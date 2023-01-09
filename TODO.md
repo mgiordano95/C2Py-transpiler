@@ -4,7 +4,7 @@ This is an example of TODO.md
 
 ### Todo
 
-- [ ] Task 2
+- [ ] Capire come funziona LEX
 - [ ] Task 3
   - [ ] Sub-task or description
 
