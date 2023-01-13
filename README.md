@@ -29,6 +29,7 @@
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
+    <li><a href="#requirements">Requirements</a></li>
     <li><a href="#installation">Installation</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#features">Features</a></li>
@@ -45,11 +46,21 @@
 
 ### Built With
 
-[![c][c]][c-url] [![python][python]][python-url]
+[![c][c]][c-url] 
 
-- Flex
-- Bison
+[![python][python]][python-url]
 
+<!-- -->
+## Requirements
+
+Project Requirements & Environment Configuration:
+- [Download](https://sourceforge.net/projects/gnuwin32/files/flex/2.5.4a-1/flex-2.5.4a-1.exe/download) and Install Flex v. 2.5.4
+- [Download](http://downloads.sourceforge.net/gnuwin32/bison-2.4.1-setup.exe) and Install Bison v. 2.4.1
+- [Download](https://sourceforge.net/projects/wxdsgn/files/latest/download) and Install wxDev-C++ (wxdevcpp_7.4.2_full_setup.exe), a fork of Dev-C++ which includes the gcc compiler
+- Include in the PATH environment variable the bin subdirectories
+of the compiler, Flex and Bison:
+  - C:\GnuWin32\bin
+  - C:\Program Files (x86)\Dev-Cpp\MinGW32\bin
 
 <!-- Installation -->
 ## Installation
