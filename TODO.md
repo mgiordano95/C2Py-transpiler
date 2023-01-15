@@ -1,17 +1,6 @@
-# Example of TODO.md
+# C2Py Transpiler TODO.md
 
-This is an example of TODO.md
-
-### Todo
-
-- [ ] Capire come funziona LEX
-- [ ] Task 3
-  - [ ] Sub-task or description
-
-### In Progress
-
-- [ ] Task 1
-
-### Done ✓
-
-- [x] Task 0
+- [x] Understand lexer
+- [x] Understand parser
+- [x] Understand symtab
+- [ ] Study [uthash](https://troydhanson.github.io/uthash/) library 
