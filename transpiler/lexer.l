@@ -22,22 +22,23 @@ id              {letter}({letter}|{digit})*
 
 %%
 
-"/*"                        BEGIN(MLCOMMENT);
+"/*"                        BEGIN(MLCOMMENT);   printf("found ML comment");
 <MLCOMMENT>[^*\n]*          { } /* se non trovi asterisco vai avanti  */
 <MLCOMMENT>"*"+[^*/n]*      { } /*  asterischi senza lo slash   */
 <MLCOMMENT>\n               { } /* se vado a capo */
-<MLCOMMENT>"*"+"/"          BEGIN(INITIAL);
+<MLCOMMENT>"*"+"/"          BEGIN(INITIAL);     printf("end of ML comment");
 
-"//" 						BEGIN(SLCOMMENT);
+"//" 						BEGIN(SLCOMMENT);   printf("found SL comment");
 <SLCOMMENT>[^\n]* 			/* tutto tranne a capo */
-<SLCOMMENT>\n 				BEGIN(INITIAL);
+<SLCOMMENT>\n 				BEGIN(INITIAL);     printf("end of SL comment");
 
 \"\"                        {printf("found quotes "); }
 
-\"                          BEGIN(QUOTE);   
-<QUOTE>([^("\|\n)]|\\.)*      {printf("Questa cosa va' bene");}      
-<QUOTE>\"                   BEGIN(INITIAL);       
-<QUOTE>\n                   {printf("questo deve generare un errore");}               
+\"                          { BEGIN QUOTE; }
+<QUOTE>([^"\\\n]|\\.)*      { printf("stringa accettata"); }
+<QUOTE>\"                   { BEGIN INITIAL; }
+<QUOTE>\n |  
+<QUOTE><<EOF>>              {printf("errore");}     
 
 
 
