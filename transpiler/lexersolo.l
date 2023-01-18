@@ -8,7 +8,6 @@
 %{
     #include <stdlib.h>
     #include <stdio.h>
-    #include "parser.tab.h"
 %}
 
 
@@ -44,33 +43,33 @@ id              {letter}({letter}|{digit})*
 
 
 
-"int"       {printf("keyword 'INT' detected"); return(INT); }
-"float"     {printf("keyword 'FLOAT' detected"); return(FLOAT);}
-"void"      {printf("keyword 'VOID' detected"); return(VOID);}
-"char"      {printf("keyword 'CHAR' detected"); return(CHAR);}
-"if"        {printf("keyword 'IF' detected"); return(IF);}
-"else"      {printf("keyword 'ELSE' detected"); return(ELSE);}
-"for"       {printf("keyword 'FOR' detected"); return(FOR);}
-"printf"    {printf("keyword 'PRINTF' detected"); return(PRINTF);}
-"scanf"     {printf("keyword 'SCANF' detected"); return(SCANF);}
-"return"    {printf("keyword 'RETURN' detected"); return(RETURN);}
+"int"       {printf("keyword 'INT' detected"); }
+"float"     {printf("keyword 'FLOAT' detected"); }
+"void"      {printf("keyword 'VOID' detected"); }
+"char"      {printf("keyword 'CHAR' detected"); }
+"if"        {printf("keyword 'IF' detected"); }
+"else"      {printf("keyword 'ELSE' detected"); }
+"for"       {printf("keyword 'FOR' detected"); }
+"printf"    {printf("keyword 'PRINTF' detected"); }
+"scanf"     {printf("keyword 'SCANF' detected"); }
+"return"    {printf("keyword 'RETURN' detected"); }
 
-"+"        {printf("keyword '+' detected"); return(ADD);}
-"-"        {printf("keyword '-' detected"); return(SUB);}
-"*"        {printf("keyword '*' detected"); return(MUL);}
-"/"        {printf("keyword '/' detected"); return(DIV);}
-"="        {printf("keyword '=' detected"); return(EQ);}
+"+"        {printf("keyword '+' detected"); }
+"-"        {printf("keyword '-' detected"); }
+"*"        {printf("keyword '*' detected"); }
+"/"        {printf("keyword '/' detected"); }
+"="        {printf("keyword '=' detected"); }
 
-"<"        {printf("keyword '<' detected"); return(LT);}
-">"        {printf("keyword '>' detected"); return(GT);}
-"=="       {printf("keyword '==' detected"); return(EE);}
-"<="       {printf("keyword '<=' detected"); return(LE);}
-">="       {printf("keyword '>=' detected"); return(GE);}
-"!="       {printf("keyword '!=' detected"); return(NE);}
+"<"        {printf("keyword '<' detected"); }
+">"        {printf("keyword '>' detected"); }
+"=="       {printf("keyword '==' detected"); }
+"<="       {printf("keyword '<=' detected"); }
+">="       {printf("keyword '>=' detected"); }
+"!="       {printf("keyword '!=' detected"); }
 
-"!"       {printf("keyword '!' detected"); return(NOT);}
-"&&"       {printf("keyword '&&' detected"); return(AND);}
-"||"       {printf("keyword '||' detected"); return(OR);}
+"!"       {printf("keyword '!' detected"); }
+"&&"       {printf("keyword '&&' detected"); }
+"||"       {printf("keyword '||' detected"); }
 
 "(" |
 ")" |
@@ -91,13 +90,13 @@ id              {letter}({letter}|{digit})*
 {letter}            {printf("Found LETTER\n");}
 {id}                {printf("Found ID");}         
       
-[ \t\n\f]           { }
+
 
 %%
 
-/* main() {
+main() {
     yylex();
     printf("stringa di prova");
     system("PAUSE");
     return 0;
-} */
+}
