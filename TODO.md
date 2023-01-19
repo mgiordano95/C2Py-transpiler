@@ -4,3 +4,9 @@
 - [x] Understand parser
 - [x] Understand symtab
 - [ ] Study [uthash](https://troydhanson.github.io/uthash/) library 
+
+## Task
+
+- [ ] Create Abstract Syntax Tree (ast.h) 
+- [ ] Create Symbol Table (symtab.h)
+- [ ] Create parser.y

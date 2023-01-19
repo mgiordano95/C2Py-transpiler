@@ -35,18 +35,18 @@ id              {letter}({letter}|{digit})*
 
 \"\"                        {printf("found quotes "); }
 
-\"                          { BEGIN QUOTE; }
+\"                          BEGIN(QUOTE); printf("found quote");
 <QUOTE>([^"\\\n]|\\.)*      { printf("stringa accettata"); }
-<QUOTE>\"                   { BEGIN INITIAL; }
+<QUOTE>\"                   BEGIN(INITIAL); printf("end quote");
 <QUOTE>\n |  
 <QUOTE><<EOF>>              {printf("errore");}     
 
 
 
 
+"void"      {printf("keyword 'VOID' detected"); return(VOID);}
 "int"       {printf("keyword 'INT' detected"); return(INT); }
 "float"     {printf("keyword 'FLOAT' detected"); return(FLOAT);}
-"void"      {printf("keyword 'VOID' detected"); return(VOID);}
 "char"      {printf("keyword 'CHAR' detected"); return(CHAR);}
 "if"        {printf("keyword 'IF' detected"); return(IF);}
 "else"      {printf("keyword 'ELSE' detected"); return(ELSE);}
@@ -55,32 +55,33 @@ id              {letter}({letter}|{digit})*
 "scanf"     {printf("keyword 'SCANF' detected"); return(SCANF);}
 "return"    {printf("keyword 'RETURN' detected"); return(RETURN);}
 
-"+"        {printf("keyword '+' detected"); return(ADD);}
-"-"        {printf("keyword '-' detected"); return(SUB);}
-"*"        {printf("keyword '*' detected"); return(MUL);}
-"/"        {printf("keyword '/' detected"); return(DIV);}
-"="        {printf("keyword '=' detected"); return(EQ);}
+"+"         {printf("keyword '+' detected"); return(ADD);}
+"-"         {printf("keyword '-' detected"); return(SUB);}
+"*"         {printf("keyword '*' detected"); return(MUL);}
+"/"         {printf("keyword '/' detected"); return(DIV);}
 
-"<"        {printf("keyword '<' detected"); return(LT);}
-">"        {printf("keyword '>' detected"); return(GT);}
-"=="       {printf("keyword '==' detected"); return(EE);}
-"<="       {printf("keyword '<=' detected"); return(LE);}
-">="       {printf("keyword '>=' detected"); return(GE);}
-"!="       {printf("keyword '!=' detected"); return(NE);}
+"="         {printf("keyword '=' detected"); return(EQ);}
 
-"!"       {printf("keyword '!' detected"); return(NOT);}
-"&&"       {printf("keyword '&&' detected"); return(AND);}
-"||"       {printf("keyword '||' detected"); return(OR);}
+"=="        {printf("keyword '==' detected"); return(EE);}
+"!="        {printf("keyword '!=' detected"); return(NE);}
+">"         {printf("keyword '>' detected"); return(GT);}
+"<"         {printf("keyword '<' detected"); return(LT);}
+">="        {printf("keyword '>=' detected"); return(GE);}
+"<="        {printf("keyword '<=' detected"); return(LE);}
 
-"(" |
-")" |
-"[" |
-"]" |
-"{" |
-"}"         {printf("Found brackets");}
+"&&"        {printf("keyword '&&' detected"); return(AND);}
+"||"        {printf("keyword '||' detected"); return(OR);}
+"!"         {printf("keyword '!' detected"); return(NOT);}
 
-";"         {printf("Found semicolon");}
-","         {printf("Found colon");}
+"("         {printf("keyword '(' detexted"); return(LPAR);}
+")"         {printf("keyword ')' detexted"); return(RPAR);}
+"["         {printf("keyword '[' detexted"); return(LSBRA);}
+"]"         {printf("keyword ']' detexted"); return(RSBRA);}
+"{"         {printf("keyword '{' detexted"); return(LBRA);}
+"}"         {printf("keyword '}' detexted"); return(RBRA);}
+
+";"         {printf("Found semicolon"); return(SEMICOL)}
+","         {printf("Found comma"); return(COMM)}
 
 
 {delim}             {printf("Found DELIM");}
@@ -90,7 +91,7 @@ id              {letter}({letter}|{digit})*
 {float_number}      {printf("Found FLOAT NUMBER");}
 {letter}            {printf("Found LETTER\n");}
 {id}                {printf("Found ID");}         
-      
+
 [ \t\n\f]           { }
 
 %%
