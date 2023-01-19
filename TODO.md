@@ -7,6 +7,7 @@
 
 ## Task
 
+- [x] Import utash header file
 - [ ] Create Abstract Syntax Tree (ast.h) 
 - [ ] Create Symbol Table (symtab.h)
 - [ ] Create parser.y
