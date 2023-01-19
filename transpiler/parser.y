@@ -23,7 +23,11 @@ int error_num = 0;
 
 %%
 
-//qui vanno le definizioni della grammatica
+  program:   { scope_enter(); }    statements    { root = $2; scope_exit(); };
+  types:
+              INT       { $$ = DATA_TYPE_INT; }
+          |   FLOAT     { $$ = DATA_TYPE_INT; }
+          |   CHAR      { $$ = DATA_TYPE_CHAR; }
 
 %%
 
@@ -46,4 +50,33 @@ int yyerror(char *st) { printf("\n\n\t***Error: %s***\n\t***Line: %d***\n\n\n",s
 
 int main {
     yyparse();
+}
+
+//Conversione type to string
+char * type_to_str(int type) {
+    switch (type) {
+        case DATA_TYPE_INT:
+            return "int";
+        break;
+        case DATA_TYPE_FLOAT:
+            return "float";
+        break;
+        case DATA_TYPE_CHAR:
+            return "char";
+        break;
+        case DATA_TYPE_NONE:
+            return "Type none";
+        break;
+        default:
+            return "Type not defined";
+        break;
+    }
+}
+
+// Conversione string to type
+int str_to_type (int type) {
+    if      (strcmp(type_to_str(type), "int") == 0)  	{ return DATA_TYPE_INT; }
+    else if (strcmp(type_to_str(type), "float") == 0)   { return DATA_TYPE_FLOAT; }
+    else if (strcmp(type_to_str(type), "char") == 0)    { return DATA_TYPE_CHAR; }
+    else                                                { return DATA_TYPE_NONE; }
 }
