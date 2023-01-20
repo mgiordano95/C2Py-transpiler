@@ -22,9 +22,9 @@ enum Data_Type {
 
 enum Content_Type {
     CONTENT_TYPE_ID,
-    CONTENT_TYPE_STRING,
-    CONTENT_TYPE_FLOAT_NUMBER,
     CONTENT_TYPE_INT_NUMBER,
+    CONTENT_TYPE_FLOAT_NUMBER,
+    CONTENT_TYPE_CHAR,
     CONTENT_TYPE_EXPRESSION,
     CONTENT_TYPE_FUNCTION,
 };
@@ -35,6 +35,8 @@ enum Access_Type {
     ACCESS_TYPE_FUNCTION,
 };
 
+
+//TO-DO: da scrivere dopo il Node_type, serve per la traduzione
 enum Node_Type {
     INIT_NODE,
     ASSIGN_NODE,
@@ -54,59 +56,125 @@ enum Node_Type {
 
 union yystype {
     char *string;
-    struct AST_NODE_INIT            *init;
-    struct AST_NODE_ASSIGN          *assign;
+    struct AST_NODE_INIT                *init;
+    struct AST_NODE_ASSIGN              *assign;
+    struct AST_NODE_EXPRESSION          *expression;
+    struct AST_NODE_OPERAND             *operand;
+    struct AST_NODE_FUNCTION_DECL       *functionDecl;
+    struct AST_NODE_FUNCTION_CALL       *functionCall;
+    struct AST_NODE_FUNCTION_PARAMS     *functionParams;
+    struct AST_NODE_BODY                *body;
+    /* struct AST_NODE_FUNCTION_INPUT      *inputFunction;
+    struct AST_NODE_FUNCTION_OUTPUT     *outputFunction; */
+
+
+
+
+
 
     struct AST_Node_Declare_Params  *declare_params;
-    struct AST_Node_Params          *params;
+    
     struct AST_Node_Instruction     *instruction;
-    struct AST_Node_Expression      *expression;
+    
     struct AST_Node_Statements      *statements;
     struct AST_Node_Value           *value;
     struct AST_Node_Variable        *variable;
-    struct AST_Node_FunctionCall    *functionCall;
-    struct AST_Node_FunctionDef     *functionDef;
     struct AST_Node_If              *ifNode;
     struct AST_Node_Else            *elseNode;
     struct AST_Node_Else_If         *elseIfNode;
     struct AST_Node_For             *forNode;
-    struct AST_Node_Operand         *operand;
-    struct AST_Node_Return          *returnNode;
-    struct AST_Node_Input           *inputNode;
-    struct AST_Node_Output          *outputNode;
-    struct AST_NODE_BODY            *bodyNode;
+    
 };
 
 /*--------------- Other Types ---------------*/
-typedef union Value_after_eq {
+typedef union Value_oper {
     char *val;
-    /* struct AST_Node_Expression *expr;
-    struct AST_Node_FunctionCall *funca; */ 
+    struct AST_NODE_EXPRESSION *expression;
+    struct AST_NODE_FUNCTION_CALL *funtionCall;
 };
 
 static union Value_sym null_value;
 
-struct AST_NODE_ARRAY {
-    char *variable_name;
-    int *length;
-
-};
-
 
 /*--------------- Node Initialization ---------------*/
 
+//int a = 3;
 struct AST_NODE_INIT {
     enum Data_Type data_type; 
     struct AST_NODE_ASSIGN *assign;
     struct AST_NODE_INIT *next_init;
 };
 
+//a = 5;
 struct AST_NODE_ASSIGN {
     char *variable_name;
     enum Data_Type value_type; //value_type serve per il check del type del Content/ID
-    union Value_after_eq assign_value; //Value
+    union Value_oper assign_value; //Value
     enum Content_Type assign_type; //assign_type è il tipo di ciò che c'è dopo l'uguale
 };
+
+/* NODE EXPRESSION:
+a+b
+7-3
+a*2
+d/3
+a + 5 > 6
+i + 1 < 8
+*/
+struct AST_NODE_EXPRESSION {
+    enum Data_Type expr_type;
+    char *op; // op è $2 e può essere +, -, *, /, >, < ...
+    struct AST_NODE_OPERAND *left_oper;
+    struct AST_NODE_OPERAND *right_oper; 
+};
+
+/* NODE OEPRAND:
+a = int myFunc() -> myFunc = content_type, a = value_type
+*/
+struct AST_NODE_OPERAND {
+    enum Data_Type value_type;
+    union Value_oper value;
+    enum Content_Type content_type; //content_type è il tipo di value
+}; 
+
+struct AST_NODE_FUNCTION_DECL {
+    char *function_name;
+    enum Data_Type return_type; //tipo restituito dalla funzione
+    struct AST_NODE_FUNCTION_PARAMS *function_params;
+    struct AST_NODE_BODY *function_body;
+};
+
+struct AST_NODE_FUNCTION_CALL {
+    char *function_name;
+    enum Data_Type return_type;
+    struct AST_NODE_FUNCTION_PARAMS *function_params;
+};
+
+struct AST_NODE_FUNCTION_PARAMS {
+    struct AST_NODE_INIT *init_param; //questo vale solo per la dichiarazione e va annullato nella chiamata 
+    struct AST_NODE_OPERAND *call_params; //questo vale solo per la chiamata e va annullato nella dichiarazione 
+    struct AST_NODE_FUNCTION_PARAMS *next_params; // questo vale sempre per puntare al parametro successivo (a, b, c), sia dichiarazione che chiamata
+    /* Gestione di più parametri:
+    multi_fun_param:
+                fun_param                           {
+                                                        $1->next_param = NULL;
+                                                        $$ = $1;
+                                                        }
+                |   fun_param COMMA  multi_fun_param    {
+                                                        $1->next_param = $3;
+                                                        $$ = $1;
+                                                        };
+    */
+};
+
+/* struct AST_NODE_FUNCTION_INPUT {
+    struct AST_NODE_FUNCTION_CALL *input_function;
+};
+
+struct AST_NODE_FUNCTION_OUTPUT {
+    struct AST_NODE_FUNCTION_CALL *output_function;
+}; */
+
 
 
 
