@@ -29,33 +29,26 @@ enum Content_Type {
     CONTENT_TYPE_FUNCTION,
 };
 
-enum Access_Type {
-    ACCESS_TYPE_VAR,
-    ACCESS_TYPE_ASSIGN,
-    ACCESS_TYPE_FUNCTION,
-};
-
-
 //TO-DO: da scrivere dopo il Node_type, serve per la traduzione
 enum Node_Type {
     INIT_NODE,
     ASSIGN_NODE,
-    EXPR_NODE,
-    FUNC_DEF_NODE,
-    FUN_CALL_NODE,
-    STATEMENT_NODE,
-    ARRAY_NODE,
+    EXPRESSION_NODE,
+    FUNCTION_DECL_NODE,
+    FUNCTION_CALL_NODE,
+    ARRAY_INIT_NODE,
+    ARRAY_ASSIGN_NODE,
     IF_NODE,
     ELSE_NODE,
-    IF_ELSE_NODE,
-    FOR_NODE,
-    INPUT_NODE,
-    OUTPUT_NODE,
-    
+    ELSE_IF_NODE,
+    WHILE_NODE,
+    STATEMENT_NODE,
 };
 
 union yystype {
     char *string;
+    struct AST_NODE_STATEMENTS          *statements;
+    struct AST_NODE_INSTRUCTION         *instruction;
     struct AST_NODE_INIT                *init;
     struct AST_NODE_ASSIGN              *assign;
     struct AST_NODE_EXPRESSION          *expression;
@@ -64,25 +57,16 @@ union yystype {
     struct AST_NODE_FUNCTION_CALL       *functionCall;
     struct AST_NODE_FUNCTION_PARAMS     *functionParams;
     struct AST_NODE_BODY                *body;
-    /* struct AST_NODE_FUNCTION_INPUT      *inputFunction;
+    /* struct AST_NODE_FUNCTION_INPUT   *inputFunction;
     struct AST_NODE_FUNCTION_OUTPUT     *outputFunction; */
-
-
-
-
-
-
-    struct AST_Node_Declare_Params  *declare_params;
-    
-    struct AST_Node_Instruction     *instruction;
-    
-    struct AST_Node_Statements      *statements;
-    struct AST_Node_Value           *value;
-    struct AST_Node_Variable        *variable;
-    struct AST_Node_If              *ifNode;
-    struct AST_Node_Else            *elseNode;
-    struct AST_Node_Else_If         *elseIfNode;
-    struct AST_Node_For             *forNode;
+    struct AST_NODE_ARRAY_INIT          ;
+    struct AST_NODE_ARRAY_ASSIGN        ;
+    struct AST_NODE_IF                  ;
+    struct AST_NODE_ELSE                ;
+    struct AST_NODE_ELSE_IF             ;
+    struct AST_NODE_WHILE               ;
+    struct AST_NODE_VALUE               *value;
+    struct AST_NODE_VARIABLE            *variable;
     
 };
 
@@ -94,6 +78,18 @@ typedef union Value_oper {
 };
 
 static union Value_sym null_value;
+
+struct AST_NODE_STATEMENTS {
+    enum Node_Type node_type; //questa può essere uguale solo a Node_Type.STATEMENT_NODE
+    struct AST_NODE_INSTRUCTION *left; //puntatore all'instruction corrente
+    struct AST_NODE_STATEMENTS *next_statement; //puntato allo statmenent successivo
+};
+
+struct AST_NODE_INSTRUCTION {
+    enum Node_Type node_type; //tipo dell'instruction
+    union yystype value; /*puntatore alla struct dell'instruction $1 -> value.init, $1 -> value.functionDecl
+    usare gli stessi nomi dei puntatori definiti in camelCase a riga 55*/
+};
 
 
 /*--------------- Node Initialization ---------------*/
@@ -141,7 +137,7 @@ struct AST_NODE_FUNCTION_DECL {
     char *function_name;
     enum Data_Type return_type; //tipo restituito dalla funzione
     struct AST_NODE_FUNCTION_PARAMS *function_params;
-    struct AST_NODE_BODY *function_body;
+    struct AST_NODE_BODY *function_body; //da scrivere
 };
 
 struct AST_NODE_FUNCTION_CALL {
@@ -166,6 +162,12 @@ struct AST_NODE_FUNCTION_PARAMS {
                                                         };
     */
 };
+
+struct AST_NODE_BODY {
+    struct AST_NODE_STATEMENTS *body_statements;
+    struct AST_NODE_OPERAND *return_value;
+};
+
 
 /* struct AST_NODE_FUNCTION_INPUT {
     struct AST_NODE_FUNCTION_CALL *input_function;
