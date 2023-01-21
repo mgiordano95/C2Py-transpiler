@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include "ast.h"
 
 int yylex(void);
 int yyparse(void);
@@ -9,17 +10,52 @@ int error_num = 0;
 
 %}
 
-%union {
+%union  {
     char *str;
     int num;
 }
 
-%token INT FLOAT VOID CHAR
-%token IF ELSE FOR RETURN
-%token<str> ID SCANF PRINTF
-%left NOT AND OR
-%left ADD SUB MUL DIV EQ
-%left LT GT EE LE GE NE
+%code requires{
+    #include "ast.h"
+}
+
+%token VOID 
+%token INT 
+%token FLOAT 
+%token CHAR
+%token IF 
+%token ELSE
+%token WHILE
+%token PRINTF
+%token SCANF
+%token RETURN
+%token ADD 
+%token SUB 
+%token MUL
+%token DIV
+%token EQ
+%token EE
+%token NE
+%token GT
+%token LT
+%token GE
+%token LE
+%token AND
+%token OR
+%token NOT
+%token LPAR RPAR LSBRA RSBRA LBRA RBRA
+%token SEMICOL
+%token COMMA 
+%token INT_VALUE 
+%token FLOAT_VALUE
+%token CHAR_VALUE
+%token ID 
+
+
+/* NON_TERMINAL TYPES */
+%define api.value.type {union yystype}
+
+%type<AST_NODE_INSTRUCTION> statements
 
 %%
 
@@ -55,6 +91,9 @@ int main {
 //Conversione type to string
 char * type_to_str(int type) {
     switch (type) {
+         case DATA_TYPE_VOID:
+            return "void";
+        break;
         case DATA_TYPE_INT:
             return "int";
         break;
@@ -75,7 +114,8 @@ char * type_to_str(int type) {
 
 // Conversione string to type
 int str_to_type (int type) {
-    if      (strcmp(type_to_str(type), "int") == 0)  	{ return DATA_TYPE_INT; }
+    if      (strcmp(type_to_str(type), "void") == 0)  	{ return DATA_TYPE_VOID; }         
+    else if (strcmp(type_to_str(type), "int") == 0)  	{ return DATA_TYPE_INT; }
     else if (strcmp(type_to_str(type), "float") == 0)   { return DATA_TYPE_FLOAT; }
     else if (strcmp(type_to_str(type), "char") == 0)    { return DATA_TYPE_CHAR; }
     else                                                { return DATA_TYPE_NONE; }

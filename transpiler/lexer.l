@@ -15,10 +15,12 @@
 delim           [ \t]
 ws              {delim}+
 digit           [0-9]
-int_number      ([+]?[0]+|([-+]?[0]+?[1-9][0-9]*))       
-float_number    [-+]?([0-9]*\.?[0-9]+|[0-9]+\.)(E[+-]?{digit}+)?
 letter          [a-zA-Z]
+int_value       ([+]?[0]+|([-+]?[0]+?[1-9][0-9]*))       
+float_value     [-+]?([0-9]*\.?[0-9]+|[0-9]+\.)(E[+-]?{digit}+)?
+char_value      {letter}|{digit}
 id              {letter}({letter}|{digit})*
+
 
 
 %%
@@ -50,7 +52,7 @@ id              {letter}({letter}|{digit})*
 "char"      {printf("keyword 'CHAR' detected"); return(CHAR);}
 "if"        {printf("keyword 'IF' detected"); return(IF);}
 "else"      {printf("keyword 'ELSE' detected"); return(ELSE);}
-"for"       {printf("keyword 'FOR' detected"); return(FOR);}
+"while"     {printf("keyword 'WHILE' detected"); return(WHILE);}
 "printf"    {printf("keyword 'PRINTF' detected"); return(PRINTF);}
 "scanf"     {printf("keyword 'SCANF' detected"); return(SCANF);}
 "return"    {printf("keyword 'RETURN' detected"); return(RETURN);}
@@ -80,17 +82,17 @@ id              {letter}({letter}|{digit})*
 "{"         {printf("keyword '{' detexted"); return(LBRA);}
 "}"         {printf("keyword '}' detexted"); return(RBRA);}
 
-";"         {printf("Found semicolon"); return(SEMICOL)}
-","         {printf("Found comma"); return(COMM)}
+";"         {printf("Found semicolon"); return(SEMICOL);}
+","         {printf("Found comma"); return(COMMA);}
 
 
 {delim}             {printf("Found DELIM");}
 {ws}                {printf("Found WHITE SPACE");}
 {digit}             {printf("Found DIGIT");}
-{int_number}        {printf("Found INTEGER NUMBER");}
-{float_number}      {printf("Found FLOAT NUMBER");}
-{letter}            {printf("Found LETTER\n");}
-{id}                {printf("Found ID");}         
+{int_value}         {printf("Found INTEGER NUMBER"); return(INT_VALUE);}
+{float_value}       {printf("Found FLOAT NUMBER"); return(FLOAT_VALUE);}
+{char_value}        {printf("Found CHAR"); return(CHAR_VALUE);}
+{id}                {printf("Found ID"); return(ID);}         
 
 [ \t\n\f]           { }
 
