@@ -53,14 +53,32 @@
 <!-- -->
 ## Requirements
 
-Project Requirements & Environment Configuration:
-- [Download](https://sourceforge.net/projects/gnuwin32/files/flex/2.5.4a-1/flex-2.5.4a-1.exe/download) and Install Flex v. 2.5.4
-- [Download](http://downloads.sourceforge.net/gnuwin32/bison-2.4.1-setup.exe) and Install Bison v. 2.4.1
-- [Download](https://sourceforge.net/projects/wxdsgn/files/latest/download) and Install wxDev-C++ (wxdevcpp_7.4.2_full_setup.exe), a fork of Dev-C++ which includes the gcc compiler
-- Include in the PATH environment variable the bin subdirectories
+Windows:
+1. [Download](https://sourceforge.net/projects/gnuwin32/files/flex/2.5.4a-1/flex-2.5.4a-1.exe/download) and Install Flex v. 2.5.4
+2. [Download](http://downloads.sourceforge.net/gnuwin32/bison-2.4.1-setup.exe) and Install Bison v. 2.4.1
+3. [Download](https://sourceforge.net/projects/wxdsgn/files/latest/download) and Install wxDev-C++ (wxdevcpp_7.4.2_full_setup.exe), a fork of Dev-C++ which includes the gcc compiler
+4. Include in the PATH environment variable the bin subdirectories
 of the compiler, Flex and Bison:
   - C:\GnuWin32\bin
   - C:\Program Files (x86)\Dev-Cpp\MinGW32\bin
+
+Ubuntu/Debian:
+1. Open a terminal window using Ctrl + Alt + T.
+2. Update the system's package list by typing the following command and pressing Enter:
+    > <code>sudo apt-get update</code>
+3. Install Flex typing the following command and pressing Enter:
+    > <code>sudo apt-get install flex</code>
+4. Install Bison typing the following command and pressing Enter:
+    > <code>sudo apt-get install bison</code>
+5. Verify that the installations were successful by typing the following commands and pressing Enter:
+    > <code>flex --version</code>
+
+    > <code>bison --version</code>
+
+To compile this project we used:
+- Flex v. 2.6.4
+- Bison v. 3.8.2
+- GCC v. 11.3.0
 
 <!-- Installation -->
 ## Installation
@@ -70,6 +88,17 @@ of the compiler, Flex and Bison:
 <!-- Usage -->
 ## Usage
 
+1. Download ZIP.
+2. Open a terminal window using Ctrl + Alt + T.
+3. Go to the "transpiler" directory.
+4. Run the following commands:
+    > <code>bison -d parser.y</code>
+
+    > <code>flex lexer.l</code>
+
+    > <code>gcc parser.tab.c lex.yy.c -lfl -lm</code>
+
+    > <code>./a.out</code>
 
 
 <!-- Features -->
