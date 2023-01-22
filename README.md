@@ -65,15 +65,22 @@ of the compiler, Flex and Bison:
 Ubuntu/Debian:
 1. Open a terminal window using Ctrl + Alt + T.
 2. Update the system's package list by typing the following command and pressing Enter:
-    > <code>sudo apt-get update</code>
-3. Install Flex typing the following command and pressing Enter:
-    > <code>sudo apt-get install flex</code>
-4. Install Bison typing the following command and pressing Enter:
-    > <code>sudo apt-get install bison</code>
-5. Verify that the installations were successful by typing the following commands and pressing Enter:
-    > <code>flex --version</code>
 
-    > <code>bison --version</code>
+    `sudo apt-get update`
+
+3. Install Flex typing the following command and pressing Enter:
+
+    `sudo apt-get install flex`
+
+4. Install Bison typing the following command and pressing Enter:
+
+    `sudo apt-get install bison`
+
+5. Verify that the installations were successful by typing the following commands and pressing Enter:
+
+    `flex --version`
+
+    `bison --version`
 
 To compile this project we used:
 - Flex v. 2.6.4
@@ -92,13 +99,13 @@ To compile this project we used:
 2. Open a terminal window using Ctrl + Alt + T.
 3. Go to the "transpiler" directory.
 4. Run the following commands:
-    > <code>bison -d parser.y</code>
+    `bison -d parser.y`
 
-    > <code>flex lexer.l</code>
+    `flex lexer.l`
 
-    > <code>gcc parser.tab.c lex.yy.c -lfl -lm</code>
+    `gcc parser.tab.c lex.yy.c -lfl -lm`
 
-    > <code>./a.out</code>
+    `./a.out`
 
 
 <!-- Features -->
