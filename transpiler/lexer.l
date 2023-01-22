@@ -1,5 +1,4 @@
-%option yylineno
-%option noyywrap
+
 
 %x  MLCOMMENT
 %x  SLCOMMENT
@@ -97,10 +96,3 @@ id              {letter}({letter}|{digit})*
 [ \t\n\f]           { }
 
 %%
-
-/* main() {
-    yylex();
-    printf("stringa di prova");
-    system("PAUSE");
-    return 0;
-} */

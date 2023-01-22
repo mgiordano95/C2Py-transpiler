@@ -59,25 +59,25 @@ union yystype {
     struct AST_NODE_BODY                *body;
     /* struct AST_NODE_FUNCTION_INPUT   *inputFunction;
     struct AST_NODE_FUNCTION_OUTPUT     *outputFunction; */
-    struct AST_NODE_ARRAY_INIT          ;
+    /* struct AST_NODE_ARRAY_INIT          ;
     struct AST_NODE_ARRAY_ASSIGN        ;
     struct AST_NODE_IF                  ;
     struct AST_NODE_ELSE                ;
     struct AST_NODE_ELSE_IF             ;
-    struct AST_NODE_WHILE               ;
+    struct AST_NODE_WHILE               ; */
     struct AST_NODE_VALUE               *value;
     struct AST_NODE_VARIABLE            *variable;
     
 };
 
 /*--------------- Other Types ---------------*/
-typedef union Value_oper {
+/* typedef union Value_oper {
     char *val;
     struct AST_NODE_EXPRESSION *expression;
     struct AST_NODE_FUNCTION_CALL *funtionCall;
 };
 
-static union Value_sym null_value;
+static union Value_oper null_value; */
 
 struct AST_NODE_STATEMENTS {
     enum Node_Type node_type; //questa può essere uguale solo a Node_Type.STATEMENT_NODE
@@ -105,7 +105,7 @@ struct AST_NODE_INIT {
 struct AST_NODE_ASSIGN {
     char *variable_name;
     enum Data_Type value_type; //value_type serve per il check del type del Content/ID
-    union Value_oper assign_value; //Value
+    /* union Value_oper assign_value; */ //Value
     enum Content_Type assign_type; //assign_type è il tipo di ciò che c'è dopo l'uguale
 };
 
@@ -129,7 +129,7 @@ a = int myFunc() -> myFunc = content_type, a = value_type
 */
 struct AST_NODE_OPERAND {
     enum Data_Type value_type;
-    union Value_oper value;
+    /* union Value_oper value; */
     enum Content_Type content_type; //content_type è il tipo di value
 }; 
 

@@ -1,19 +1,14 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "ast.h"
 
-int yylex(void);
-int yyparse(void);
-int yyerror(char *st);
-int error_num = 0;
+int yyerror(char *s);
+int yylex();
+
 
 %}
-
-%union  {
-    char *str;
-    int num;
-}
 
 %code requires{
     #include "ast.h"
@@ -55,68 +50,18 @@ int error_num = 0;
 /* NON_TERMINAL TYPES */
 %define api.value.type {union yystype}
 
-%type<AST_NODE_INSTRUCTION> statements
+%type<statements> statements
 
 %%
 
-  program:   { scope_enter(); }    statements    { root = $2; scope_exit(); };
-  types:
-              INT       { $$ = DATA_TYPE_INT; }
-          |   FLOAT     { $$ = DATA_TYPE_INT; }
-          |   CHAR      { $$ = DATA_TYPE_CHAR; }
-
+  program:   { printf("ciao"); }    statements    { printf("ciao"); };
+  statements:   {printf("ciao");}
 %%
 
-
-int yylex (void) {
-  int c;
-  while ((c = getchar ()) == ' ' || c == '\t' || c == '\n');
-  if (c == '.' || isdigit (c)) {
-    ungetc (c, stdin);
-    scanf ("%lf", &yylval);
-    return VAL;
-  }
-  if (c == EOF)
-    return 0;
-  return c;
+int yyerror(char *s) {
+    printf("%s\n", s);
 }
 
-int yyerror(char *st) { printf("\n\n\t***Error: %s***\n\t***Line: %d***\n\n\n",st,yylineno); error_num++;}
-
-
-int main {
-    yyparse();
-}
-
-//Conversione type to string
-char * type_to_str(int type) {
-    switch (type) {
-         case DATA_TYPE_VOID:
-            return "void";
-        break;
-        case DATA_TYPE_INT:
-            return "int";
-        break;
-        case DATA_TYPE_FLOAT:
-            return "float";
-        break;
-        case DATA_TYPE_CHAR:
-            return "char";
-        break;
-        case DATA_TYPE_NONE:
-            return "Type none";
-        break;
-        default:
-            return "Type not defined";
-        break;
-    }
-}
-
-// Conversione string to type
-int str_to_type (int type) {
-    if      (strcmp(type_to_str(type), "void") == 0)  	{ return DATA_TYPE_VOID; }         
-    else if (strcmp(type_to_str(type), "int") == 0)  	{ return DATA_TYPE_INT; }
-    else if (strcmp(type_to_str(type), "float") == 0)   { return DATA_TYPE_FLOAT; }
-    else if (strcmp(type_to_str(type), "char") == 0)    { return DATA_TYPE_CHAR; }
-    else                                                { return DATA_TYPE_NONE; }
+int main(void) {
+    return yyparse();
 }
