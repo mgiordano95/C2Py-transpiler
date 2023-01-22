@@ -99,6 +99,7 @@ To compile this project we used:
 2. Open a terminal window using Ctrl + Alt + T.
 3. Go to the "transpiler" directory.
 4. Run the following commands:
+
     `bison -d parser.y`
 
     `flex lexer.l`
