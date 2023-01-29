@@ -5,8 +5,9 @@
 #include "ast.h"
 
 int yyerror(char *s);
-int yylex();
+int yylex(void);
 
+struct AST_NODE_STATEMENTS *root;
 
 %}
 
@@ -50,12 +51,54 @@ int yylex();
 /* NON_TERMINAL TYPES */
 %define api.value.type {union yystype}
 
-%type<statements> statements
+%type<string> types
+%type<statements> program statements 
+%type<instruction> instruction 
+%type<init> initialization
+%type<assign> assignment
+%type<expression> expression
+%type<operand>
+%type<functionDecl> function_decl
+%type<funcionCall> function_call
+%type<functionParams>
+%type<body> body
+
+%start program
 
 %%
 
-  program:   { printf("ciao"); }    statements    { printf("ciao"); };
-  statements:   {printf("ciao");}
+    program:    statements
+
+    statements: 
+                instruction statements          {   
+                                                    $$ = malloc(sizeof(struct AST_Node_Statements));
+                                                    $->n_type = STATEMENT_NODE;
+                                                    $$->left = $1;
+                                                    $$->right = $2;
+                                                }
+            |   instruction                     {
+
+                                                };
+
+
+    instruction:
+                initialization SEMICOL          {
+                                                }
+            |   assignment SEMICOL              {
+                                                }
+            |   function_decl                   {
+
+                                                }
+            |   function_call SEMICOL           {
+
+                                                };
+
+
+                                                
+
+    
+
+
 %%
 
 int yyerror(char *s) {

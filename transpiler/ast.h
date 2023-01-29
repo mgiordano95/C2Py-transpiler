@@ -1,4 +1,3 @@
-/*--------------- Abstrac Syntax Tree ---------------*/
 #ifndef AST_H
 #define AST_H
 
@@ -103,7 +102,7 @@ struct AST_NODE_INIT {
 
 //a = 5;
 struct AST_NODE_ASSIGN {
-    char *variable_name;
+    char *variable_name; 
     enum Data_Type value_type; //value_type serve per il check del type del Content/ID
     /* union Value_oper assign_value; */ //Value
     enum Content_Type assign_type; //assign_type è il tipo di ciò che c'è dopo l'uguale
