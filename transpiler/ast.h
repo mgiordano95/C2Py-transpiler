@@ -80,7 +80,7 @@ static union Value_oper null_value;
 
 struct AST_NODE_STATEMENTS {
     enum Node_Type node_type; //questa può essere uguale solo a Node_Type.STATEMENT_NODE
-    struct AST_NODE_INSTRUCTION *left; //puntatore all'instruction corrente
+    struct AST_NODE_INSTRUCTION *current_instruction; //puntatore all'instruction corrente
     struct AST_NODE_STATEMENTS *next_statement; //puntato allo statmenent successivo
 };
 
@@ -97,7 +97,8 @@ struct AST_NODE_INSTRUCTION {
 struct AST_NODE_INIT {
     enum Data_Type data_type; 
     struct AST_NODE_ASSIGN *assign;
-    struct AST_NODE_INIT *next_init;
+    // struct AST_NODE_INIT *next_init;  serivra' per controllo che non siano state inizializzate 2 variabili 
+    // con lo stesso nome
 };
 
 //a = 5;
@@ -106,6 +107,8 @@ struct AST_NODE_ASSIGN {
     enum Data_Type value_type; //value_type serve per il check del type del Content/ID
     union Value_oper assign_value; //Value
     enum Content_Type assign_type; //assign_type è il tipo di ciò che c'è dopo l'uguale
+    //int a -> CONTENT_TYPE_ID indica che e' solo un ID senza assegnazione
+    //int main() -> CONTENT_TYPE_FUNCTION
 };
 
 /* NODE EXPRESSION:

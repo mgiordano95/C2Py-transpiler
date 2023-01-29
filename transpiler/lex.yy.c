@@ -369,12 +369,12 @@ static const flex_int16_t yy_accept[117] =
        51,   42,   54,   43,    2,    4,    3,    7,    8,   11,
        13,   12,   54,   47,   30,    9,   35,    0,   49,   49,
        50,   50,    1,    6,   50,    0,   49,   34,   29,   33,
-       52,   52,   52,   52,   18,   52,   52,   52,   52,   52,
-       52,   36,    2,    3,    3,    5,    7,   11,    0,    0,
-       50,   52,   52,   52,   15,   52,   52,   52,   52,   52,
+       51,   51,   51,   51,   18,   51,   51,   51,   51,   51,
+       51,   36,    2,    3,    3,    5,    7,   11,    0,    0,
+       50,   51,   51,   51,   15,   51,   51,   51,   51,   51,
 
-       17,   19,   52,   52,   52,   52,   14,   52,   16,   52,
-       52,   22,   20,   21,   23,    0
+       17,   19,   51,   51,   51,   51,   14,   51,   16,   51,
+       51,   22,   20,   21,   23,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -1078,22 +1078,22 @@ YY_RULE_SETUP
 case 51:
 YY_RULE_SETUP
 #line 93 "lexer.l"
-{printf("Found CHAR"); return(CHAR_VALUE);}
+{printf("Found ID"); return(ID);}    
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
 #line 94 "lexer.l"
-{printf("Found ID"); return(ID);}         
+{printf("Found CHAR"); return(CHAR_VALUE);}
 	YY_BREAK
 case 53:
 /* rule 53 can match eol */
 YY_RULE_SETUP
-#line 96 "lexer.l"
+#line 97 "lexer.l"
 { }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 98 "lexer.l"
+#line 99 "lexer.l"
 ECHO;
 	YY_BREAK
 #line 1100 "lex.yy.c"
@@ -2103,5 +2103,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 98 "lexer.l"
+#line 99 "lexer.l"
 

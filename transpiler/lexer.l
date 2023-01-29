@@ -90,8 +90,9 @@ id              {letter}({letter}|{digit})*
 {digit}             {printf("Found DIGIT");}
 {int_value}         {printf("Found INTEGER NUMBER"); return(INT_VALUE);}
 {float_value}       {printf("Found FLOAT NUMBER"); return(FLOAT_VALUE);}
+{id}                {printf("Found ID"); return(ID);}    
 {char_value}        {printf("Found CHAR"); return(CHAR_VALUE);}
-{id}                {printf("Found ID"); return(ID);}         
+     
 
 [ \t\n\f]           { }
 
