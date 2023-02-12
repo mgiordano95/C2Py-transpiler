@@ -51,7 +51,7 @@ struct AST_NODE_STATEMENTS *root;
 /* NON_TERMINAL TYPES */
 %define api.value.type {union yystype}
 
-%type <string> types ID SEMICOL
+%type <string> types ID SEMICOL INT_VALUE FLOAT_VALUE CHAR_VALUE EQ content
 %type <statements> program statements 
 %type <instruction> instruction 
 %type <init> initialization
@@ -62,57 +62,99 @@ struct AST_NODE_STATEMENTS *root;
 
 %%
 
-    program:    statements                      { root = $1; };
+program:    
+statements                      { root = $1; };
 
-    statements: 
-                instruction statements          {   
-                                                    $$ = malloc(sizeof(struct AST_NODE_STATEMENTS));
-                                                    $$->node_type = STATEMENT_NODE;
-                                                    $$->current_instruction = $1;
-                                                    $$->next_statement = $2;
-                                                }
-            |   instruction                     {
-                                                    $$ = malloc(sizeof(struct AST_NODE_STATEMENTS));
-                                                    $$->node_type = STATEMENT_NODE;
-                                                    $$->current_instruction = $1;
-                                                    $$->next_statement = NULL;
-                                                };
-
-
-    instruction:
-                initialization SEMICOL          {
-                                                    $$ = malloc(sizeof(struct AST_NODE_INSTRUCTION));
-                                                    $$->node_type = INIT_NODE;
-                                                    $$->value.init = $1;
-                                                }
-            |   assignment SEMICOL              {
-                                                    $$ = malloc(sizeof(struct AST_NODE_INSTRUCTION));
-                                                    $$->node_type = ASSIGN_NODE;
-                                                    $$->value.assign = $1;
-                                                };
-        
-
-    initialization:
-                types ID                        {
-                                                    $$ = malloc(sizeof(struct AST_NODE_INIT)); printf("AST_NODE_INIT allocated");
-                                                    $$->data_type = str_to_type($1);
-                                                    $$->assign = malloc(sizeof(struct AST_NODE_ASSIGN)); printf("AST_NODE_ASSIGN allocated");
-                                                    $$->assign->variable_name = $2;
-                                                    $$->assign->value_type = str_to_type($1);
-                                                    $$->assign->assign_value.val = NULL;
-                                                    $$->assign->assign_type = CONTENT_TYPE_ID;
-                                                };
+statements: 
+instruction statements          {   
+                                    $$ = malloc(sizeof(struct AST_NODE_STATEMENTS));
+                                    $$->node_type = STATEMENT_NODE;
+                                    $$->current_instruction = $1;
+                                    $$->next_statement = $2;
+                                }
+|   instruction                 {
+                                    $$ = malloc(sizeof(struct AST_NODE_STATEMENTS));
+                                    $$->node_type = STATEMENT_NODE;
+                                    $$->current_instruction = $1;
+                                    $$->next_statement = NULL;
+                                };
 
 
-    assignment:                                 { printf("Assign stocazzo");}
+instruction:
+initialization SEMICOL          {
+                                    $$ = malloc(sizeof(struct AST_NODE_INSTRUCTION));
+                                    $$->node_type = INIT_NODE;
+                                    $$->value.init = $1;
+                                }
+|   assignment SEMICOL              {
+                                    $$ = malloc(sizeof(struct AST_NODE_INSTRUCTION));
+                                    $$->node_type = ASSIGN_NODE;
+                                    $$->value.assign = $1;
+                                };
+    
+
+initialization:
+types ID                        {
+                                    $$ = malloc(sizeof(struct AST_NODE_INIT)); printf("AST_NODE_INIT allocated");
+                                    $$->data_type = str_to_type($1);
+                                    $$->assign = malloc(sizeof(struct AST_NODE_ASSIGN)); printf("AST_NODE_ASSIGN allocated");
+                                    $$->assign->variable_name = $2;
+                                    $$->assign->variable_type = str_to_type($1);
+                                    $$->assign->assign_value.val = NULL; 
+                                    $$->assign->assign_type = CONTENT_TYPE_ID;
+                                };
+
+
+assignment:                     
+| types ID EQ content           {   
+                                    $$ = malloc(sizeof(struct AST_NODE_ASSIGN)); printf("AST_NODE_ASSIGN allocated");
+                                    $$->variable_name = $2;
+                                    $$->variable_type = str_to_type($1);
+                                    $$->assign_value.val = $4;  //valore vero dopo uguale, oppure FunctionCall oppure Expression
+                                    if ($4->value_type = NULL) $$->assign_type = NULL;
+                                    if ($4->value_type = DATA_TYPE_INT) $$->assign_type = CONTENT_TYPE_INT_NUMBER;
+                                    if ($4->value_type = DATA_TYPE_FLOAT) $$->assign_type = CONTENT_TYPE_FLOAT_NUMBER;
+                                    if ($4->value_type = DATA_TYPE_CHAR) $$->assign_type = CONTENT_TYPE_CHAR;
+                                };
+/* | types ID EQ functionCall
+| types ID EQ expression */
+
+content:
+ID                  {
+                        $$ = malloc(sizeof(struct AST_Node_Operand)); 
+                        $$->value.val = $1;
+                        $$->value_type = NULL;
+                    }
+
+|   INT_VALUE       {
+                        $$ = malloc(sizeof(struct AST_Node_Operand)); 
+                        $$->value.val = $1;
+                        $$->value_type = DATA_TYPE_INT; 
+                    }
+
+|   FLOAT_VALUE     {
+                        $$ = malloc(sizeof(struct AST_Node_Operand)); 
+                        $$->value.val = $1;
+                        $$->value_type = DATA_TYPE_FLOAT; 
+                    }
+
+|   CHAR_VALUE      {
+                        $$ = malloc(sizeof(struct AST_Node_Operand)); 
+                        $$->value.val = $1;
+                        $$->value_type = DATA_TYPE_CHAR;  
+                    };
+            
+
+types:
+    VOID     {$$ = DATA_TYPE_VOID; }
+|   INT      {$$ = DATA_TYPE_INT; }
+|   FLOAT    {$$ = DATA_TYPE_FLOAT; }
+|   CHAR     {$$ = DATA_TYPE_CHAR; };
                 
 
-    types:
-            VOID     {$$ = DATA_TYPE_VOID; }
-        |   INT      {$$ = DATA_TYPE_INT; }
-        |   FLOAT    {$$ = DATA_TYPE_FLOAT; }
-        |   CHAR     {$$ = DATA_TYPE_CHAR; };
-                
+
+/* |   expr            { CONTENT_TYPE_EXPRESSION }
+    function        { CONTENT_TYPE_FUNCTION, } */   
 
 
                                                 

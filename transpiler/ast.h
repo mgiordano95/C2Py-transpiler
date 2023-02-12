@@ -104,9 +104,9 @@ struct AST_NODE_INIT {
 //a = 5;
 struct AST_NODE_ASSIGN {
     char *variable_name; 
-    enum Data_Type value_type; //value_type serve per il check del type del Content/ID
-    union Value_oper assign_value; //Value
-    enum Content_Type assign_type; //assign_type è il tipo di ciò che c'è dopo l'uguale
+    enum Data_Type variable_type; //value_type serve per il check del type del Content/ID ed è il tipo prima di uguale
+    union Value_oper assign_value; //Valore vero e proprio dopo uguale
+    enum Content_Type assign_type; //Contenuto (int func expr) che c'è dopo l'uguale
     //int a -> CONTENT_TYPE_ID indica che e' solo un ID senza assegnazione
     //int main() -> CONTENT_TYPE_FUNCTION
 };
@@ -130,9 +130,9 @@ struct AST_NODE_EXPRESSION {
 a = int myFunc() -> myFunc = content_type, a = value_type
 */
 struct AST_NODE_OPERAND {
-    enum Data_Type value_type;
-    union Value_oper value;
-    enum Content_Type content_type; //content_type è il tipo di value
+    union Value_oper value;             //valore reale restituito se int, void, char  o puntatore a func o a expr
+    enum Data_Type value_type;          //tipo del valore restituito
+    //enum Content_Type content_type   è il tipo di operando func expr int che forse serve per la traduzione ma forse no
 }; 
 
 struct AST_NODE_FUNCTION_DECL {
