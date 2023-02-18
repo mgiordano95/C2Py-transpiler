@@ -120,7 +120,7 @@ a + 5 > 6
 i + 1 < 8
 */
 struct AST_NODE_EXPRESSION {
-    enum Data_Type expr_type;
+    enum Data_Type expr_type;  //tipo dato restituito dall'espressione (void, int float, char)
     char *op; // op è $2 e può essere +, -, *, /, >, < ...
     struct AST_NODE_OPERAND *left_oper;
     struct AST_NODE_OPERAND *right_oper; 

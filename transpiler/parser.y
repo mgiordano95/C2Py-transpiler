@@ -51,12 +51,13 @@ struct AST_NODE_STATEMENTS *root;
 /* NON_TERMINAL TYPES */
 %define api.value.type {union yystype}
 
-%type <string> types ID SEMICOL INT_VALUE FLOAT_VALUE CHAR_VALUE EQ 
+%type <string> types ID SEMICOL INT_VALUE FLOAT_VALUE CHAR_VALUE EQ ADD
 %type <statements> program statements 
 %type <instruction> instruction 
 %type <init> initialization
 %type <assign> assignment
 %type <operand> content
+%type <expression> expression
 
 
 %start program
@@ -111,6 +112,37 @@ types ID EQ content             {
                                     $$->variable_type = str_to_type($1);
                                     $$->assign_value.val = $4->value.val; 
                                     $$->assign_type = $4->content_type;
+                                }
+|   types ID EQ expression      {   
+                                    $$ = malloc(sizeof(struct AST_NODE_ASSIGN)); printf("AST_NODE_ASSIGN allocated\n");
+                                    $$->variable_name = $2;
+                                    $$->variable_type = str_to_type($1);
+                                    $$->assign_value.expression = $4;
+                                    $$->assign_type = CONTENT_TYPE_EXPRESSION;
+                                    if ($$->variable_type != $$->assign_value.expression->expr_type)
+                                        { printf("Impossibile assegnare espressione a tipo diverso \n"); }
+                                };  
+
+    
+expression:
+content ADD content             {
+                                    $$ = malloc(sizeof(struct AST_NODE_EXPRESSION));
+                                    $$->left_oper = malloc(sizeof(struct AST_NODE_OPERAND));
+                                    $$->right_oper = malloc(sizeof(struct AST_NODE_OPERAND)); 
+                                    $$->left_oper = $1;   
+                                    $$->op = $2;  
+                                    $$->left_oper = $3; 
+                                    $$->expr_type = $1->value_type;    
+                                    if  ($1->value_type == DATA_TYPE_CHAR || $3->value_type == DATA_TYPE_CHAR)
+                                        { printf("\n Errore! Impossibile sommare tipi char"); }
+                                    else if  ($1->value_type == DATA_TYPE_VOID || $3->value_type == DATA_TYPE_VOID)
+                                        { printf("\n Errore! Impossibile sommare tipi void"); }  
+                                    else if ($1->value_type != $3->value_type)
+                                        { printf("\n Errore! Impossibile sommare tipi diversi"); }   
+                                    else 
+                                        {
+                                            printf("Expression di tipo somma \n");
+                                        }                
                                 };
 
 content:
