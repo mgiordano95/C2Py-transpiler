@@ -132,7 +132,7 @@ a = int myFunc() -> myFunc = content_type, a = value_type
 struct AST_NODE_OPERAND {
     union Value_oper value;             //valore reale restituito se int, void, char  o puntatore a func o a expr
     enum Data_Type value_type;          //tipo del valore restituito
-    //enum Content_Type content_type   è il tipo di operando func expr int che forse serve per la traduzione ma forse no
+    enum Content_Type content_type   //è il tipo di operando func expr int che forse serve per la traduzione ma forse no
 }; 
 
 struct AST_NODE_FUNCTION_DECL {
