@@ -1193,7 +1193,7 @@ yyreduce:
   case 9: /* content: ID  */
 #line 117 "parser.y"
                                 {
-                                    (yyval.operand) = malloc(sizeof(struct AST_NODE_OPERAND)); printf("Il tipo e' void poichè abbiamo int a = b\n");
+                                    (yyval.operand) = malloc(sizeof(struct AST_NODE_OPERAND)); printf("Ci troviamo nel caso in cui abbiamo int a = b\n");
                                     (yyval.operand)->value.val = (yyvsp[0].string);
                                     (yyval.operand)->value_type = DATA_TYPE_VOID;
                                     (yyval.operand)->content_type = CONTENT_TYPE_ID;

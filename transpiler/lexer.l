@@ -17,7 +17,7 @@ digit           [0-9]
 letter          [a-zA-Z]
 int_value       ([+]?[0]+|([-+]?[0]+?[1-9][0-9]*))       
 float_value     [-+]?([0-9]*\.?[0-9]+|[0-9]+\.)(E[+-]?{digit}+)?
-char_value      {letter}|{digit}
+char_value      (\')({letter}|{digit})(\')
 id              {letter}({letter}|{digit})*
 
 
@@ -90,7 +90,6 @@ id              {letter}({letter}|{digit})*
 {int_value}         {printf("Found INTEGER NUMBER\n"); return(INT_VALUE);}
 {float_value}       {printf("Found FLOAT NUMBER\n"); return(FLOAT_VALUE);}
 {char_value}        {printf("Found CHAR\n"); return(CHAR_VALUE);}
-{digit}             {printf("Found DIGIT\n");}
 
 [ \t\n\f]           { }
 
