@@ -106,34 +106,34 @@ types ID                        {
 
 assignment:                     
 types ID EQ content             {   
-                                    $$ = malloc(sizeof(struct AST_NODE_ASSIGN)); printf("AST_NODE_ASSIGN 2 allocated\n");
+                                    $$ = malloc(sizeof(struct AST_NODE_ASSIGN)); printf("AST_NODE_ASSIGN allocated\n");
                                     $$->variable_name = $2;
                                     $$->variable_type = str_to_type($1);
                                     $$->assign_value.val = $4->value.val; 
-                                    $$->assign_type = $4->content_type; printf("A quanto pare ha funzionato\n");
+                                    $$->assign_type = $4->content_type;
                                 };
 
 content:
 ID                              {
-                                    $$ = malloc(sizeof(struct AST_NODE_OPERAND)); 
+                                    $$ = malloc(sizeof(struct AST_NODE_OPERAND)); printf("Ci troviamo nel caso in cui abbiamo int a = b\n");
                                     $$->value.val = $1;
                                     $$->value_type = DATA_TYPE_VOID;
                                     $$->content_type = CONTENT_TYPE_ID;
                                 }
 |   INT_VALUE                   {       
-                                    $$ = malloc(sizeof(struct AST_NODE_OPERAND)); printf("Il tipo e' int");
+                                    $$ = malloc(sizeof(struct AST_NODE_OPERAND)); printf("Il tipo e' int\n");
                                     $$->value.val = $1;
                                     $$->value_type = DATA_TYPE_INT; 
                                     $$->content_type = CONTENT_TYPE_INT_NUMBER;
                                 }
 |   FLOAT_VALUE                 {
-                                    $$ = malloc(sizeof(struct AST_NODE_OPERAND)); 
+                                    $$ = malloc(sizeof(struct AST_NODE_OPERAND)); printf("Il tipo e' float\n");
                                     $$->value.val = $1;
                                     $$->value_type = DATA_TYPE_FLOAT; 
                                     $$->content_type = CONTENT_TYPE_FLOAT_NUMBER;
                                 }
 |   CHAR_VALUE                  {
-                                    $$ = malloc(sizeof(struct AST_NODE_OPERAND)); 
+                                    $$ = malloc(sizeof(struct AST_NODE_OPERAND)); printf("Il tipo e' char\n");
                                     $$->value.val = $1;
                                     $$->value_type = DATA_TYPE_CHAR;  
                                     $$->content_type = CONTENT_TYPE_CHAR;

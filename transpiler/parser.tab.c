@@ -1181,11 +1181,11 @@ yyreduce:
   case 8: /* assignment: types ID EQ content  */
 #line 108 "parser.y"
                                 {   
-                                    (yyval.assign) = malloc(sizeof(struct AST_NODE_ASSIGN)); printf("AST_NODE_ASSIGN 2 allocated\n");
+                                    (yyval.assign) = malloc(sizeof(struct AST_NODE_ASSIGN)); printf("AST_NODE_ASSIGN allocated\n");
                                     (yyval.assign)->variable_name = (yyvsp[-2].string);
                                     (yyval.assign)->variable_type = str_to_type((yyvsp[-3].string));
                                     (yyval.assign)->assign_value.val = (yyvsp[0].operand)->value.val; 
-                                    (yyval.assign)->assign_type = (yyvsp[0].operand)->content_type; printf("A quanto pare ha funzionato\n");
+                                    (yyval.assign)->assign_type = (yyvsp[0].operand)->content_type;
                                 }
 #line 1191 "parser.tab.c"
     break;
@@ -1193,7 +1193,7 @@ yyreduce:
   case 9: /* content: ID  */
 #line 117 "parser.y"
                                 {
-                                    (yyval.operand) = malloc(sizeof(struct AST_NODE_OPERAND)); 
+                                    (yyval.operand) = malloc(sizeof(struct AST_NODE_OPERAND)); printf("Il tipo e' void poichè abbiamo int a = b\n");
                                     (yyval.operand)->value.val = (yyvsp[0].string);
                                     (yyval.operand)->value_type = DATA_TYPE_VOID;
                                     (yyval.operand)->content_type = CONTENT_TYPE_ID;
@@ -1204,7 +1204,7 @@ yyreduce:
   case 10: /* content: INT_VALUE  */
 #line 123 "parser.y"
                                 {       
-                                    (yyval.operand) = malloc(sizeof(struct AST_NODE_OPERAND)); printf("Il tipo e' int");
+                                    (yyval.operand) = malloc(sizeof(struct AST_NODE_OPERAND)); printf("Il tipo e' int\n");
                                     (yyval.operand)->value.val = (yyvsp[0].string);
                                     (yyval.operand)->value_type = DATA_TYPE_INT; 
                                     (yyval.operand)->content_type = CONTENT_TYPE_INT_NUMBER;
@@ -1215,7 +1215,7 @@ yyreduce:
   case 11: /* content: FLOAT_VALUE  */
 #line 129 "parser.y"
                                 {
-                                    (yyval.operand) = malloc(sizeof(struct AST_NODE_OPERAND)); 
+                                    (yyval.operand) = malloc(sizeof(struct AST_NODE_OPERAND)); printf("Il tipo e' float\n");
                                     (yyval.operand)->value.val = (yyvsp[0].string);
                                     (yyval.operand)->value_type = DATA_TYPE_FLOAT; 
                                     (yyval.operand)->content_type = CONTENT_TYPE_FLOAT_NUMBER;
@@ -1226,7 +1226,7 @@ yyreduce:
   case 12: /* content: CHAR_VALUE  */
 #line 135 "parser.y"
                                 {
-                                    (yyval.operand) = malloc(sizeof(struct AST_NODE_OPERAND)); 
+                                    (yyval.operand) = malloc(sizeof(struct AST_NODE_OPERAND)); printf("Il tipo e' char\n");
                                     (yyval.operand)->value.val = (yyvsp[0].string);
                                     (yyval.operand)->value_type = DATA_TYPE_CHAR;  
                                     (yyval.operand)->content_type = CONTENT_TYPE_CHAR;
