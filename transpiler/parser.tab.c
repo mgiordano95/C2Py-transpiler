@@ -77,7 +77,7 @@
 int yyerror(char *s);
 int yylex(void);
 
-struct AST_NODE_STATEMENTS *root;
+struct AstNodeStatements *root;
 
 
 #line 84 "parser.tab.c"
@@ -1126,10 +1126,10 @@ yyreduce:
   case 3: /* statements: instruction statements  */
 #line 71 "parser.y"
                                 {   
-                                    (yyval.statements) = malloc(sizeof(struct AST_NODE_STATEMENTS));
-                                    (yyval.statements)->node_type = STATEMENT_NODE;
-                                    (yyval.statements)->current_instruction = (yyvsp[-1].instruction);
-                                    (yyval.statements)->next_statement = (yyvsp[0].statements);
+                                    (yyval.statements) = malloc(sizeof(struct AstNodeStatements));
+                                    (yyval.statements)->nodeType = STATEMENT_NODE;
+                                    (yyval.statements)->currentInstruction = (yyvsp[-1].instruction);
+                                    (yyval.statements)->nextStatement = (yyvsp[0].statements);
                                 }
 #line 1135 "parser.tab.c"
     break;
@@ -1137,10 +1137,10 @@ yyreduce:
   case 4: /* statements: instruction  */
 #line 77 "parser.y"
                                 {
-                                    (yyval.statements) = malloc(sizeof(struct AST_NODE_STATEMENTS));
-                                    (yyval.statements)->node_type = STATEMENT_NODE;
-                                    (yyval.statements)->current_instruction = (yyvsp[0].instruction);
-                                    (yyval.statements)->next_statement = NULL;
+                                    (yyval.statements) = malloc(sizeof(struct AstNodeStatements));
+                                    (yyval.statements)->nodeType = STATEMENT_NODE;
+                                    (yyval.statements)->currentInstruction = (yyvsp[0].instruction);
+                                    (yyval.statements)->nextStatement = NULL;
                                 }
 #line 1146 "parser.tab.c"
     break;
@@ -1148,8 +1148,8 @@ yyreduce:
   case 5: /* instruction: initialization SEMICOL  */
 #line 86 "parser.y"
                                 {
-                                    (yyval.instruction) = malloc(sizeof(struct AST_NODE_INSTRUCTION));
-                                    (yyval.instruction)->node_type = INIT_NODE;
+                                    (yyval.instruction) = malloc(sizeof(struct AstNodeInstruction));
+                                    (yyval.instruction)->nodeType = INIT_NODE;
                                     (yyval.instruction)->value.init = (yyvsp[-1].init);
                                 }
 #line 1156 "parser.tab.c"
@@ -1158,8 +1158,8 @@ yyreduce:
   case 6: /* instruction: assignment SEMICOL  */
 #line 91 "parser.y"
                                 {
-                                    (yyval.instruction) = malloc(sizeof(struct AST_NODE_INSTRUCTION));
-                                    (yyval.instruction)->node_type = ASSIGN_NODE;
+                                    (yyval.instruction) = malloc(sizeof(struct AstNodeInstruction));
+                                    (yyval.instruction)->nodeType = ASSIGN_NODE;
                                     (yyval.instruction)->value.assign = (yyvsp[-1].assign);
                                 }
 #line 1166 "parser.tab.c"
@@ -1168,13 +1168,13 @@ yyreduce:
   case 7: /* initialization: types ID  */
 #line 98 "parser.y"
                                 {
-                                    (yyval.init) = malloc(sizeof(struct AST_NODE_INIT)); printf("AST_NODE_INIT allocated\n");
-                                    (yyval.init)->data_type = str_to_type((yyvsp[-1].string));
-                                    (yyval.init)->assign = malloc(sizeof(struct AST_NODE_ASSIGN)); printf("AST_NODE_ASSIGN allocated\n");
-                                    (yyval.init)->assign->variable_name = (yyvsp[0].string);
-                                    (yyval.init)->assign->variable_type = str_to_type((yyvsp[-1].string)); printf("assegnato variable type\n");
-                                    (yyval.init)->assign->assign_value.val = NULL;   
-                                    (yyval.init)->assign->assign_type = CONTENT_TYPE_ID;  
+                                    (yyval.init) = malloc(sizeof(struct AstNodeInit)); printf("AstNodeInit allocated\n");
+                                    (yyval.init)->dataType = str_to_type((yyvsp[-1].string));
+                                    (yyval.init)->assign = malloc(sizeof(struct AstNodeAssign)); printf("AstNodeAssign allocated\n");
+                                    (yyval.init)->assign->variableName = (yyvsp[0].string);
+                                    (yyval.init)->assign->variableType = str_to_type((yyvsp[-1].string)); printf("assegnato variable type\n");
+                                    (yyval.init)->assign->assignValue.val = NULL;   
+                                    (yyval.init)->assign->assignType = CONTENT_TYPE_ID;  
                                 }
 #line 1180 "parser.tab.c"
     break;
@@ -1182,11 +1182,11 @@ yyreduce:
   case 8: /* assignment: types ID EQ content  */
 #line 109 "parser.y"
                                 {   
-                                    (yyval.assign) = malloc(sizeof(struct AST_NODE_ASSIGN)); printf("AST_NODE_ASSIGN allocated\n");
-                                    (yyval.assign)->variable_name = (yyvsp[-2].string);
-                                    (yyval.assign)->variable_type = str_to_type((yyvsp[-3].string));
-                                    (yyval.assign)->assign_value.val = (yyvsp[0].operand)->value.val; 
-                                    (yyval.assign)->assign_type = (yyvsp[0].operand)->content_type;
+                                    (yyval.assign) = malloc(sizeof(struct AstNodeAssign)); printf("AstNodeAssign allocated\n");
+                                    (yyval.assign)->variableName = (yyvsp[-2].string);
+                                    (yyval.assign)->variableType = str_to_type((yyvsp[-3].string));
+                                    (yyval.assign)->assignValue.val = (yyvsp[0].operand)->value.val; 
+                                    (yyval.assign)->assignType = (yyvsp[0].operand)->contentType;
                                 }
 #line 1192 "parser.tab.c"
     break;
@@ -1194,12 +1194,12 @@ yyreduce:
   case 9: /* assignment: types ID EQ expression  */
 #line 116 "parser.y"
                                 {   
-                                    (yyval.assign) = malloc(sizeof(struct AST_NODE_ASSIGN)); printf("AST_NODE_ASSIGN allocated\n");
-                                    (yyval.assign)->variable_name = (yyvsp[-2].string);
-                                    (yyval.assign)->variable_type = str_to_type((yyvsp[-3].string));
-                                    (yyval.assign)->assign_value.expression = (yyvsp[0].expression);
-                                    (yyval.assign)->assign_type = CONTENT_TYPE_EXPRESSION;
-                                    if ((yyval.assign)->variable_type != (yyval.assign)->assign_value.expression->expr_type)
+                                    (yyval.assign) = malloc(sizeof(struct AstNodeAssign)); printf("AstNodeAssign allocated\n");
+                                    (yyval.assign)->variableName = (yyvsp[-2].string);
+                                    (yyval.assign)->variableType = str_to_type((yyvsp[-3].string));
+                                    (yyval.assign)->assignValue.expression = (yyvsp[0].expression);
+                                    (yyval.assign)->assignType = CONTENT_TYPE_EXPRESSION;
+                                    if ((yyval.assign)->variableType != (yyval.assign)->assignValue.expression->exprType)
                                         { printf("Impossibile assegnare espressione a tipo diverso \n"); }
                                 }
 #line 1206 "parser.tab.c"
@@ -1208,18 +1208,18 @@ yyreduce:
   case 10: /* expression: content ADD content  */
 #line 128 "parser.y"
                                 {
-                                    (yyval.expression) = malloc(sizeof(struct AST_NODE_EXPRESSION));
-                                    (yyval.expression)->left_oper = malloc(sizeof(struct AST_NODE_OPERAND));
-                                    (yyval.expression)->right_oper = malloc(sizeof(struct AST_NODE_OPERAND)); 
-                                    (yyval.expression)->left_oper = (yyvsp[-2].operand);   
+                                    (yyval.expression) = malloc(sizeof(struct AstNodeExpression));
+                                    (yyval.expression)->leftOper = malloc(sizeof(struct AstNodeOperand));
+                                    (yyval.expression)->rightOper = malloc(sizeof(struct AstNodeOperand)); 
+                                    (yyval.expression)->leftOper = (yyvsp[-2].operand);   
                                     (yyval.expression)->op = (yyvsp[-1].string);  
-                                    (yyval.expression)->left_oper = (yyvsp[0].operand); 
-                                    (yyval.expression)->expr_type = (yyvsp[-2].operand)->value_type;    
-                                    if  ((yyvsp[-2].operand)->value_type == DATA_TYPE_CHAR || (yyvsp[0].operand)->value_type == DATA_TYPE_CHAR)
+                                    (yyval.expression)->leftOper = (yyvsp[0].operand); 
+                                    (yyval.expression)->exprType = (yyvsp[-2].operand)->valueType;    
+                                    if  ((yyvsp[-2].operand)->valueType == DATA_TYPE_CHAR || (yyvsp[0].operand)->valueType == DATA_TYPE_CHAR)
                                         { printf("\n Errore! Impossibile sommare tipi char"); }
-                                    else if  ((yyvsp[-2].operand)->value_type == DATA_TYPE_VOID || (yyvsp[0].operand)->value_type == DATA_TYPE_VOID)
+                                    else if  ((yyvsp[-2].operand)->valueType == DATA_TYPE_VOID || (yyvsp[0].operand)->valueType == DATA_TYPE_VOID)
                                         { printf("\n Errore! Impossibile sommare tipi void"); }  
-                                    else if ((yyvsp[-2].operand)->value_type != (yyvsp[0].operand)->value_type)
+                                    else if ((yyvsp[-2].operand)->valueType != (yyvsp[0].operand)->valueType)
                                         { printf("\n Errore! Impossibile sommare tipi diversi"); }   
                                     else 
                                         {
@@ -1232,10 +1232,10 @@ yyreduce:
   case 11: /* content: ID  */
 #line 149 "parser.y"
                                 {
-                                    (yyval.operand) = malloc(sizeof(struct AST_NODE_OPERAND)); printf("Ci troviamo nel caso in cui abbiamo int a = b\n");
+                                    (yyval.operand) = malloc(sizeof(struct AstNodeOperand)); printf("Ci troviamo nel caso in cui abbiamo int a = b\n");
                                     (yyval.operand)->value.val = (yyvsp[0].string);
-                                    (yyval.operand)->value_type = DATA_TYPE_VOID;
-                                    (yyval.operand)->content_type = CONTENT_TYPE_ID;
+                                    (yyval.operand)->valueType = DATA_TYPE_VOID;
+                                    (yyval.operand)->contentType = CONTENT_TYPE_ID;
                                 }
 #line 1241 "parser.tab.c"
     break;
@@ -1243,10 +1243,10 @@ yyreduce:
   case 12: /* content: INT_VALUE  */
 #line 155 "parser.y"
                                 {       
-                                    (yyval.operand) = malloc(sizeof(struct AST_NODE_OPERAND)); printf("Il tipo e' int\n");
+                                    (yyval.operand) = malloc(sizeof(struct AstNodeOperand)); printf("Il tipo e' int\n");
                                     (yyval.operand)->value.val = (yyvsp[0].string);
-                                    (yyval.operand)->value_type = DATA_TYPE_INT; 
-                                    (yyval.operand)->content_type = CONTENT_TYPE_INT_NUMBER;
+                                    (yyval.operand)->valueType = DATA_TYPE_INT; 
+                                    (yyval.operand)->contentType = CONTENT_TYPE_INT_NUMBER;
                                 }
 #line 1252 "parser.tab.c"
     break;
@@ -1254,10 +1254,10 @@ yyreduce:
   case 13: /* content: FLOAT_VALUE  */
 #line 161 "parser.y"
                                 {
-                                    (yyval.operand) = malloc(sizeof(struct AST_NODE_OPERAND)); printf("Il tipo e' float\n");
+                                    (yyval.operand) = malloc(sizeof(struct AstNodeOperand)); printf("Il tipo e' float\n");
                                     (yyval.operand)->value.val = (yyvsp[0].string);
-                                    (yyval.operand)->value_type = DATA_TYPE_FLOAT; 
-                                    (yyval.operand)->content_type = CONTENT_TYPE_FLOAT_NUMBER;
+                                    (yyval.operand)->valueType = DATA_TYPE_FLOAT; 
+                                    (yyval.operand)->contentType = CONTENT_TYPE_FLOAT_NUMBER;
                                 }
 #line 1263 "parser.tab.c"
     break;
@@ -1265,10 +1265,10 @@ yyreduce:
   case 14: /* content: CHAR_VALUE  */
 #line 167 "parser.y"
                                 {
-                                    (yyval.operand) = malloc(sizeof(struct AST_NODE_OPERAND)); printf("Il tipo e' char\n");
+                                    (yyval.operand) = malloc(sizeof(struct AstNodeOperand)); printf("Il tipo e' char\n");
                                     (yyval.operand)->value.val = (yyvsp[0].string);
-                                    (yyval.operand)->value_type = DATA_TYPE_CHAR;  
-                                    (yyval.operand)->content_type = CONTENT_TYPE_CHAR;
+                                    (yyval.operand)->valueType = DATA_TYPE_CHAR;  
+                                    (yyval.operand)->contentType = CONTENT_TYPE_CHAR;
                                 }
 #line 1274 "parser.tab.c"
     break;
