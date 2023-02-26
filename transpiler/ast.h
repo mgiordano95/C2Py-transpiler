@@ -56,14 +56,14 @@ union yystype {
     struct AST_NODE_FUNCTION_CALL       *functionCall;
     struct AST_NODE_FUNCTION_PARAMS     *functionParams;
     struct AST_NODE_BODY                *body;
-    /* struct AST_NODE_FUNCTION_INPUT   *inputFunction;
-    struct AST_NODE_FUNCTION_OUTPUT     *outputFunction; */
-    /* struct AST_NODE_ARRAY_INIT          ;
-    struct AST_NODE_ARRAY_ASSIGN        ;
-    struct AST_NODE_IF                  ;
-    struct AST_NODE_ELSE                ;
-    struct AST_NODE_ELSE_IF             ;
-    struct AST_NODE_WHILE               ; */
+    // struct AST_NODE_FUNCTION_INPUT   *inputFunction;
+    // struct AST_NODE_FUNCTION_OUTPUT  *outputFunction;
+    // struct AST_NODE_ARRAY_INIT       *arrayInit;
+    // struct AST_NODE_ARRAY_ASSIGN     *arrayAssign;
+    struct AST_NODE_IF                  *ifStatement;
+    struct AST_NODE_ELSE_IF             *elseifStatement;
+    struct AST_NODE_ELSE                *elseStatement;
+    struct AST_NODE_WHILE               *whileLoop;
     struct AST_NODE_VALUE               *value;
     struct AST_NODE_VARIABLE            *variable;
     
