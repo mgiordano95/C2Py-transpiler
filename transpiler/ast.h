@@ -187,7 +187,7 @@ struct AstNodeElse {
 
 struct AstNodeWhile {
     struct AstNodeExpression *whileCondition;
-    struct AstNodeStatements *whileBody;
+    struct AstNodeStatements *whileBody; //oppure utilizzare la struct AstNodeBody
 };
 
 
