@@ -61,8 +61,8 @@ union yystype {
     /* struct AstNodeArrayInit          *arrayInit;
     struct AstNodeArrayAssign        *arrayAssign; */
     struct AstNodeIf                  *ifStatement;
-    struct AstNodeElseIf              *elseStatement;
-    struct AstNodeElse                *elseifStatement;
+    struct AstNodeElseIf              *elseifStatement;
+    struct AstNodeElse                *elseStatement;
     struct AstNodeWhile               *whileLoop;
     struct AstNodeValue               *value;
     struct AstNodeVariable            *variable;
@@ -171,19 +171,23 @@ struct AstNodeBody {
 };
 
 struct AstNodeIf {
+    struct AstNodeExpression *ifCondition;
+    struct AstNodeStatements *ifBody; //oppure utilizzare la struct AstNodeBody
 
 };
 
 struct AstNodeElseIf {
-
+    struct AstNodeExpression *elseifCondition;
+    struct AstNodeStatements *elseifBody; //oppure utilizzare la struct AstNodeBody
 };
 
 struct AstNodeElse {
-
+    struct AstNodeStatements *elseBody; //oppure utilizzare la struct AstNodeBody
 };
 
 struct AstNodeWhile {
-
+    struct AstNodeExpression *whileCondition;
+    struct AstNodeStatements *whileBody;
 };
 
 
