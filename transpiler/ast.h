@@ -58,12 +58,12 @@ union yystype {
     struct AstNodeBody                *body;
     /* struct AstNodeFunctionInput       *inputFunction;
     struct AstNodeFunctionOutput      *outputFunction; */
-    /* struct AstNodeArrayInit          ;
-    struct AstNodeArrayAssign        ; */
-    /* struct AstNodeIf                  ;
-    struct AstNodeElse                ;
-    struct AstNodeElseIf             ;
-    struct AstNodeWhile               ; */
+    /* struct AstNodeArrayInit          *arrayInit;
+    struct AstNodeArrayAssign        *arrayAssign; */
+    struct AstNodeIf                  *ifStatement;
+    struct AstNodeElseIf              *elseStatement;
+    struct AstNodeElse                *elseifStatement;
+    struct AstNodeWhile               *whileLoop;
     struct AstNodeValue               *value;
     struct AstNodeVariable            *variable;
     
@@ -168,6 +168,22 @@ struct AstNodeFunctionParams {
 struct AstNodeBody {
     struct AstNodeStatements *bodyStatements;
     struct AstNodeOperand *returnValue;
+};
+
+struct AstNodeIf {
+
+};
+
+struct AstNodeElseIf {
+
+};
+
+struct AstNodeElse {
+
+};
+
+struct AstNodeWhile {
+
 };
 
 
