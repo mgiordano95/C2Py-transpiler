@@ -1129,7 +1129,7 @@ yyreduce:
                                     (yyval.statements) = malloc(sizeof(struct AstNodeStatements));
                                     (yyval.statements)->nodeType = STATEMENT_NODE;
                                     (yyval.statements)->currentInstruction = (yyvsp[-1].instruction);
-                                    (yyval.statements)->next_statement = (yyvsp[0].statements);
+                                    (yyval.statements)->nextStatement = (yyvsp[0].statements);
                                 }
 #line 1135 "parser.tab.c"
     break;
@@ -1140,7 +1140,7 @@ yyreduce:
                                     (yyval.statements) = malloc(sizeof(struct AstNodeStatements));
                                     (yyval.statements)->nodeType = STATEMENT_NODE;
                                     (yyval.statements)->currentInstruction = (yyvsp[0].instruction);
-                                    (yyval.statements)->next_statement = NULL;
+                                    (yyval.statements)->nextStatement = NULL;
                                 }
 #line 1146 "parser.tab.c"
     break;

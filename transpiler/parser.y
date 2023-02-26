@@ -115,7 +115,7 @@ types ID EQ content             {
                                 }
 |   types ID EQ expression      {   
                                     $$ = malloc(sizeof(struct AstNodeAssign)); printf("AstNodeAssign allocated\n");
-                                    $$->variable_name = $2;
+                                    $$->variableName = $2;
                                     $$->variableType = str_to_type($1);
                                     $$->assignValue.expression = $4;
                                     $$->assignType = CONTENT_TYPE_EXPRESSION;
