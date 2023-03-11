@@ -51,14 +51,15 @@ struct AstNodeStatements *root;
 /* NON_TERMINAL TYPES */
 %define api.value.type {union yystype}
 
-%type <string> types ID SEMICOL INT_VALUE FLOAT_VALUE CHAR_VALUE EQ ADD SUB MUL DIV EE NE GT LT GE LE AND OR NOT RETURN
+%type <string> types ID SEMICOL INT_VALUE FLOAT_VALUE CHAR_VALUE EQ ADD SUB MUL DIV EE NE GT LT GE LE AND OR NOT RETURN LBRA RBRA
 %type <statements> program statements 
 %type <instruction> instruction 
 %type <init> initialization
 %type <assign> assignment
 %type <operand> content
 %type <expression> expression
-
+%type <body> body
+%type <functionDecl> functionDecl
         
 %start program
 
@@ -94,13 +95,27 @@ initialization SEMICOL          {
                                     $$->value.assign = $1;
                                 };
 
+functionDecl:
+initialization LPAR RPAR body   {
+                                    $$ = malloc(sizeof(struct AstNodeFunctionDecl));   printf("Nodo functionDecl dichiarato \n");
+                                    $$->functionName = $1->assign->variableName;
+                                    $$->returnType = $1->dataType;      printf("Assegnato returnType \n");
+                                    $$->functionParams = NULL;
+                                    $$->functiontBody = $4;         printf("Montato function body \n");
+                                };
+
+
 body:
 LBRA statements RBRA                            {
-
+                                                    $$ = malloc(sizeof(struct AstNodeBody));  printf("Espando Body \n");
+                                                    $$->bodyStatements = $2;
+                                                    $$->returnValue = NULL;
                                                 }
 | LBRA statements RETURN content SEMICOL RBRA   {
-
-                                                }
+                                                    $$ = malloc(sizeof(struct AstNodeBody));
+                                                    $$->bodyStatements = $2;
+                                                    $$->returnValue = $4;
+                                                };
                                                 
 
 
@@ -131,10 +146,7 @@ types ID EQ content             {
                                     $$->assignType = CONTENT_TYPE_EXPRESSION;
                                     if ($$->variableType != $$->assignValue.expression->exprType)
                                         { printf("Impossibile assegnare espressione a tipo diverso \n"); }
-                                }
-|   types ID EQ function        {
-
-                                };  
+                                }; 
 
     
 expression:
