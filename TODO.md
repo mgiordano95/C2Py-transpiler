@@ -8,16 +8,16 @@
 
 ### In Progress
 
-- [-] Create Abstract Syntax Tree (ast.h)
+- [:computer:] Create Abstract Syntax Tree (ast.h)
     - [x] Add struct AstNodeStatements
     - [x] Add struct AstNodeInstruction
     - [x] Add struct AstNodeInit
     - [x] Add struct AstNodeAssign
     - [x] Add struct AstNodeExpression
     - [x] Add struct AstNodeOperand
-    - [-] Add struct AstNodeArrayInit (to test)
-    - [-] Add struct AstNodeArrayAssign (to test)
-    - [-] Add struct AstNodeArrayElements (to test)
+    - [:computer:] Add struct AstNodeArrayInit (to test)
+    - [:computer:] Add struct AstNodeArrayAssign (to test)
+    - [:computer:] Add struct AstNodeArrayElements (to test)
     - [x] Add struct AstNodeFunctionDecl
     - [x] Add struct AstNodeFunctionCall
     - [x] Add struct AstNodeFunctionParams
@@ -26,18 +26,18 @@
     - [x] Add struct AstNodeElseIf
     - [x] Add struct AstNodeElse
     - [x] Add struct AstNodeWhile
-- [-] Create parser.y
+- [:computer:] Create parser.y
     - [x] Implement statements
-    - [-] Implement instruction
-    - [-] Implement initialization
-    - [-] Implement assignment
-    - [-] Implement expression
+    - [:computer:] Implement instruction
+    - [:computer:] Implement initialization
+    - [:computer:] Implement assignment
+    - [:computer:] Implement expression
     - [x] Implement content
     - [ ] Implement arrayInit
     - [ ] Implement arrayAssign
     - [ ] Implement arrayElements
-    - [-] Implement functionDecl
-    - [-] Implement functionCall
+    - [:computer:] Implement functionDecl
+    - [:computer:] Implement functionCall
     - [ ] Implement functionParams
     - [x] Implement body
     - [ ] Implement if
