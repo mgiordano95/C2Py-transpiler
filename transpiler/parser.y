@@ -51,7 +51,7 @@ struct AstNodeStatements *root;
 /* NON_TERMINAL TYPES */
 %define api.value.type {union yystype}
 
-%type <string> types ID SEMICOL INT_VALUE FLOAT_VALUE CHAR_VALUE EQ ADD
+%type <string> types ID SEMICOL INT_VALUE FLOAT_VALUE CHAR_VALUE EQ ADD SUB MUL DIV EE NE GT LT GE LE AND OR NOT RETURN
 %type <statements> program statements 
 %type <instruction> instruction 
 %type <init> initialization
@@ -59,7 +59,7 @@ struct AstNodeStatements *root;
 %type <operand> content
 %type <expression> expression
 
-
+        
 %start program
 
 %%
@@ -94,6 +94,16 @@ initialization SEMICOL          {
                                     $$->value.assign = $1;
                                 };
 
+body:
+LBRA statements RBRA                            {
+
+                                                }
+| LBRA statements RETURN content SEMICOL RBRA   {
+
+                                                }
+                                                
+
+
 initialization:
 types ID                        {
                                     $$ = malloc(sizeof(struct AstNodeInit)); printf("AstNodeInit allocated\n");
@@ -121,6 +131,9 @@ types ID EQ content             {
                                     $$->assignType = CONTENT_TYPE_EXPRESSION;
                                     if ($$->variableType != $$->assignValue.expression->exprType)
                                         { printf("Impossibile assegnare espressione a tipo diverso \n"); }
+                                }
+|   types ID EQ function        {
+
                                 };  
 
     
@@ -143,7 +156,43 @@ content ADD content             {
                                         {
                                             printf("Expression di tipo somma \n");
                                         }                
-                                };
+                                }
+|   content SUB content         {
+
+                                }
+|   content MUL content         {
+
+                                }
+|   content DIV content         {
+
+                                } 
+|   content EE content          {
+
+                                }
+|   content NE content          {
+
+                                }
+|   content GT content          {
+
+                                } 
+|   content LT content          {
+
+                                }
+|   content GE content          {
+
+                                }
+|   content LE content          {
+
+                                } 
+|   content AND content         {
+
+                                }
+|   content OR content          {
+
+                                }
+|   content NOT content         {
+
+                                }; 
 
 content:
 ID                              {
