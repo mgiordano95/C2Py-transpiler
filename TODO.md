@@ -3,7 +3,7 @@
 - [x] Understand lexer
 - [x] Understand parser
 - [x] Understand symtab
-- [ ] Study [uthash](https://troydhanson.github.io/uthash/) library 
+- [x] Study [uthash](https://troydhanson.github.io/uthash/) library 
 
 ## Task
 
@@ -19,10 +19,10 @@
     - [x] Add struct AST_NODE_BODY
     - [ ] Add struct AST_NODE_ARRAY_INIT
     - [ ] Add struct AST_NODE_ARRAY_ASSIGN
-    - [ ] Add struct AST_NODE_IF
-    - [ ] Add struct AST_NODE_ELSE
-    - [ ] Add struct AST_NODE_ELSE_IF
-    - [ ] Add struct AST_NODE_WHILE
+    - [x] Add struct AST_NODE_IF
+    - [x] Add struct AST_NODE_ELSE
+    - [x] Add struct AST_NODE_ELSE_IF
+    - [x] Add struct AST_NODE_WHILE
     - [ ] Add struct AST_NODE_CONDITION
-- [ ] Create Symbol Table (symtab.h)
+- [x] Create Symbol Table (symtab.h)
 - [ ] Create parser.y

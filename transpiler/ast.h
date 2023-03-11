@@ -30,18 +30,19 @@ enum ContentType {
 
 //TO-DO: da scrivere dopo il Node_type, serve per la traduzione
 enum NodeType {
+    STATEMENT_NODE,
     INIT_NODE,
     ASSIGN_NODE,
     EXPRESSION_NODE,
+    OPERAND_NODE,
     FUNCTION_DECL_NODE,
     FUNCTION_CALL_NODE,
     ARRAY_INIT_NODE,
     ARRAY_ASSIGN_NODE,
     IF_NODE,
-    ELSE_NODE,
     ELSE_IF_NODE,
+    ELSE_NODE,
     WHILE_NODE,
-    STATEMENT_NODE,
 };
 
 union yystype {
@@ -58,14 +59,14 @@ union yystype {
     struct AstNodeBody                *body;
     /* struct AstNodeFunctionInput       *inputFunction;
     struct AstNodeFunctionOutput      *outputFunction; */
-    /* struct AstNodeArrayInit          ;
-    struct AstNodeArrayAssign        ; */
-    /* struct AstNodeIf                  ;
-    struct AstNodeElse                ;
-    struct AstNodeElseIf             ;
-    struct AstNodeWhile               ; */
-    struct AstNodeValue               *value;
-    struct AstNodeVariable            *variable;
+    /* struct AstNodeArrayInit          *arrayInit;
+    struct AstNodeArrayAssign        *arrayAssign; */
+    struct AstNodeIf                  *ifStatement;
+    struct AstNodeElseIf              *elseifStatement;
+    struct AstNodeElse                *elseStatement;
+    struct AstNodeWhile               *whileLoop;
+    /* struct AstNodeValue               *value;
+    struct AstNodeVariable            *variable; */
     
 };
 
@@ -101,6 +102,7 @@ struct AstNodeInit {
     // con lo stesso nome
 };
 
+/*--------------- Node Assignment ---------------*/
 //a = 5;
 struct AstNodeAssign {
     char *variableName; 
@@ -111,7 +113,8 @@ struct AstNodeAssign {
     //int main() -> CONTENT_TYPE_FUNCTION
 };
 
-/* NODE EXPRESSION:
+/*--------------- Node Expression ---------------*/
+/* 
 a+b
 7-3
 a*2
@@ -126,7 +129,8 @@ struct AstNodeExpression {
     struct AstNodeOperand *rightOper; 
 };
 
-/* NODE OEPRAND:
+/*--------------- Node Operand ---------------*/
+/*
 a = int myFunc() -> myFunc = contentType, a = valueType
 */
 struct AstNodeOperand {
@@ -135,19 +139,22 @@ struct AstNodeOperand {
     enum ContentType contentType;   //è il tipo di operando func expr int che forse serve per la traduzione ma forse no
 }; 
 
+/*--------------- Node Function Declaration ---------------*/
 struct AstNodeFunctionDecl {
     char *functionName;
     enum DataType returnType; //tipo restituito dalla funzione
     struct AstNodeFunctionParams *functionParams;
-    struct AstNodeBody *functionBody; //da scrivere
+    struct AstNodeBody *functiontBody; //da scrivere
 };
 
+/*--------------- Node Function Call ---------------*/
 struct AstNodeFunctionCall {
     char *functionName;
     enum DataType returnType;
     struct AstNodeFunctionParams *functionParams;
 };
 
+/*--------------- Node Function Parameters ---------------*/
 struct AstNodeFunctionParams {
     struct AstNodeInit *initParam; //questo vale solo per la dichiarazione e va annullato nella chiamata 
     struct AstNodeOperand *callParams; //questo vale solo per la chiamata e va annullato nella dichiarazione 
@@ -168,6 +175,30 @@ struct AstNodeFunctionParams {
 struct AstNodeBody {
     struct AstNodeStatements *bodyStatements;
     struct AstNodeOperand *returnValue;
+};
+
+/*--------------- Node If ---------------*/
+struct AstNodeIf {
+    struct AstNodeExpression *ifCondition;
+    struct AstNodeBody *ifBody;
+
+};
+
+/*--------------- Node Elseif ---------------*/
+struct AstNodeElseIf {
+    struct AstNodeExpression *elseifCondition;
+    struct AstNodeBody *elseifBody;
+};
+
+/*--------------- Node Else ---------------*/
+struct AstNodeElse {
+    struct AstNodeBody *elseBody;
+};
+
+/*--------------- Node While ---------------*/
+struct AstNodeWhile {
+    struct AstNodeExpression *whileCondition;
+    struct AstNodeBody *whileBody;
 };
 
 
