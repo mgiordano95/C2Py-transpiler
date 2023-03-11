@@ -151,11 +151,13 @@ enum yysymbol_kind_t
   YYSYMBOL_program = 40,                   /* program  */
   YYSYMBOL_statements = 41,                /* statements  */
   YYSYMBOL_instruction = 42,               /* instruction  */
-  YYSYMBOL_initialization = 43,            /* initialization  */
-  YYSYMBOL_assignment = 44,                /* assignment  */
-  YYSYMBOL_expression = 45,                /* expression  */
-  YYSYMBOL_content = 46,                   /* content  */
-  YYSYMBOL_types = 47                      /* types  */
+  YYSYMBOL_functionDecl = 43,              /* functionDecl  */
+  YYSYMBOL_body = 44,                      /* body  */
+  YYSYMBOL_initialization = 45,            /* initialization  */
+  YYSYMBOL_assignment = 46,                /* assignment  */
+  YYSYMBOL_expression = 47,                /* expression  */
+  YYSYMBOL_content = 48,                   /* content  */
+  YYSYMBOL_types = 49                      /* types  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -481,18 +483,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  11
+#define YYFINAL  12
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   15
+#define YYLAST   49
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  39
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  9
+#define YYNNTS  11
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  18
+#define YYNRULES  34
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  25
+#define YYNSTATES  61
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   293
@@ -545,8 +547,10 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    68,    68,    71,    77,    86,    91,    98,   109,   116,
-     128,   149,   155,   161,   167,   175,   176,   177,   178
+       0,    69,    69,    72,    78,    87,    92,    97,   104,   114,
+     119,   128,   139,   146,   158,   177,   180,   183,   186,   189,
+     192,   195,   198,   201,   204,   207,   210,   215,   221,   227,
+     233,   241,   242,   243,   244
 };
 #endif
 
@@ -567,8 +571,8 @@ static const char *const yytname[] =
   "MUL", "DIV", "EQ", "EE", "NE", "GT", "LT", "GE", "LE", "AND", "OR",
   "NOT", "LPAR", "RPAR", "LSBRA", "RSBRA", "LBRA", "RBRA", "SEMICOL",
   "COMMA", "INT_VALUE", "FLOAT_VALUE", "CHAR_VALUE", "ID", "$accept",
-  "program", "statements", "instruction", "initialization", "assignment",
-  "expression", "content", "types", YY_NULLPTR
+  "program", "statements", "instruction", "functionDecl", "body",
+  "initialization", "assignment", "expression", "content", "types", YY_NULLPTR
 };
 
 static const char *
@@ -578,7 +582,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-32)
+#define YYPACT_NINF (-27)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -592,9 +596,13 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -3,   -32,   -32,   -32,   -32,     8,   -32,    -3,   -24,   -23,
-     -27,   -32,   -32,   -32,   -32,    -5,   -31,   -32,   -32,   -32,
-     -32,   -32,     0,   -31,   -32
+       0,   -27,   -27,   -27,   -27,     7,   -27,     0,   -20,   -25,
+     -19,   -22,   -27,   -27,   -27,   -11,   -27,   -27,     1,     8,
+     -26,     0,   -27,   -27,   -27,   -27,   -27,   -27,    22,   -12,
+     -26,   -26,   -26,   -26,   -26,   -26,   -26,   -26,   -26,   -26,
+     -26,   -26,   -26,   -26,   -27,   -27,   -27,   -27,   -27,   -27,
+     -27,   -27,   -27,   -27,   -27,   -27,   -27,   -27,   -14,    17,
+     -27
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -602,21 +610,27 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,    15,    16,    17,    18,     0,     2,     4,     0,     0,
-       0,     1,     3,     5,     6,     7,     0,    12,    13,    14,
-      11,     9,     8,     0,    10
+       0,    31,    32,    33,    34,     0,     2,     4,     0,     0,
+       0,     0,     1,     3,     7,     0,     5,     6,    11,     0,
+       0,     0,     8,    28,    29,    30,    27,    13,    12,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     9,    14,    15,    16,    17,    18,
+      19,    20,    21,    22,    23,    24,    25,    26,     0,     0,
+      10
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -32,   -32,     7,   -32,   -32,   -32,   -32,    -8,   -32
+     -27,   -27,    -6,   -27,   -27,   -27,   -27,   -27,   -27,    -9,
+     -27
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     5,     6,     7,     8,     9,    21,    22,    10
+       0,     5,     6,     7,     8,    22,     9,    10,    27,    28,
+      11
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -624,37 +638,51 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       1,     2,     3,     4,    17,    18,    19,    20,    11,    13,
-      14,    15,    16,    23,    12,    24
+      43,    13,    15,     1,     2,     3,     4,    12,    16,    23,
+      24,    25,    26,    14,    17,    29,    18,    19,    20,    59,
+      44,    45,    46,    47,    48,    49,    50,    51,    52,    53,
+      54,    55,    56,    57,    58,    30,    31,    32,    33,    21,
+      34,    35,    36,    37,    38,    39,    40,    41,    42,    60
 };
 
 static const yytype_int8 yycheck[] =
 {
-       3,     4,     5,     6,    35,    36,    37,    38,     0,    33,
-      33,    38,    17,    13,     7,    23
+      12,     7,    27,     3,     4,     5,     6,     0,    33,    35,
+      36,    37,    38,    33,    33,    21,    38,    28,    17,    33,
+      32,    30,    31,    32,    33,    34,    35,    36,    37,    38,
+      39,    40,    41,    42,    43,    13,    14,    15,    16,    31,
+      18,    19,    20,    21,    22,    23,    24,    25,    26,    32
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,     4,     5,     6,    40,    41,    42,    43,    44,
-      47,     0,    41,    33,    33,    38,    17,    35,    36,    37,
-      38,    45,    46,    13,    46
+       0,     3,     4,     5,     6,    40,    41,    42,    43,    45,
+      46,    49,     0,    41,    33,    27,    33,    33,    38,    28,
+      17,    31,    44,    35,    36,    37,    38,    47,    48,    41,
+      13,    14,    15,    16,    18,    19,    20,    21,    22,    23,
+      24,    25,    26,    12,    32,    48,    48,    48,    48,    48,
+      48,    48,    48,    48,    48,    48,    48,    48,    48,    33,
+      32
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    39,    40,    41,    41,    42,    42,    43,    44,    44,
-      45,    46,    46,    46,    46,    47,    47,    47,    47
+       0,    39,    40,    41,    41,    42,    42,    42,    43,    44,
+      44,    45,    46,    46,    47,    47,    47,    47,    47,    47,
+      47,    47,    47,    47,    47,    47,    47,    48,    48,    48,
+      48,    49,    49,    49,    49
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     2,     1,     2,     2,     2,     4,     4,
-       3,     1,     1,     1,     1,     1,     1,     1,     1
+       0,     2,     1,     2,     1,     2,     2,     2,     4,     3,
+       6,     2,     4,     4,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     3,     3,     3,     3,     1,     1,     1,
+       1,     1,     1,     1,     1
 };
 
 
@@ -1118,55 +1146,97 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* program: statements  */
-#line 68 "parser.y"
+#line 69 "parser.y"
                                 { root = (yyvsp[0].statements); }
-#line 1124 "parser.tab.c"
+#line 1152 "parser.tab.c"
     break;
 
   case 3: /* statements: instruction statements  */
-#line 71 "parser.y"
+#line 72 "parser.y"
                                 {   
                                     (yyval.statements) = malloc(sizeof(struct AstNodeStatements));
                                     (yyval.statements)->nodeType = STATEMENT_NODE;
                                     (yyval.statements)->currentInstruction = (yyvsp[-1].instruction);
                                     (yyval.statements)->nextStatement = (yyvsp[0].statements);
                                 }
-#line 1135 "parser.tab.c"
+#line 1163 "parser.tab.c"
     break;
 
   case 4: /* statements: instruction  */
-#line 77 "parser.y"
+#line 78 "parser.y"
                                 {
                                     (yyval.statements) = malloc(sizeof(struct AstNodeStatements));
                                     (yyval.statements)->nodeType = STATEMENT_NODE;
                                     (yyval.statements)->currentInstruction = (yyvsp[0].instruction);
                                     (yyval.statements)->nextStatement = NULL;
                                 }
-#line 1146 "parser.tab.c"
+#line 1174 "parser.tab.c"
     break;
 
   case 5: /* instruction: initialization SEMICOL  */
-#line 86 "parser.y"
+#line 87 "parser.y"
                                 {
                                     (yyval.instruction) = malloc(sizeof(struct AstNodeInstruction));
                                     (yyval.instruction)->nodeType = INIT_NODE;
                                     (yyval.instruction)->value.init = (yyvsp[-1].init);
                                 }
-#line 1156 "parser.tab.c"
+#line 1184 "parser.tab.c"
     break;
 
   case 6: /* instruction: assignment SEMICOL  */
-#line 91 "parser.y"
+#line 92 "parser.y"
                                 {
                                     (yyval.instruction) = malloc(sizeof(struct AstNodeInstruction));
                                     (yyval.instruction)->nodeType = ASSIGN_NODE;
                                     (yyval.instruction)->value.assign = (yyvsp[-1].assign);
                                 }
-#line 1166 "parser.tab.c"
+#line 1194 "parser.tab.c"
     break;
 
-  case 7: /* initialization: types ID  */
-#line 98 "parser.y"
+  case 7: /* instruction: functionDecl SEMICOL  */
+#line 97 "parser.y"
+                                {
+                                    (yyval.instruction) = malloc(sizeof(struct AstNodeInstruction));
+                                    (yyval.instruction)->nodeType = FUNCTION_DECL_NODE;
+                                    (yyval.instruction)->value.functionDecl = (yyvsp[-1].functionDecl);
+                                }
+#line 1204 "parser.tab.c"
+    break;
+
+  case 8: /* functionDecl: initialization LPAR RPAR body  */
+#line 104 "parser.y"
+                                {
+                                    (yyval.functionDecl) = malloc(sizeof(struct AstNodeFunctionDecl));   printf("Nodo functionDecl dichiarato \n");
+                                    (yyval.functionDecl)->functionName = (yyvsp[-3].init)->assign->variableName;
+                                    (yyval.functionDecl)->returnType = (yyvsp[-3].init)->dataType;      printf("Assegnato returnType \n");
+                                    (yyval.functionDecl)->functionParams = NULL;
+                                    (yyval.functionDecl)->functiontBody = (yyvsp[0].body);         printf("Montato function body \n");
+                                }
+#line 1216 "parser.tab.c"
+    break;
+
+  case 9: /* body: LBRA statements RBRA  */
+#line 114 "parser.y"
+                                                {
+                                                    (yyval.body) = malloc(sizeof(struct AstNodeBody));  printf("Espando Body \n");
+                                                    (yyval.body)->bodyStatements = (yyvsp[-1].statements);
+                                                    (yyval.body)->returnValue = NULL;
+                                                }
+#line 1226 "parser.tab.c"
+    break;
+
+  case 10: /* body: LBRA statements RETURN content SEMICOL RBRA  */
+#line 119 "parser.y"
+                                                {
+                                                    (yyval.body) = malloc(sizeof(struct AstNodeBody));
+                                                    (yyval.body)->bodyStatements = (yyvsp[-4].statements);
+                                                    (yyval.body)->returnValue = (yyvsp[-2].operand);
+                                                }
+#line 1236 "parser.tab.c"
+    break;
+
+  case 11: /* initialization: types ID  */
+#line 128 "parser.y"
                                 {
                                     (yyval.init) = malloc(sizeof(struct AstNodeInit)); printf("AstNodeInit allocated\n");
                                     (yyval.init)->dataType = str_to_type((yyvsp[-1].string));
@@ -1176,11 +1246,11 @@ yyreduce:
                                     (yyval.init)->assign->assignValue.val = NULL;   
                                     (yyval.init)->assign->assignType = CONTENT_TYPE_ID;  
                                 }
-#line 1180 "parser.tab.c"
+#line 1250 "parser.tab.c"
     break;
 
-  case 8: /* assignment: types ID EQ content  */
-#line 109 "parser.y"
+  case 12: /* assignment: types ID EQ content  */
+#line 139 "parser.y"
                                 {   
                                     (yyval.assign) = malloc(sizeof(struct AstNodeAssign)); printf("AstNodeAssign allocated\n");
                                     (yyval.assign)->variableName = (yyvsp[-2].string);
@@ -1188,11 +1258,11 @@ yyreduce:
                                     (yyval.assign)->assignValue.val = (yyvsp[0].operand)->value.val; 
                                     (yyval.assign)->assignType = (yyvsp[0].operand)->contentType;
                                 }
-#line 1192 "parser.tab.c"
+#line 1262 "parser.tab.c"
     break;
 
-  case 9: /* assignment: types ID EQ expression  */
-#line 116 "parser.y"
+  case 13: /* assignment: types ID EQ expression  */
+#line 146 "parser.y"
                                 {   
                                     (yyval.assign) = malloc(sizeof(struct AstNodeAssign)); printf("AstNodeAssign allocated\n");
                                     (yyval.assign)->variableName = (yyvsp[-2].string);
@@ -1202,11 +1272,11 @@ yyreduce:
                                     if ((yyval.assign)->variableType != (yyval.assign)->assignValue.expression->exprType)
                                         { printf("Impossibile assegnare espressione a tipo diverso \n"); }
                                 }
-#line 1206 "parser.tab.c"
+#line 1276 "parser.tab.c"
     break;
 
-  case 10: /* expression: content ADD content  */
-#line 128 "parser.y"
+  case 14: /* expression: content ADD content  */
+#line 158 "parser.y"
                                 {
                                     (yyval.expression) = malloc(sizeof(struct AstNodeExpression));
                                     (yyval.expression)->leftOper = malloc(sizeof(struct AstNodeOperand));
@@ -1226,79 +1296,175 @@ yyreduce:
                                             printf("Expression di tipo somma \n");
                                         }                
                                 }
-#line 1230 "parser.tab.c"
+#line 1300 "parser.tab.c"
     break;
 
-  case 11: /* content: ID  */
-#line 149 "parser.y"
+  case 15: /* expression: content SUB content  */
+#line 177 "parser.y"
+                                {
+
+                                }
+#line 1308 "parser.tab.c"
+    break;
+
+  case 16: /* expression: content MUL content  */
+#line 180 "parser.y"
+                                {
+
+                                }
+#line 1316 "parser.tab.c"
+    break;
+
+  case 17: /* expression: content DIV content  */
+#line 183 "parser.y"
+                                {
+
+                                }
+#line 1324 "parser.tab.c"
+    break;
+
+  case 18: /* expression: content EE content  */
+#line 186 "parser.y"
+                                {
+
+                                }
+#line 1332 "parser.tab.c"
+    break;
+
+  case 19: /* expression: content NE content  */
+#line 189 "parser.y"
+                                {
+
+                                }
+#line 1340 "parser.tab.c"
+    break;
+
+  case 20: /* expression: content GT content  */
+#line 192 "parser.y"
+                                {
+
+                                }
+#line 1348 "parser.tab.c"
+    break;
+
+  case 21: /* expression: content LT content  */
+#line 195 "parser.y"
+                                {
+
+                                }
+#line 1356 "parser.tab.c"
+    break;
+
+  case 22: /* expression: content GE content  */
+#line 198 "parser.y"
+                                {
+
+                                }
+#line 1364 "parser.tab.c"
+    break;
+
+  case 23: /* expression: content LE content  */
+#line 201 "parser.y"
+                                {
+
+                                }
+#line 1372 "parser.tab.c"
+    break;
+
+  case 24: /* expression: content AND content  */
+#line 204 "parser.y"
+                                {
+
+                                }
+#line 1380 "parser.tab.c"
+    break;
+
+  case 25: /* expression: content OR content  */
+#line 207 "parser.y"
+                                {
+
+                                }
+#line 1388 "parser.tab.c"
+    break;
+
+  case 26: /* expression: content NOT content  */
+#line 210 "parser.y"
+                                {
+
+                                }
+#line 1396 "parser.tab.c"
+    break;
+
+  case 27: /* content: ID  */
+#line 215 "parser.y"
                                 {
                                     (yyval.operand) = malloc(sizeof(struct AstNodeOperand)); printf("Ci troviamo nel caso in cui abbiamo int a = b\n");
                                     (yyval.operand)->value.val = (yyvsp[0].string);
                                     (yyval.operand)->valueType = DATA_TYPE_VOID;
                                     (yyval.operand)->contentType = CONTENT_TYPE_ID;
                                 }
-#line 1241 "parser.tab.c"
+#line 1407 "parser.tab.c"
     break;
 
-  case 12: /* content: INT_VALUE  */
-#line 155 "parser.y"
+  case 28: /* content: INT_VALUE  */
+#line 221 "parser.y"
                                 {       
                                     (yyval.operand) = malloc(sizeof(struct AstNodeOperand)); printf("Il tipo e' int\n");
                                     (yyval.operand)->value.val = (yyvsp[0].string);
                                     (yyval.operand)->valueType = DATA_TYPE_INT; 
                                     (yyval.operand)->contentType = CONTENT_TYPE_INT_NUMBER;
                                 }
-#line 1252 "parser.tab.c"
+#line 1418 "parser.tab.c"
     break;
 
-  case 13: /* content: FLOAT_VALUE  */
-#line 161 "parser.y"
+  case 29: /* content: FLOAT_VALUE  */
+#line 227 "parser.y"
                                 {
                                     (yyval.operand) = malloc(sizeof(struct AstNodeOperand)); printf("Il tipo e' float\n");
                                     (yyval.operand)->value.val = (yyvsp[0].string);
                                     (yyval.operand)->valueType = DATA_TYPE_FLOAT; 
                                     (yyval.operand)->contentType = CONTENT_TYPE_FLOAT_NUMBER;
                                 }
-#line 1263 "parser.tab.c"
+#line 1429 "parser.tab.c"
     break;
 
-  case 14: /* content: CHAR_VALUE  */
-#line 167 "parser.y"
+  case 30: /* content: CHAR_VALUE  */
+#line 233 "parser.y"
                                 {
                                     (yyval.operand) = malloc(sizeof(struct AstNodeOperand)); printf("Il tipo e' char\n");
                                     (yyval.operand)->value.val = (yyvsp[0].string);
                                     (yyval.operand)->valueType = DATA_TYPE_CHAR;  
                                     (yyval.operand)->contentType = CONTENT_TYPE_CHAR;
                                 }
-#line 1274 "parser.tab.c"
+#line 1440 "parser.tab.c"
     break;
 
-  case 15: /* types: VOID  */
-#line 175 "parser.y"
+  case 31: /* types: VOID  */
+#line 241 "parser.y"
                                 {(yyval.string) = DATA_TYPE_VOID; }
-#line 1280 "parser.tab.c"
+#line 1446 "parser.tab.c"
     break;
 
-  case 16: /* types: INT  */
-#line 176 "parser.y"
+  case 32: /* types: INT  */
+#line 242 "parser.y"
                                 {(yyval.string) = DATA_TYPE_INT; }
-#line 1286 "parser.tab.c"
+#line 1452 "parser.tab.c"
     break;
 
-  case 17: /* types: FLOAT  */
-#line 177 "parser.y"
+  case 33: /* types: FLOAT  */
+#line 243 "parser.y"
                                 {(yyval.string) = DATA_TYPE_FLOAT; }
-#line 1292 "parser.tab.c"
+#line 1458 "parser.tab.c"
     break;
 
-  case 18: /* types: CHAR  */
-#line 178 "parser.y"
+  case 34: /* types: CHAR  */
+#line 244 "parser.y"
                                 {(yyval.string) = DATA_TYPE_CHAR; }
-#line 1298 "parser.tab.c"
+#line 1464 "parser.tab.c"
     break;
 
 
-#line 1302 "parser.tab.c"
+#line 1468 "parser.tab.c"
 
       default: break;
     }
@@ -1491,7 +1657,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 180 "parser.y"
+#line 246 "parser.y"
 
 
 int yyerror(char *s) {

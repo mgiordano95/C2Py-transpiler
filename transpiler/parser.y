@@ -51,7 +51,7 @@ struct AstNodeStatements *root;
 /* NON_TERMINAL TYPES */
 %define api.value.type {union yystype}
 
-%type <string> types ID SEMICOL INT_VALUE FLOAT_VALUE CHAR_VALUE EQ ADD SUB MUL DIV EE NE GT LT GE LE AND OR NOT RETURN LBRA RBRA
+%type <string> types ID SEMICOL INT_VALUE FLOAT_VALUE CHAR_VALUE EQ ADD SUB MUL DIV EE NE GT LT GE LE AND OR NOT RETURN LBRA RBRA LPAR RPAR
 %type <statements> program statements 
 %type <instruction> instruction 
 %type <init> initialization
@@ -93,6 +93,11 @@ initialization SEMICOL          {
                                     $$ = malloc(sizeof(struct AstNodeInstruction));
                                     $$->nodeType = ASSIGN_NODE;
                                     $$->value.assign = $1;
+                                }
+|   functionDecl SEMICOL        {
+                                    $$ = malloc(sizeof(struct AstNodeInstruction));
+                                    $$->nodeType = FUNCTION_DECL_NODE;
+                                    $$->value.functionDecl = $1;
                                 };
 
 functionDecl:
