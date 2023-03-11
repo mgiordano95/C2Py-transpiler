@@ -56,7 +56,7 @@ union yystype {
     struct AstNodeFunctionDecl        *functionDecl;
     struct AstNodeFunctionCall        *functionCall;
     struct AstNodeFunctionParams      *functionParams;
-    /* struct AstNodeBody                *body; */
+    struct AstNodeBody                *body;
     /* struct AstNodeFunctionInput       *inputFunction;
     struct AstNodeFunctionOutput      *outputFunction; */
     /* struct AstNodeArrayInit          *arrayInit;
@@ -144,7 +144,7 @@ struct AstNodeFunctionDecl {
     char *functionName;
     enum DataType returnType; //tipo restituito dalla funzione
     struct AstNodeFunctionParams *functionParams;
-    struct AstNodeStatements *functionBody; //da scrivere
+    struct AstNodeBody *functiontBody; //da scrivere
 };
 
 /*--------------- Node Function Call ---------------*/
@@ -172,33 +172,33 @@ struct AstNodeFunctionParams {
     */
 };
 
-/* struct AstNodeBody {
+struct AstNodeBody {
     struct AstNodeStatements *bodyStatements;
     struct AstNodeOperand *returnValue;
-}; */
+};
 
 /*--------------- Node If ---------------*/
 struct AstNodeIf {
     struct AstNodeExpression *ifCondition;
-    struct AstNodeStatements *ifBody; //oppure utilizzare la struct AstNodeBody
+    struct AstNodeBody *ifBody;
 
 };
 
 /*--------------- Node Elseif ---------------*/
 struct AstNodeElseIf {
     struct AstNodeExpression *elseifCondition;
-    struct AstNodeStatements *elseifBody; //oppure utilizzare la struct AstNodeBody
+    struct AstNodeBody *elseifBody;
 };
 
 /*--------------- Node Else ---------------*/
 struct AstNodeElse {
-    struct AstNodeStatements *elseBody; //oppure utilizzare la struct AstNodeBody
+    struct AstNodeBody *elseBody;
 };
 
 /*--------------- Node While ---------------*/
 struct AstNodeWhile {
     struct AstNodeExpression *whileCondition;
-    struct AstNodeStatements *whileBody; //oppure utilizzare la struct AstNodeBody
+    struct AstNodeBody *whileBody;
 };
 
 
