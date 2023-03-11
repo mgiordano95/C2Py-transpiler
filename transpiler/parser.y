@@ -60,6 +60,8 @@ struct AstNodeStatements *root;
 %type <expression> expression
 %type <body> body
 %type <functionDecl> functionDecl
+%type <functionCall> functionCall
+
         
 %start program
 
@@ -98,6 +100,11 @@ initialization SEMICOL          {
                                     $$ = malloc(sizeof(struct AstNodeInstruction));
                                     $$->nodeType = FUNCTION_DECL_NODE;
                                     $$->value.functionDecl = $1;
+                                }
+|   functionCall SEMICOL        {
+                                    $$ = malloc(sizeof(struct AstNodeInstruction));
+                                    $$->nodeType = FUNCTION_CALL_NODE;
+                                    $$->value.functionCall = $1;
                                 };
 
 functionDecl:
@@ -108,6 +115,15 @@ initialization LPAR RPAR body   {
                                     $$->functionParams = NULL;
                                     $$->functiontBody = $4;         printf("Montato function body \n");
                                 };
+
+functionCall:
+ID LPAR RPAR                    {
+                                    $$ = malloc(sizeof(struct AstNodeFunctionCall));   printf("Nodo Function Call \n");
+                                    $$->functionName = $1;
+                                    $$->returnType = DATA_TYPE_INT;
+                                    $$->functionParams = NULL; 
+                                }
+
 
 
 body:
