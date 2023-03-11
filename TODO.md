@@ -26,7 +26,7 @@
     - [x] Add struct AstNodeElseIf
     - [x] Add struct AstNodeElse
     - [x] Add struct AstNodeWhile
-- [:computer:] Create parser.y
+- [ ] :computer: Create parser.y
     - [x] Implement statements
     - [ ] :computer: Implement instruction
     - [ ] :computer: Implement initialization
