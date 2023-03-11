@@ -28,17 +28,16 @@ enum ContentType {
     CONTENT_TYPE_FUNCTION,
 };
 
-//TO-DO: da scrivere dopo il Node_type, serve per la traduzione
 enum NodeType {
     STATEMENT_NODE,
     INIT_NODE,
     ASSIGN_NODE,
-    EXPRESSION_NODE,
-    OPERAND_NODE,
-    FUNCTION_DECL_NODE,
-    FUNCTION_CALL_NODE,
+    // EXPRESSION_NODE,
+    // OPERAND_NODE,
     ARRAY_INIT_NODE,
     ARRAY_ASSIGN_NODE,
+    FUNCTION_DECL_NODE,
+    FUNCTION_CALL_NODE,
     IF_NODE,
     ELSE_IF_NODE,
     ELSE_NODE,
@@ -53,18 +52,19 @@ union yystype {
     struct AstNodeAssign              *assign;
     struct AstNodeExpression          *expression;
     struct AstNodeOperand             *operand;
+    struct AstNodeArrayInit           *arrayInit;
+    struct AstNodeArrayAssign         *arrayAssign;
+    struct AstNodeArrayElements       *arrayElements;
     struct AstNodeFunctionDecl        *functionDecl;
     struct AstNodeFunctionCall        *functionCall;
     struct AstNodeFunctionParams      *functionParams;
     struct AstNodeBody                *body;
-    /* struct AstNodeFunctionInput       *inputFunction;
-    struct AstNodeFunctionOutput      *outputFunction; */
-    /* struct AstNodeArrayInit          *arrayInit;
-    struct AstNodeArrayAssign        *arrayAssign; */
     struct AstNodeIf                  *ifStatement;
     struct AstNodeElseIf              *elseifStatement;
     struct AstNodeElse                *elseStatement;
     struct AstNodeWhile               *whileLoop;
+    /* struct AstNodeFunctionInput       *inputFunction;
+    struct AstNodeFunctionOutput      *outputFunction; */
     /* struct AstNodeValue               *value;
     struct AstNodeVariable            *variable; */
     
@@ -138,6 +138,26 @@ struct AstNodeOperand {
     enum DataType valueType;          //tipo del valore restituito
     enum ContentType contentType;   //è il tipo di operando func expr int che forse serve per la traduzione ma forse no
 }; 
+
+/*--------------- Node Array Init ---------------*/
+struct AstNodeArrayInit {
+    enum DataType arrayType; 
+    struct AstNodeArrayAssign *assignArray;
+};
+
+/*--------------- Node Array Assign ---------------*/
+struct AstNodeArrayAssign {
+    char *arrayName;
+    int *index;
+    enum DataType arrayType;
+    struct AstNodeArrayElements *elements;
+};
+
+/*--------------- Node Array Assign ---------------*/
+struct AstNodeArrayElements {
+    struct AstNodeOperand *element;
+
+};
 
 /*--------------- Node Function Declaration ---------------*/
 struct AstNodeFunctionDecl {
