@@ -3,11 +3,13 @@
 #include <stdlib.h>
 #include <math.h>
 #include "ast.h"
+#include "symboltable.h"
 
 int yyerror(char *s);
 int yylex(void);
 
 struct AstNodeStatements *root;
+struct List *actualList = NULL;  
 
 %}
 
@@ -153,6 +155,11 @@ types ID                        {
 
 assignment:                     
 types ID EQ content             {   
+                                    struct SymTab *s = NULL;  //sarà diverso da NULL solo se trova il simbolo
+                                    s = findSymtab(actualList, $2);  //controlla se il simbolo è stato già dichiarato
+                                    if (s==NULL) {
+                                        s = createSym($2, actualList, SYMBOL_VARIABLE, str_to_type($1), str_to_type($1), null, $4->value );
+                                    }
                                     $$ = malloc(sizeof(struct AstNodeAssign)); printf("AstNodeAssign allocated\n");
                                     $$->variableName = $2;
                                     $$->variableType = str_to_type($1);
@@ -230,6 +237,8 @@ content ADD content             {
 content:
 ID                              {
                                     $$ = malloc(sizeof(struct AstNodeOperand)); printf("Ci troviamo nel caso in cui abbiamo int a = b\n");
+                                    struct SymTab *s = findSymtab(actualTable, $1);
+                                    if(s==NULL) { $$->}
                                     $$->value.val = $1;
                                     $$->valueType = DATA_TYPE_VOID;
                                     $$->contentType = CONTENT_TYPE_ID;
