@@ -31,7 +31,7 @@
     - [ ] :computer: Implement instruction
     - [ ] :computer: Implement initialization
     - [ ] :computer: Implement assignment
-    - [ ] :computer: Implement expression
+    - [x] :computer: Implement expression (to test)
     - [x] Implement content
     - [ ] Implement arrayInit
     - [ ] Implement arrayAssign
