@@ -379,9 +379,9 @@ content ADD content             {
                                     $$->leftOper = $2;
                                     $$->rightOper = NULL;
                                     $$->exprType = DATA_TYPE_INT;
-                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
+                                    if  ($2->valueType == DATA_TYPE_CHAR) {
                                         printf("\n Errore! Impossibile confrontare variabili di tipo char");
-                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
+                                    } else if  ($2->valueType == DATA_TYPE_VOID) { 
                                         printf("\n Errore! Impossibile confrontare variabili di tipo void");
                                     } else {
                                         printf("Expression di tipo NOT \n");
