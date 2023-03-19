@@ -163,23 +163,27 @@ ID EQ ID                        {
                                     $$->assignType = CONTENT_TYPE_ID;
                                     $$->assignValue.val = $3;
                                     struct SymTab *s = findSymtab(actualList, $3);
-                                    if (s==NULL) { $$->variableType = DATA_TYPE_NONE; }
-                                    else { $$->variableType = s->dataType; }
+                                    if (s==NULL) { 
+                                        $$->variableType = DATA_TYPE_NONE; 
+                                        printf("ID EQ ID non esiste dollaro3 nella symtab\n");
+                                    }
+                                    else { 
+                                        $$->variableType = s->dataType;
+                                        printf("ID EQ ID esiste dollaro3 nella symtab\n");
+                                    }
                                 }
 |   types ID EQ content         {   
                                     struct SymTab *s = NULL;  //sarà diverso da NULL solo se trova il simbolo
                                     s = findSymtab(actualList, $2);  //controlla se il simbolo è stato già dichiarato
                                     if (s==NULL) {
                                         s = createSym($2, actualList, SYMBOL_VARIABLE, str_to_type($1), str_to_type($1), null, $4->value );
-                                    }
-                                    else {
+                                        printf("types ID EQ content non esiste dollaro2 nella symtab e la creo\n");
+                                    } else {
                                         printf("\n Errore: variabile %s gia' dichiarata \n", $2);
-                                    }
+                                    } 
                                     if ((str_to_type($1) != $4->valueType)) {
                                         printf("Errore: impossibile assegnare un tipo %s ad un tipo %s \n", type_to_str($4->valueType), type_to_str($1));
-                                    }
-                                    else 
-                                    {
+                                    } else {
                                     $$ = malloc(sizeof(struct AstNodeAssign));
                                     printf("AstNodeAssign allocated\n");
                                     $$->variableName = $2;
@@ -188,31 +192,8 @@ ID EQ ID                        {
                                     $$->assignType = $4->contentType;
                                     }
                                 }
-|   types ID EQ expression      {   
-                                    struct SymTab *s = NULL;  //sarà diverso da NULL solo se trova il simbolo
-                                    s = findSymtab(actualList, $2);  //controlla se il simbolo è stato già dichiarato
-                                    if (s==NULL) {
-                                        s = createSym($2, actualList, SYMBOL_VARIABLE, str_to_type($1), str_to_type($1), null, $4->myexpr.expression); 
-                                    }
-                                    else {
-                                        printf("\n Errore: variabile %s gia' dichiarata \n", $2);
-                                    }
-                                    if ((str_to_type($1) != $4->exprType)) {
-                                        printf("Errore: impossibile assegnare un tipo %s ad un tipo %s \n", type_to_str($4->valueType), type_to_str($1));
-                                    }
-                                    else {
-                                    $$ = malloc(sizeof(struct AstNodeAssign));
-                                    printf("AstNodeAssign allocated\n");
-                                    $$->variableName = $2;
-                                    $$->variableType = str_to_type($1);
-                                    $$->assignValue.expression = $4;
-                                    $$->assignType = CONTENT_TYPE_EXPRESSION;
-                                    if ($$->variableType != $$->assignValue.expression->exprType) 
-                                        { printf("Impossibile assegnare espressione a tipo diverso \n"); }
-                                    }
-                                }
 |   ID EQ content               {
-                                    $$ = malloc(sizeof(struct AstNodeAssign));
+                                    $$ = malloc(sizeof(struct AstNodeAssign)); //inserire qui la verifica che int a sia stato dichiarato prima di fare a = qualcosa
                                     $$->variableName = $1;
                                     $$->variableType = $3->valueType;
                                     $$->assignValue = $3->value;   //forse va- assignValue.val ma fors no perche- anche $3 e' generico
@@ -223,7 +204,6 @@ ID EQ ID                        {
 expression:
 content ADD content             {
                                     $$ = malloc(sizeof(struct AstNodeExpression));
-                                    $$->myexpr.expression = $$;
                                     $$->leftOper = malloc(sizeof(struct AstNodeOperand));
                                     $$->rightOper = malloc(sizeof(struct AstNodeOperand)); 
                                     $$->leftOper = $1;   
@@ -460,6 +440,13 @@ ID                              {
                                     $$->value.val = $1;
                                     $$->valueType = DATA_TYPE_CHAR;  
                                     $$->contentType = CONTENT_TYPE_CHAR;
+                                }
+|   expression                  {
+                                    $$ = malloc(sizeof(struct AstNodeOperand));
+                                    printf("Il tipo e' expression\n");
+                                    $$->value.expression = $1;
+                                    $$->valueType = $1->exprType;  
+                                    $$->contentType = CONTENT_TYPE_EXPRESSION;
                                 };
 
 types:

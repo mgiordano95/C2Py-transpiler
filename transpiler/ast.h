@@ -124,7 +124,6 @@ a + 5 > 6
 i + 1 < 8
 */
 struct AstNodeExpression {
-    union ValueOper myexpr;
     enum DataType exprType;  //tipo dato restituito dall'espressione (void, int float, char)
     char *op; // op è $2 e può essere +, -, *, /, >, < ...
     struct AstNodeOperand *leftOper;
