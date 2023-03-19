@@ -157,34 +157,73 @@ types ID                        {
                                 };
 
 assignment:                     
-types ID EQ content             {   
+ID EQ ID                        {
+                                    $$ = malloc(sizeof(struct AstNodeAssign));
+                                    $$->variableName = $1;
+                                    $$->assignType = CONTENT_TYPE_ID;
+                                    $$->assignValue.val = $3;
+                                    struct SymTab *s = findSymtab(actualList, $3);
+                                    if (s==NULL) { $$->variableType = DATA_TYPE_NONE; }
+                                    else { $$->variableType = s->dataType; }
+                                }
+|   types ID EQ content         {   
                                     struct SymTab *s = NULL;  //sarà diverso da NULL solo se trova il simbolo
                                     s = findSymtab(actualList, $2);  //controlla se il simbolo è stato già dichiarato
                                     if (s==NULL) {
                                         s = createSym($2, actualList, SYMBOL_VARIABLE, str_to_type($1), str_to_type($1), null, $4->value );
                                     }
+                                    else {
+                                        printf("\n Errore: variabile %s gia' dichiarata \n", $2);
+                                    }
+                                    if ((str_to_type($1) != $4->valueType)) {
+                                        printf("Errore: impossibile assegnare un tipo %s ad un tipo %s \n", type_to_str($4->valueType), type_to_str($1));
+                                    }
+                                    else 
+                                    {
                                     $$ = malloc(sizeof(struct AstNodeAssign));
                                     printf("AstNodeAssign allocated\n");
                                     $$->variableName = $2;
                                     $$->variableType = str_to_type($1);
                                     $$->assignValue.val = $4->value.val; 
                                     $$->assignType = $4->contentType;
+                                    }
                                 }
 |   types ID EQ expression      {   
+                                    struct SymTab *s = NULL;  //sarà diverso da NULL solo se trova il simbolo
+                                    s = findSymtab(actualList, $2);  //controlla se il simbolo è stato già dichiarato
+                                    if (s==NULL) {
+                                        s = createSym($2, actualList, SYMBOL_VARIABLE, str_to_type($1), str_to_type($1), null, $4->myexpr.expression); 
+                                    }
+                                    else {
+                                        printf("\n Errore: variabile %s gia' dichiarata \n", $2);
+                                    }
+                                    if ((str_to_type($1) != $4->exprType)) {
+                                        printf("Errore: impossibile assegnare un tipo %s ad un tipo %s \n", type_to_str($4->valueType), type_to_str($1));
+                                    }
+                                    else {
                                     $$ = malloc(sizeof(struct AstNodeAssign));
                                     printf("AstNodeAssign allocated\n");
                                     $$->variableName = $2;
                                     $$->variableType = str_to_type($1);
                                     $$->assignValue.expression = $4;
                                     $$->assignType = CONTENT_TYPE_EXPRESSION;
-                                    if ($$->variableType != $$->assignValue.expression->exprType) {
-                                        printf("Impossibile assegnare espressione a tipo diverso \n");
+                                    if ($$->variableType != $$->assignValue.expression->exprType) 
+                                        { printf("Impossibile assegnare espressione a tipo diverso \n"); }
                                     }
-                                }; 
+                                }
+|   ID EQ content               {
+                                    $$ = malloc(sizeof(struct AstNodeAssign));
+                                    $$->variableName = $1;
+                                    $$->variableType = $3->valueType;
+                                    $$->assignValue = $3->value;   //forse va- assignValue.val ma fors no perche- anche $3 e' generico
+                                    $$->assignType = $3->contentType;
+                                };
+
 
 expression:
 content ADD content             {
                                     $$ = malloc(sizeof(struct AstNodeExpression));
+                                    $$->myexpr.expression = $$;
                                     $$->leftOper = malloc(sizeof(struct AstNodeOperand));
                                     $$->rightOper = malloc(sizeof(struct AstNodeOperand)); 
                                     $$->leftOper = $1;   
@@ -392,11 +431,14 @@ content:
 ID                              {
                                     $$ = malloc(sizeof(struct AstNodeOperand)); 
                                     printf("Ci troviamo nel caso in cui abbiamo int a = b\n");
-                                    struct SymTab *s = findSymtab(actualTable, $1);
-                                    if(s==NULL) { $$->}
-                                    $$->value.val = $1;
-                                    $$->valueType = DATA_TYPE_VOID;
-                                    $$->contentType = CONTENT_TYPE_ID;
+                                    struct SymTab *s = findSymtab(actualList, $1);
+                                    if(s==NULL) { $$->valueType = DATA_TYPE_NONE; }  //se non e' presente il tipo e' automaticamente void anche se tecnicamente NONE
+                                    else
+                                     {
+                                         $$->value.val = $1;
+                                         $$->valueType = s->dataType;
+                                         $$->contentType = CONTENT_TYPE_ID;
+                                     }
                                 }
 |   INT_VALUE                   {       
                                     $$ = malloc(sizeof(struct AstNodeOperand));

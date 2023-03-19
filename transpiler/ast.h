@@ -13,6 +13,7 @@ enum SymbolType {
 };
 
 enum DataType {
+    DATA_TYPE_NONE,
     DATA_TYPE_VOID,
     DATA_TYPE_INT,
     DATA_TYPE_FLOAT,
@@ -123,6 +124,7 @@ a + 5 > 6
 i + 1 < 8
 */
 struct AstNodeExpression {
+    union ValueOper myexpr;
     enum DataType exprType;  //tipo dato restituito dall'espressione (void, int float, char)
     char *op; // op è $2 e può essere +, -, *, /, >, < ...
     struct AstNodeOperand *leftOper;
