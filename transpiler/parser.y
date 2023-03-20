@@ -1,7 +1,11 @@
 %{
 #include <stdio.h>
-#include <stdlib.h>
+//#include <stdlib.h>
 #include <math.h>
+#include <ctype.h>
+#include <string.h>
+#include <stdbool.h>
+//#include <stddef.h>
 #include "ast.h"
 #include "symboltable.h"
 
@@ -9,13 +13,21 @@ int yyerror(char *s);
 int yylex(void);
 
 struct AstNodeStatements *root;
-struct List *actualList = NULL;  
+struct List *actualList = NULL;
+
+char * type_to_str(int type);
+void scope_enter();
+void scope_exit();
+
+int counter = 0;
+//struct SymTab *s = NULL; 
 
 %}
 
-%code requires {
+/*%code requires {
     #include "ast.h"
-}
+    #include "symboltable.h"
+}*/
 
 %token VOID
 %token INT
@@ -56,9 +68,7 @@ struct List *actualList = NULL;
 
 
 /* NON_TERMINAL TYPES */
-%define api.value.type {
-    union yystype;
-}
+%define api.value.type {union yystype}
 
 %type <string> types SEMICOL COMMA ID INT_VALUE FLOAT_VALUE CHAR_VALUE EQ ADD SUB MUL DIV EE NE GT LT GE LE AND OR NOT RETURN LPAR RPAR LSBRA RSBRA LBRA RBRA 
 %type <statements> program statements 
@@ -75,10 +85,10 @@ struct List *actualList = NULL;
 
 %%
 
-program:    
-statements                                      { 
+program: {scope_enter();} statements {root = $2; scope_exit();};    
+/*statements                                      { 
                                                     root = $1; 
-                                                };
+                                                };*/
 
 statements: 
 instruction statements                          {
@@ -176,8 +186,8 @@ ID EQ ID                                        {
                                                     $$->variableName = $1;
                                                     $$->assignType = CONTENT_TYPE_ID;
                                                     $$->assignValue.val = $3;
-                                                    struct SymTab *s = findSymtab(actualList, $3);
-                                                    if (s==NULL) { 
+                                                    struct SymTab *s = findSym($3, actualList);
+                                                    if (s == NULL) { 
                                                         $$->variableType = DATA_TYPE_NONE; 
                                                         printf("ID EQ ID non esiste dollaro3 nella symtab\n");
                                                     } else { 
@@ -187,15 +197,15 @@ ID EQ ID                                        {
                                                 }
 |   types ID EQ content                         {
                                                     struct SymTab *s = NULL;  //sarà diverso da NULL solo se trova il simbolo
-                                                    s = findSymtab(actualList, $2);  //controlla se il simbolo è stato già dichiarato
+                                                    s = findSym($2, actualList);  //controlla se il simbolo è stato già dichiarato
                                                     if (s==NULL) {
-                                                        s = createSym($2, actualList, SYMBOL_VARIABLE, str_to_type($1), str_to_type($1), null, $4->value );
+                                                        s = createSym($2, actualList, SYMBOL_VARIABLE, str_to_type($1), str_to_type($1), NULL, $4->value);
                                                         printf("types ID EQ content non esiste dollaro2 nella symtab e la creo\n");
                                                     } else {
                                                         printf("\n Errore: variabile %s gia' dichiarata \n", $2);
-                                                    } 
+                                                    }
                                                     if ((str_to_type($1) != $4->valueType)) {
-                                                        printf("Errore: impossibile assegnare un tipo %s ad un tipo %s \n", type_to_str($4->valueType), type_to_str($1));
+                                                        //printf("Errore: impossibile assegnare un tipo %s ad un tipo %s \n", type_to_str($4->valueType), type_to_str($1));
                                                     } else {
                                                     $$ = malloc(sizeof(struct AstNodeAssign));
                                                     printf("AstNodeAssign allocated for 'types ID EQ content'\n");
@@ -437,7 +447,7 @@ content:
 ID                                              {
                                                     $$ = malloc(sizeof(struct AstNodeOperand));
                                                     printf("AstNodeOperand allocated for 'ID'\n"); //Ci troviamo nel caso in cui abbiamo int a = b
-                                                    struct SymTab *s = findSymtab(actualList, $1);
+                                                    struct SymTab *s = findSymtab($1,actualList);
                                                     if(s==NULL) { 
                                                         $$->valueType = DATA_TYPE_NONE; 
                                                     } else {
@@ -495,12 +505,29 @@ types:
 
 %%
 
+
+
+
+
+int main() {
+    yyparse();
+
+    counter = 0;
+    //return yyparse();
+}
+
 int yyerror(char *s) {
     printf("%s\n", s);
 }
 
-int main(void) {
-    return yyparse();
+void scope_enter() {
+    actualList = createList(counter, actualList);
+    counter++;
+}
+
+void scope_exit() {
+    deleteList(actualList);
+    counter--;
 }
 
 char * type_to_str(int type) {

@@ -1,5 +1,9 @@
+#ifndef SYMBOLTABLE_H
+#define SYMBOLTABLE_H
+
 #include <stdio.h>
 #include <stdlib.h> // for exit function used by uthash
+#include <stdbool.h>
 #include "uthash.h"
 #include "ast.h"
 
@@ -22,15 +26,54 @@ struct SymTab {
 //Gestione delle tabelle
 struct List *createList(int scope, struct List *next);   //crea lista
 struct List *deleteList(struct List *symList);      //cancella lista
-struct SymTab *findSymtab(struct List *symList, char *symbolName); //Ricerca symble table all'interno della lista
+struct SymTab *findSymtab(char *symbolName, struct List *symList); //Ricerca symble table all'interno della lista
 
 //Gestione dei simboli
 struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType symbolType, enum DataType dataType, enum DataType returnType, char *funcName, union ValueOper valueOper);
-struct SymTab *findSym(struct List *symList, char *symbolName);
+struct SymTab *findSym(char *symbolName, struct List *symList);
+
+struct SymTab *findSym(char *symbolName, struct List *symList) {
+    printf("Entro in findSym\n");
+    struct SymTab *sym;
+    HASH_FIND_STR(symList->symTab, symbolName, sym);  //hash table lista, puntatore alla chiave che cerco, puntatore alla struct con la chiave cercata
+    printf("Entro in findSym2\n");
+    return sym; //puntatore alla symbol table cercata
+    if (sym == NULL) {
+        printf("\n Error: Symbol %s not found \n", symbolName);
+        return NULL;
+    } else {
+        return sym;
+    }
+}
+
+//aggiunge una symbol table con simbolo alla lista 
+struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType symbolType, enum DataType dataType, enum DataType returnType, char *funcName, union ValueOper valueOper) {
+    struct SymTab *sym;
+    printf("Entro in createSym\n");
+    sym = findSym(symbolName, list);
+    if(sym == NULL) {
+        sym = (struct SymTab *) malloc(sizeof(struct SymTab));
+        sym->symbolName = symbolName;
+        sym->symbolType = symbolType;
+        sym->dataType = dataType;
+        sym->returnType = returnType;
+        sym->funcName = funcName;
+        sym->valueOper = valueOper;
+
+        HASH_ADD_STR(list->symTab, symbolName, sym);  // hash table lista, chiave che identifica il simbolo, tabella puntatore struct da aggiungere
+    } else {
+        printf("\n Error: Symbol %s already exists\n", symbolName);
+    }
+}
+
+void deleteSym (struct SymTab *sym, struct List *list) {
+    HASH_DEL(list->symTab, sym);
+    free(sym);
+}
 
 struct List *createList(int scope, struct List *next) {
     struct SymTab *symTab = NULL;   //uthash richiede di inizializzarlo a null
-    struct List *list = (struct List*) malloc(sizeof(struct List));
+    struct List *list = (struct List *) malloc(sizeof(struct List));
 
     list->symTab = symTab;
     list->next = next;
@@ -53,11 +96,12 @@ struct List *deleteList(struct List *symList) {   //più che cancellare la lista
 
 }
 
-struct SymTab *findSymtab(struct List *symList, char *symbolName) {
+struct SymTab *findSymtab(char *symbolName, struct List *symList) {
     struct SymTab *sym;
     struct List *l = symList;
+    printf("Entro in findSymtab\n");
     while (l != NULL) {
-        sym = findSym(l, symbolName);
+        sym = findSym(symbolName, l);
         if (sym != NULL) {
             return sym;
         }
@@ -67,33 +111,8 @@ struct SymTab *findSymtab(struct List *symList, char *symbolName) {
 
 
 
-//aggiunge una symbol table con simbolo alla lista 
-struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType symbolType, enum DataType dataType, enum DataType returnType, char *funcName, union ValueOper valueOper) {
-    struct SymTab *sym;
-    sym = findSym(list, symbolName);
-    if(sym == NULL) {
-        sym = (struct SymTab*) malloc(sizeof(struct SymTab));
-        sym->symbolName = symbolName;
-        sym->symbolType = symbolType;
-        sym->dataType = dataType;
-        sym->returnType = returnType;
-        sym->funcName = funcName;
-        sym->valueOper = valueOper;
 
-        HASH_ADD_STR(list->symTab, symbolName, sym);  // hash table lista, chiave che identifica il simbolo, tabella puntatore struct da aggiungere
-    } else {
-        printf("\n Error: Symbol %s already exists\n", symbolName);
-    }
-}
 
-struct SymTab *findSym(struct List *symList, char *symbolName) {
-    struct SymTab *sym;
-    HASH_FIND_STR(symList->symTab, symbolName, sym);  //hash table lista, puntatore alla chiave che cerco, puntatore alla struct con la chiave cercata
-    return sym; //puntatore alla symbol table cercata
-    if (sym == NULL) {
-        printf("\n Error: Symbol %s not found \n", symbolName);
-        return NULL;
-    } else {
-        return sym;
-    }
-}
+
+
+#endif

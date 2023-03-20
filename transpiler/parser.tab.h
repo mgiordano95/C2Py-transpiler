@@ -44,12 +44,6 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
-/* "%code requires" blocks.  */
-#line 16 "parser.y"
-
-    #include "ast.h"
-
-#line 53 "parser.tab.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -92,10 +86,10 @@ extern int yydebug;
     RBRA = 287,                    /* RBRA  */
     SEMICOL = 288,                 /* SEMICOL  */
     COMMA = 289,                   /* COMMA  */
-    INT_VALUE = 290,               /* INT_VALUE  */
-    FLOAT_VALUE = 291,             /* FLOAT_VALUE  */
-    CHAR_VALUE = 292,              /* CHAR_VALUE  */
-    ID = 293                       /* ID  */
+    ID = 290,                      /* ID  */
+    INT_VALUE = 291,               /* INT_VALUE  */
+    FLOAT_VALUE = 292,             /* FLOAT_VALUE  */
+    CHAR_VALUE = 293               /* CHAR_VALUE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

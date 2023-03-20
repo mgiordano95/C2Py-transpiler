@@ -536,12 +536,13 @@ char *yytext;
 
 
 
-#line 8 "lexer.l"
+#line 6 "lexer.l"
     #include <stdlib.h>
     #include <stdio.h>
     #include "parser.tab.h"
-#line 544 "lex.yy.c"
+    #include "ast.h"
 #line 545 "lex.yy.c"
+#line 546 "lex.yy.c"
 
 #define INITIAL 0
 #define MLCOMMENT 1
@@ -761,10 +762,10 @@ YY_DECL
 		}
 
 	{
-#line 25 "lexer.l"
+#line 24 "lexer.l"
 
 
-#line 768 "lex.yy.c"
+#line 769 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -823,93 +824,93 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 27 "lexer.l"
+#line 26 "lexer.l"
 BEGIN(MLCOMMENT);   printf("found ML comment\n");
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 28 "lexer.l"
+#line 27 "lexer.l"
 { } /* se non trovi asterisco vai avanti  */
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 29 "lexer.l"
+#line 28 "lexer.l"
 { } /*  asterischi senza lo slash   */
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 30 "lexer.l"
+#line 29 "lexer.l"
 { } /* se vado a capo */
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 31 "lexer.l"
+#line 30 "lexer.l"
 BEGIN(INITIAL);     printf("end of ML comment\n");
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 33 "lexer.l"
+#line 32 "lexer.l"
 BEGIN(SLCOMMENT);   printf("found SL comment\n");
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 34 "lexer.l"
+#line 33 "lexer.l"
 /* tutto tranne a capo */
 	YY_BREAK
 case 8:
 /* rule 8 can match eol */
 YY_RULE_SETUP
-#line 35 "lexer.l"
+#line 34 "lexer.l"
 BEGIN(INITIAL);     printf("end of SL comment\n");
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 37 "lexer.l"
+#line 36 "lexer.l"
 {printf("found quotes "); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 39 "lexer.l"
+#line 38 "lexer.l"
 BEGIN(QUOTE); printf("found quote\n");
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 40 "lexer.l"
+#line 39 "lexer.l"
 { printf("stringa accettata\n"); }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 41 "lexer.l"
+#line 40 "lexer.l"
 BEGIN(INITIAL); printf("end quote\n");
 	YY_BREAK
 case 13:
 /* rule 13 can match eol */
-#line 43 "lexer.l"
+#line 42 "lexer.l"
 YY_RULE_SETUP
 case YY_STATE_EOF(QUOTE):
-#line 43 "lexer.l"
+#line 42 "lexer.l"
 {printf("errore\n");}     
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 48 "lexer.l"
+#line 47 "lexer.l"
 {printf("keyword 'VOID' detected\n"); return(VOID);}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 49 "lexer.l"
+#line 48 "lexer.l"
 {printf("keyword 'INT' detected\n"); return(INT); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 50 "lexer.l"
+#line 49 "lexer.l"
 {printf("keyword 'FLOAT' detected\n"); return(FLOAT);}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 51 "lexer.l"
+#line 50 "lexer.l"
 {printf("keyword 'CHAR' detected\n"); return(CHAR);}
 	YY_BREAK
 case 18:
@@ -1093,7 +1094,7 @@ YY_RULE_SETUP
 #line 96 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 1097 "lex.yy.c"
+#line 1098 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(MLCOMMENT):
 case YY_STATE_EOF(SLCOMMENT):
