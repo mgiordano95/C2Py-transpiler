@@ -1,5 +1,3 @@
-
-
 %x  MLCOMMENT
 %x  SLCOMMENT
 %x  QUOTE
@@ -49,6 +47,7 @@ id              {letter}({letter}|{digit})*
 "int"       {printf("keyword 'INT' detected\n"); return(INT); }
 "float"     {printf("keyword 'FLOAT' detected\n"); return(FLOAT);}
 "char"      {printf("keyword 'CHAR' detected\n"); return(CHAR);}
+
 "if"        {printf("keyword 'IF' detected\n"); return(IF);}
 "else"      {printf("keyword 'ELSE' detected\n"); return(ELSE);}
 "while"     {printf("keyword 'WHILE' detected\n"); return(WHILE);}

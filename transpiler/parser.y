@@ -13,22 +13,22 @@ struct List *actualList = NULL;
 
 %}
 
-%code requires{
+%code requires {
     #include "ast.h"
 }
 
-%token VOID 
-%token INT 
-%token FLOAT 
+%token VOID
+%token INT
+%token FLOAT
 %token CHAR
-%token IF 
+%token IF
 %token ELSE
 %token WHILE
 %token PRINTF
 %token SCANF
 %token RETURN
-%token ADD 
-%token SUB 
+%token ADD
+%token SUB
 %token MUL
 %token DIV
 %token EQ
@@ -41,19 +41,26 @@ struct List *actualList = NULL;
 %token AND
 %token OR
 %token NOT
-%token LPAR RPAR LSBRA RSBRA LBRA RBRA
+%token LPAR
+%token RPAR
+%token LSBRA
+%token RSBRA
+%token LBRA
+%token RBRA
 %token SEMICOL
-%token COMMA 
-%token INT_VALUE 
+%token COMMA
+%token ID
+%token INT_VALUE
 %token FLOAT_VALUE
 %token CHAR_VALUE
-%token ID 
 
 
 /* NON_TERMINAL TYPES */
-%define api.value.type {union yystype}
+%define api.value.type {
+    union yystype;
+}
 
-%type <string> types ID SEMICOL INT_VALUE FLOAT_VALUE CHAR_VALUE EQ ADD SUB MUL DIV EE NE GT LT GE LE AND OR NOT RETURN LBRA RBRA LPAR RPAR
+%type <string> types SEMICOL COMMA ID INT_VALUE FLOAT_VALUE CHAR_VALUE EQ ADD SUB MUL DIV EE NE GT LT GE LE AND OR NOT RETURN LPAR RPAR LSBRA RSBRA LBRA RBRA 
 %type <statements> program statements 
 %type <instruction> instruction 
 %type <init> initialization
@@ -64,404 +71,427 @@ struct List *actualList = NULL;
 %type <functionDecl> functionDecl
 %type <functionCall> functionCall
 
-        
 %start program
 
 %%
 
 program:    
-statements                      { root = $1; };
+statements                                      { 
+                                                    root = $1; 
+                                                };
 
 statements: 
-instruction statements          {   
-                                    $$ = malloc(sizeof(struct AstNodeStatements));
-                                    $$->nodeType = STATEMENT_NODE;
-                                    $$->currentInstruction = $1;
-                                    $$->nextStatement = $2;
-                                }
-|   instruction                 {
-                                    $$ = malloc(sizeof(struct AstNodeStatements));
-                                    $$->nodeType = STATEMENT_NODE;
-                                    $$->currentInstruction = $1;
-                                    $$->nextStatement = NULL;
-                                };
+instruction statements                          {
+                                                    $$ = malloc(sizeof(struct AstNodeStatements));
+                                                    printf("AstNodeStatements allocated for 'instruction statements'\n");
+                                                    $$->nodeType = STATEMENT_NODE;
+                                                    $$->currentInstruction = $1;
+                                                    $$->nextStatement = $2;
+                                                }
+|   instruction                                 {
+                                                    $$ = malloc(sizeof(struct AstNodeStatements));
+                                                    printf("AstNodeStatements allocated for 'instruction'\n");
+                                                    $$->nodeType = STATEMENT_NODE;
+                                                    $$->currentInstruction = $1;
+                                                    $$->nextStatement = NULL;
+                                                };
 
 instruction:
-initialization SEMICOL          {
-                                    $$ = malloc(sizeof(struct AstNodeInstruction));
-                                    $$->nodeType = INIT_NODE;
-                                    $$->value.init = $1;
-                                }
-|   assignment SEMICOL          {
-                                    $$ = malloc(sizeof(struct AstNodeInstruction));
-                                    $$->nodeType = ASSIGN_NODE;
-                                    $$->value.assign = $1;
-                                }
-|   functionDecl SEMICOL        {
-                                    $$ = malloc(sizeof(struct AstNodeInstruction));
-                                    $$->nodeType = FUNCTION_DECL_NODE;
-                                    $$->value.functionDecl = $1;
-                                }
-|   functionCall SEMICOL        {
-                                    $$ = malloc(sizeof(struct AstNodeInstruction));
-                                    $$->nodeType = FUNCTION_CALL_NODE;
-                                    $$->value.functionCall = $1;
-                                };
+initialization SEMICOL                          {
+                                                    $$ = malloc(sizeof(struct AstNodeInstruction));
+                                                    printf("AstNodeInstruction allocated for 'initialization SEMICOL'\n");
+                                                    $$->nodeType = INIT_NODE;
+                                                    $$->value.init = $1;
+                                                }
+|   assignment SEMICOL                          {
+                                                    $$ = malloc(sizeof(struct AstNodeInstruction));
+                                                    printf("AstNodeInstruction allocated for 'assignment SEMICOL'\n");
+                                                    $$->nodeType = ASSIGN_NODE;
+                                                    $$->value.assign = $1;
+                                                }
+|   functionDecl SEMICOL                        {
+                                                    $$ = malloc(sizeof(struct AstNodeInstruction));
+                                                    printf("AstNodeInstruction allocated for 'functionDecl SEMICOL'\n");
+                                                    $$->nodeType = FUNCTION_DECL_NODE;
+                                                    $$->value.functionDecl = $1;
+                                                }
+|   functionCall SEMICOL                        {
+                                                    $$ = malloc(sizeof(struct AstNodeInstruction));
+                                                    printf("AstNodeInstruction allocated for 'functionCall SEMICOL'\n");
+                                                    $$->nodeType = FUNCTION_CALL_NODE;
+                                                    $$->value.functionCall = $1;
+                                                };
 
 functionDecl:
-initialization LPAR RPAR body   {
-                                    $$ = malloc(sizeof(struct AstNodeFunctionDecl));
-                                    printf("Nodo functionDecl dichiarato \n");
-                                    $$->functionName = $1->assign->variableName;
-                                    $$->returnType = $1->dataType;
-                                    printf("Assegnato returnType \n");
-                                    $$->functionParams = NULL;
-                                    $$->functiontBody = $4;
-                                    printf("Montato function body \n");
-                                };
+initialization LPAR RPAR body                   {
+                                                    $$ = malloc(sizeof(struct AstNodeFunctionDecl));
+                                                    printf("AstNodeFunctionDecl allocated for 'initialization LPAR RPAR body'\n");
+                                                    $$->functionName = $1->assign->variableName;
+                                                    $$->returnType = $1->dataType;
+                                                    printf("returnType assigned\n");
+                                                    $$->functionParams = NULL;
+                                                    $$->functiontBody = $4;
+                                                };
 
 functionCall:
-ID LPAR RPAR                    {
-                                    $$ = malloc(sizeof(struct AstNodeFunctionCall));
-                                    printf("Nodo Function Call \n");
-                                    $$->functionName = $1;
-                                    $$->returnType = DATA_TYPE_INT;
-                                    $$->functionParams = NULL; 
-                                }
+ID LPAR RPAR                                    {
+                                                    $$ = malloc(sizeof(struct AstNodeFunctionCall));
+                                                    printf("AstNodeFunctionCall allocated for 'ID LPRA RPAR'\n");
+                                                    $$->functionName = $1;
+                                                    $$->returnType = DATA_TYPE_INT;
+                                                    $$->functionParams = NULL; 
+                                                }
 
 body:
 LBRA statements RBRA                            {
                                                     $$ = malloc(sizeof(struct AstNodeBody));
-                                                    printf("Espando Body \n");
+                                                    printf("AstNodeBody allocated for 'LBRA statements RBRA'\n");
                                                     $$->bodyStatements = $2;
                                                     $$->returnValue = NULL;
                                                 }
 | LBRA statements RETURN content SEMICOL RBRA   {
                                                     $$ = malloc(sizeof(struct AstNodeBody));
+                                                    printf("AstNodeBody allocated for 'LBRA statements RETURN content SEMICOL RBRA'\n");
                                                     $$->bodyStatements = $2;
                                                     $$->returnValue = $4;
                                                 };
 
 initialization:
-types ID                        {
-                                    $$ = malloc(sizeof(struct AstNodeInit));
-                                    printf("AstNodeInit allocated\n");
-                                    $$->dataType = str_to_type($1);
-                                    $$->assign = malloc(sizeof(struct AstNodeAssign));
-                                    printf("AstNodeAssign allocated\n");
-                                    $$->assign->variableName = $2;
-                                    $$->assign->variableType = str_to_type($1);
-                                    printf("assegnato variable type\n");
-                                    $$->assign->assignValue.val = NULL;   
-                                    $$->assign->assignType = CONTENT_TYPE_ID;  
-                                };
+types ID                                        {
+                                                    $$ = malloc(sizeof(struct AstNodeInit));
+                                                    printf("AstNodeInit allocated for 'types ID'\n");
+                                                    $$->dataType = str_to_type($1);
+                                                    $$->assign = malloc(sizeof(struct AstNodeAssign));
+                                                    printf("AstNodeAssign allocated for 'types ID'\n");
+                                                    $$->assign->variableName = $2;
+                                                    $$->assign->variableType = str_to_type($1);
+                                                    $$->assign->assignValue.val = NULL;   
+                                                    $$->assign->assignType = CONTENT_TYPE_ID;  
+                                                };
 
 assignment:                     
-ID EQ ID                        {
-                                    $$ = malloc(sizeof(struct AstNodeAssign));
-                                    $$->variableName = $1;
-                                    $$->assignType = CONTENT_TYPE_ID;
-                                    $$->assignValue.val = $3;
-                                    struct SymTab *s = findSymtab(actualList, $3);
-                                    if (s==NULL) { 
-                                        $$->variableType = DATA_TYPE_NONE; 
-                                        printf("ID EQ ID non esiste dollaro3 nella symtab\n");
-                                    }
-                                    else { 
-                                        $$->variableType = s->dataType;
-                                        printf("ID EQ ID esiste dollaro3 nella symtab\n");
-                                    }
-                                }
-|   types ID EQ content         {   
-                                    struct SymTab *s = NULL;  //sarà diverso da NULL solo se trova il simbolo
-                                    s = findSymtab(actualList, $2);  //controlla se il simbolo è stato già dichiarato
-                                    if (s==NULL) {
-                                        s = createSym($2, actualList, SYMBOL_VARIABLE, str_to_type($1), str_to_type($1), null, $4->value );
-                                        printf("types ID EQ content non esiste dollaro2 nella symtab e la creo\n");
-                                    } else {
-                                        printf("\n Errore: variabile %s gia' dichiarata \n", $2);
-                                    } 
-                                    if ((str_to_type($1) != $4->valueType)) {
-                                        printf("Errore: impossibile assegnare un tipo %s ad un tipo %s \n", type_to_str($4->valueType), type_to_str($1));
-                                    } else {
-                                    $$ = malloc(sizeof(struct AstNodeAssign));
-                                    printf("AstNodeAssign allocated\n");
-                                    $$->variableName = $2;
-                                    $$->variableType = str_to_type($1);
-                                    $$->assignValue.val = $4->value.val; 
-                                    $$->assignType = $4->contentType;
-                                    }
-                                }
-|   ID EQ content               {
-                                    $$ = malloc(sizeof(struct AstNodeAssign)); //inserire qui la verifica che int a sia stato dichiarato prima di fare a = qualcosa
-                                    $$->variableName = $1;
-                                    $$->variableType = $3->valueType;
-                                    $$->assignValue = $3->value;   //forse va- assignValue.val ma fors no perche- anche $3 e' generico
-                                    $$->assignType = $3->contentType;
-                                };
-
+ID EQ ID                                        {
+                                                    $$ = malloc(sizeof(struct AstNodeAssign));
+                                                    printf("AstNodeAssign allocated for 'ID EQ ID'\n");
+                                                    $$->variableName = $1;
+                                                    $$->assignType = CONTENT_TYPE_ID;
+                                                    $$->assignValue.val = $3;
+                                                    struct SymTab *s = findSymtab(actualList, $3);
+                                                    if (s==NULL) { 
+                                                        $$->variableType = DATA_TYPE_NONE; 
+                                                        printf("ID EQ ID non esiste dollaro3 nella symtab\n");
+                                                    } else { 
+                                                        $$->variableType = s->dataType;
+                                                        printf("ID EQ ID esiste dollaro3 nella symtab\n");
+                                                    }
+                                                }
+|   types ID EQ content                         {
+                                                    struct SymTab *s = NULL;  //sarà diverso da NULL solo se trova il simbolo
+                                                    s = findSymtab(actualList, $2);  //controlla se il simbolo è stato già dichiarato
+                                                    if (s==NULL) {
+                                                        s = createSym($2, actualList, SYMBOL_VARIABLE, str_to_type($1), str_to_type($1), null, $4->value );
+                                                        printf("types ID EQ content non esiste dollaro2 nella symtab e la creo\n");
+                                                    } else {
+                                                        printf("\n Errore: variabile %s gia' dichiarata \n", $2);
+                                                    } 
+                                                    if ((str_to_type($1) != $4->valueType)) {
+                                                        printf("Errore: impossibile assegnare un tipo %s ad un tipo %s \n", type_to_str($4->valueType), type_to_str($1));
+                                                    } else {
+                                                    $$ = malloc(sizeof(struct AstNodeAssign));
+                                                    printf("AstNodeAssign allocated for 'types ID EQ content'\n");
+                                                    $$->variableName = $2;
+                                                    $$->variableType = str_to_type($1);
+                                                    $$->assignValue.val = $4->value.val; 
+                                                    $$->assignType = $4->contentType;
+                                                    }
+                                                }
+|   ID EQ content                               {
+                                                    $$ = malloc(sizeof(struct AstNodeAssign)); //inserire qui la verifica che int a sia stato dichiarato prima di fare a = qualcosa
+                                                    printf("AstNodeAssign allocated for 'ID EQ content'\n");
+                                                    $$->variableName = $1;
+                                                    $$->variableType = $3->valueType;
+                                                    $$->assignValue = $3->value;   //forse va- assignValue.val ma fors no perche- anche $3 e' generico
+                                                    $$->assignType = $3->contentType;
+                                                };
 
 expression:
-content ADD content             {
-                                    $$ = malloc(sizeof(struct AstNodeExpression));
-                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand)); 
-                                    $$->leftOper = $1;   
-                                    $$->op = $2;  
-                                    $$->rightOper = $3; 
-                                    $$->exprType = $1->valueType;    
-                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                        printf("\n Errore! Impossibile sommare variabili di tipo char");
-                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
-                                        printf("\n Errore! Impossibile sommare variabili di tipo void");
-                                    } else if ($1->valueType != $3->valueType) { 
-                                        printf("\n Errore! Impossibile sommare variabili di tipi diversi"); 
-                                    } else {
-                                        printf("Expression di tipo somma \n");
-                                    }                
-                                }
-|   content SUB content         {
-                                    $$ = malloc(sizeof(struct AstNodeExpression));
-                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->leftOper = $1;
-                                    $$->op = $2;
-                                    $$->rightOper = $3;
-                                    $$->exprType = $1->valueType;
-                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                        printf("\n Errore! Impossibile sottrarre variabili di tipo char");
-                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
-                                        printf("\n Errore! Impossibile sottrare variabili di tipo void");
-                                    } else if ($1->valueType != $3->valueType) { 
-                                        printf("\n Errore! Impossibile sottrarre variabili di tipi diversi"); 
-                                    } else {
-                                        printf("Expression di tipo sottrazione \n");
-                                    }
-                                }
-|   content MUL content         {
-                                    $$ = malloc(sizeof(struct AstNodeExpression));
-                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->leftOper = $1;
-                                    $$->op = $2;
-                                    $$->rightOper = $3;
-                                    $$->exprType = $1->valueType;
-                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                        printf("\n Errore! Impossibile moltiplicare variabili di tipo char");
-                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
-                                        printf("\n Errore! Impossibile moltiplicare variabili di tipo void");
-                                    } else if ($1->valueType != $3->valueType) { 
-                                        printf("\n Errore! Impossibile moltiplicare variabili di tipi diversi"); 
-                                    } else {
-                                        printf("Expression di tipo moltiplicazione \n");
-                                    }
-                                }
-|   content DIV content         {
-                                    $$ = malloc(sizeof(struct AstNodeExpression));
-                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->leftOper = $1;
-                                    $$->op = $2;
-                                    $$->rightOper = $3;
-                                    $$->exprType = DATA_TYPE_FLOAT; //forziamo il tipo a Float essendo una divisione
-                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                        printf("\n Errore! Impossibile dividere variabili di tipo char");
-                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
-                                        printf("\n Errore! Impossibile dividere variabili di tipo void");
-                                    } else if ($1->valueType != $3->valueType) { 
-                                        printf("\n Errore! Impossibile dividere variabili di tipi diversi"); 
-                                    } else {
-                                        printf("Expression di tipo divisione \n");
-                                    }
-                                } 
-|   content EE content          {
-                                    $$ = malloc(sizeof(struct AstNodeExpression));
-                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->leftOper = $1;
-                                    $$->op = $2;
-                                    $$->rightOper = $3;
-                                    $$->exprType = DATA_TYPE_INT;
-                                    printf("Expression di tipo Equal to \n");
-                                }
-|   content NE content          {
-                                    $$ = malloc(sizeof(struct AstNodeExpression));
-                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->leftOper = $1;
-                                    $$->op = $2;
-                                    $$->rightOper = $3;
-                                    $$->exprType = DATA_TYPE_INT;
-                                    printf("Expression di tipo Not Equal \n");
-                                }
-|   content GT content          {
-                                    $$ = malloc(sizeof(struct AstNodeExpression));
-                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->leftOper = $1;
-                                    $$->op = $2;
-                                    $$->rightOper = $3;
-                                    $$->exprType = DATA_TYPE_INT;
-                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                        printf("\n Errore! Impossibile confrontare variabili di tipo char");
-                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
-                                        printf("\n Errore! Impossibile confrontare variabili di tipo void");
-                                    } else {
-                                        printf("Expression di tipo Greater than \n");
-                                    }
-                                } 
-|   content LT content          {
-                                    $$ = malloc(sizeof(struct AstNodeExpression));
-                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->leftOper = $1;
-                                    $$->op = $2;
-                                    $$->rightOper = $3;
-                                    $$->exprType = DATA_TYPE_INT;
-                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                        printf("\n Errore! Impossibile confrontare variabili di tipo char");
-                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
-                                        printf("\n Errore! Impossibile confrontare variabili di tipo void");
-                                    } else {
-                                        printf("Expression di tipo Less than \n");
-                                    }
-                                }
-|   content GE content          {
-                                    $$ = malloc(sizeof(struct AstNodeExpression));
-                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->leftOper = $1;
-                                    $$->op = $2;
-                                    $$->rightOper = $3;
-                                    $$->exprType = DATA_TYPE_INT;
-                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                        printf("\n Errore! Impossibile confrontare variabili di tipo char");
-                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
-                                        printf("\n Errore! Impossibile confrontare variabili di tipo void");
-                                    } else {
-                                        printf("Expression di tipo Greater than or equal to \n");
-                                    }
-                                }
-|   content LE content          {
-                                    $$ = malloc(sizeof(struct AstNodeExpression));
-                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->leftOper = $1;
-                                    $$->op = $2;
-                                    $$->rightOper = $3;
-                                    $$->exprType = DATA_TYPE_INT;
-                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                        printf("\n Errore! Impossibile confrontare variabili di tipo char");
-                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
-                                        printf("\n Errore! Impossibile confrontare variabili di tipo void");
-                                    } else {
-                                        printf("Expression di tipo Less than or equal to \n");
-                                    }
-                                } 
-|   content AND content         {
-                                    $$ = malloc(sizeof(struct AstNodeExpression));
-                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->leftOper = $1;
-                                    $$->op = $2;
-                                    $$->rightOper = $3;
-                                    $$->exprType = DATA_TYPE_INT;
-                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                        printf("\n Errore! Impossibile confrontare variabili di tipo char");
-                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
-                                        printf("\n Errore! Impossibile confrontare variabili di tipo void");
-                                    } else {
-                                        printf("Expression di tipo AND \n");
-                                    }
-                                }
-|   content OR content          {
-                                    $$ = malloc(sizeof(struct AstNodeExpression));
-                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->leftOper = $1;
-                                    $$->op = $2;
-                                    $$->rightOper = $3;
-                                    $$->exprType = DATA_TYPE_INT;
-                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                        printf("\n Errore! Impossibile confrontare variabili di tipo char");
-                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
-                                        printf("\n Errore! Impossibile confrontare variabili di tipo void");
-                                    } else {
-                                        printf("Expression di tipo OR \n");
-                                    }
-                                }
-|   NOT content                 {
-                                    $$ = malloc(sizeof(struct AstNodeExpression));
-                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
-                                    $$->op = $1;
-                                    $$->leftOper = $2;
-                                    $$->rightOper = NULL;
-                                    $$->exprType = DATA_TYPE_INT;
-                                    if  ($2->valueType == DATA_TYPE_CHAR) {
-                                        printf("\n Errore! Impossibile confrontare variabili di tipo char");
-                                    } else if  ($2->valueType == DATA_TYPE_VOID) { 
-                                        printf("\n Errore! Impossibile confrontare variabili di tipo void");
-                                    } else {
-                                        printf("Expression di tipo NOT \n");
-                                    }
-                                }; 
+content ADD content                             {
+                                                    $$ = malloc(sizeof(struct AstNodeExpression));
+                                                    printf("AstNodeExpression allocated for 'content ADD content'\n");
+                                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand)); 
+                                                    $$->leftOper = $1;   
+                                                    $$->op = $2;  
+                                                    $$->rightOper = $3; 
+                                                    $$->exprType = $1->valueType;    
+                                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
+                                                        printf("\n Errore! Impossibile sommare variabili di tipo char");
+                                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
+                                                        printf("\n Errore! Impossibile sommare variabili di tipo void");
+                                                    } else if ($1->valueType != $3->valueType) { 
+                                                        printf("\n Errore! Impossibile sommare variabili di tipi diversi"); 
+                                                    } else {
+                                                        printf("Expression di tipo somma \n");
+                                                    }                
+                                                }
+|   content SUB content                         {
+                                                    $$ = malloc(sizeof(struct AstNodeExpression));
+                                                    printf("AstNodeExpression allocated for 'content SUB content'\n");
+                                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->leftOper = $1;
+                                                    $$->op = $2;
+                                                    $$->rightOper = $3;
+                                                    $$->exprType = $1->valueType;
+                                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
+                                                        printf("\n Errore! Impossibile sottrarre variabili di tipo char");
+                                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
+                                                        printf("\n Errore! Impossibile sottrare variabili di tipo void");
+                                                    } else if ($1->valueType != $3->valueType) { 
+                                                        printf("\n Errore! Impossibile sottrarre variabili di tipi diversi"); 
+                                                    } else {
+                                                        printf("Expression di tipo sottrazione \n");
+                                                    }
+                                                }
+|   content MUL content                         {
+                                                    $$ = malloc(sizeof(struct AstNodeExpression));
+                                                    printf("AstNodeExpression allocated for 'content MUL content'\n");
+                                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->leftOper = $1;
+                                                    $$->op = $2;
+                                                    $$->rightOper = $3;
+                                                    $$->exprType = $1->valueType;
+                                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
+                                                        printf("\n Errore! Impossibile moltiplicare variabili di tipo char");
+                                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
+                                                        printf("\n Errore! Impossibile moltiplicare variabili di tipo void");
+                                                    } else if ($1->valueType != $3->valueType) { 
+                                                        printf("\n Errore! Impossibile moltiplicare variabili di tipi diversi"); 
+                                                    } else {
+                                                        printf("Expression di tipo moltiplicazione \n");
+                                                    }
+                                                }
+|   content DIV content                         {
+                                                    $$ = malloc(sizeof(struct AstNodeExpression));
+                                                    printf("AstNodeExpression allocated for 'content DIV content'\n");
+                                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->leftOper = $1;
+                                                    $$->op = $2;
+                                                    $$->rightOper = $3;
+                                                    $$->exprType = DATA_TYPE_FLOAT; //forziamo il tipo a Float essendo una divisione
+                                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
+                                                        printf("\n Errore! Impossibile dividere variabili di tipo char");
+                                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
+                                                        printf("\n Errore! Impossibile dividere variabili di tipo void");
+                                                    } else if ($1->valueType != $3->valueType) { 
+                                                        printf("\n Errore! Impossibile dividere variabili di tipi diversi"); 
+                                                    } else {
+                                                        printf("Expression di tipo divisione \n");
+                                                    }
+                                                } 
+|   content EE content                          {
+                                                    $$ = malloc(sizeof(struct AstNodeExpression));
+                                                    printf("AstNodeExpression allocated for 'content EE content'\n");
+                                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->leftOper = $1;
+                                                    $$->op = $2;
+                                                    $$->rightOper = $3;
+                                                    $$->exprType = DATA_TYPE_INT;
+                                                    printf("Expression di tipo Equal to \n");
+                                                }
+|   content NE content                          {
+                                                    $$ = malloc(sizeof(struct AstNodeExpression));
+                                                    printf("AstNodeExpression allocated for 'content NE content'\n");
+                                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->leftOper = $1;
+                                                    $$->op = $2;
+                                                    $$->rightOper = $3;
+                                                    $$->exprType = DATA_TYPE_INT;
+                                                    printf("Expression di tipo Not Equal \n");
+                                                }
+|   content GT content                          {
+                                                    $$ = malloc(sizeof(struct AstNodeExpression));
+                                                    printf("AstNodeExpression allocated for 'content GT content'\n");
+                                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->leftOper = $1;
+                                                    $$->op = $2;
+                                                    $$->rightOper = $3;
+                                                    $$->exprType = DATA_TYPE_INT;
+                                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
+                                                        printf("\n Errore! Impossibile confrontare variabili di tipo char");
+                                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
+                                                        printf("\n Errore! Impossibile confrontare variabili di tipo void");
+                                                    } else {
+                                                        printf("Expression di tipo Greater than \n");
+                                                    }
+                                                } 
+|   content LT content                          {
+                                                    $$ = malloc(sizeof(struct AstNodeExpression));
+                                                    printf("AstNodeExpression allocated for 'content LT content'\n");
+                                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->leftOper = $1;
+                                                    $$->op = $2;
+                                                    $$->rightOper = $3;
+                                                    $$->exprType = DATA_TYPE_INT;
+                                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
+                                                        printf("\n Errore! Impossibile confrontare variabili di tipo char");
+                                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
+                                                        printf("\n Errore! Impossibile confrontare variabili di tipo void");
+                                                    } else {
+                                                        printf("Expression di tipo Less than \n");
+                                                    }
+                                                }
+|   content GE content                          {
+                                                    $$ = malloc(sizeof(struct AstNodeExpression));
+                                                    printf("AstNodeExpression allocated for 'content GE content'\n");
+                                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->leftOper = $1;
+                                                    $$->op = $2;
+                                                    $$->rightOper = $3;
+                                                    $$->exprType = DATA_TYPE_INT;
+                                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
+                                                        printf("\n Errore! Impossibile confrontare variabili di tipo char");
+                                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
+                                                        printf("\n Errore! Impossibile confrontare variabili di tipo void");
+                                                    } else {
+                                                        printf("Expression di tipo Greater than or equal to \n");
+                                                    }
+                                                }
+|   content LE content                          {
+                                                    $$ = malloc(sizeof(struct AstNodeExpression));
+                                                    printf("AstNodeExpression allocated for 'content LE content'\n");
+                                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->leftOper = $1;
+                                                    $$->op = $2;
+                                                    $$->rightOper = $3;
+                                                    $$->exprType = DATA_TYPE_INT;
+                                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
+                                                        printf("\n Errore! Impossibile confrontare variabili di tipo char");
+                                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
+                                                        printf("\n Errore! Impossibile confrontare variabili di tipo void");
+                                                    } else {
+                                                        printf("Expression di tipo Less than or equal to \n");
+                                                    }
+                                                } 
+|   content AND content                         {
+                                                    $$ = malloc(sizeof(struct AstNodeExpression));
+                                                    printf("AstNodeExpression allocated for 'content AND content'\n");
+                                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->leftOper = $1;
+                                                    $$->op = $2;
+                                                    $$->rightOper = $3;
+                                                    $$->exprType = DATA_TYPE_INT;
+                                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
+                                                        printf("\n Errore! Impossibile confrontare variabili di tipo char");
+                                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
+                                                        printf("\n Errore! Impossibile confrontare variabili di tipo void");
+                                                    } else {
+                                                        printf("Expression di tipo AND \n");
+                                                    }
+                                                }
+|   content OR content                          {
+                                                    $$ = malloc(sizeof(struct AstNodeExpression));
+                                                    printf("AstNodeExpression allocated for 'content OR content'\n");
+                                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->leftOper = $1;
+                                                    $$->op = $2;
+                                                    $$->rightOper = $3;
+                                                    $$->exprType = DATA_TYPE_INT;
+                                                    if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
+                                                        printf("\n Errore! Impossibile confrontare variabili di tipo char");
+                                                    } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) { 
+                                                        printf("\n Errore! Impossibile confrontare variabili di tipo void");
+                                                    } else {
+                                                        printf("Expression di tipo OR \n");
+                                                    }
+                                                }
+|   NOT content                                 {
+                                                    $$ = malloc(sizeof(struct AstNodeExpression));
+                                                    printf("AstNodeExpression allocated for 'NOT content'\n");
+                                                    $$->leftOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->rightOper = malloc(sizeof(struct AstNodeOperand));
+                                                    $$->op = $1;
+                                                    $$->leftOper = $2;
+                                                    $$->rightOper = NULL;
+                                                    $$->exprType = DATA_TYPE_INT;
+                                                    if  ($2->valueType == DATA_TYPE_CHAR) {
+                                                        printf("\n Errore! Impossibile confrontare variabili di tipo char");
+                                                    } else if  ($2->valueType == DATA_TYPE_VOID) { 
+                                                        printf("\n Errore! Impossibile confrontare variabili di tipo void");
+                                                    } else {
+                                                        printf("Expression di tipo NOT \n");
+                                                    }
+                                                }; 
 
 content:
-ID                              {
-                                    $$ = malloc(sizeof(struct AstNodeOperand)); 
-                                    printf("Ci troviamo nel caso in cui abbiamo int a = b\n");
-                                    struct SymTab *s = findSymtab(actualList, $1);
-                                    if(s==NULL) { $$->valueType = DATA_TYPE_NONE; }  //se non e' presente il tipo e' automaticamente void anche se tecnicamente NONE
-                                    else
-                                     {
-                                         $$->value.val = $1;
-                                         $$->valueType = s->dataType;
-                                         $$->contentType = CONTENT_TYPE_ID;
-                                     }
-                                }
-|   INT_VALUE                   {       
-                                    $$ = malloc(sizeof(struct AstNodeOperand));
-                                    printf("Il tipo e' int\n");
-                                    $$->value.val = $1;
-                                    $$->valueType = DATA_TYPE_INT; 
-                                    $$->contentType = CONTENT_TYPE_INT_NUMBER;
-                                }
-|   FLOAT_VALUE                 {
-                                    $$ = malloc(sizeof(struct AstNodeOperand));
-                                    printf("Il tipo e' float\n");
-                                    $$->value.val = $1;
-                                    $$->valueType = DATA_TYPE_FLOAT; 
-                                    $$->contentType = CONTENT_TYPE_FLOAT_NUMBER;
-                                }
-|   CHAR_VALUE                  {
-                                    $$ = malloc(sizeof(struct AstNodeOperand));
-                                    printf("Il tipo e' char\n");
-                                    $$->value.val = $1;
-                                    $$->valueType = DATA_TYPE_CHAR;  
-                                    $$->contentType = CONTENT_TYPE_CHAR;
-                                }
-|   expression                  {
-                                    $$ = malloc(sizeof(struct AstNodeOperand));
-                                    printf("Il tipo e' expression\n");
-                                    $$->value.expression = $1;
-                                    $$->valueType = $1->exprType;  
-                                    $$->contentType = CONTENT_TYPE_EXPRESSION;
-                                };
+ID                                              {
+                                                    $$ = malloc(sizeof(struct AstNodeOperand));
+                                                    printf("AstNodeOperand allocated for 'ID'\n"); //Ci troviamo nel caso in cui abbiamo int a = b
+                                                    struct SymTab *s = findSymtab(actualList, $1);
+                                                    if(s==NULL) { 
+                                                        $$->valueType = DATA_TYPE_NONE; 
+                                                    } else {
+                                                        $$->value.val = $1;
+                                                        $$->valueType = s->dataType;
+                                                        $$->contentType = CONTENT_TYPE_ID;
+                                                    }
+                                                }
+|   INT_VALUE                                   {       
+                                                    $$ = malloc(sizeof(struct AstNodeOperand));
+                                                    printf("AstNodeOperand allocated for 'INT_VALUE'\n");
+                                                    $$->value.val = $1;
+                                                    $$->valueType = DATA_TYPE_INT; 
+                                                    $$->contentType = CONTENT_TYPE_INT_NUMBER;
+                                                }
+|   FLOAT_VALUE                                 {
+                                                    $$ = malloc(sizeof(struct AstNodeOperand));
+                                                    printf("AstNodeOperand allocated for 'FLOAT_VALUE'\n");
+                                                    $$->value.val = $1;
+                                                    $$->valueType = DATA_TYPE_FLOAT; 
+                                                    $$->contentType = CONTENT_TYPE_FLOAT_NUMBER;
+                                                }
+|   CHAR_VALUE                                  {
+                                                    $$ = malloc(sizeof(struct AstNodeOperand));
+                                                    printf("AstNodeOperand allocated for 'CHAR_VALUE'\n");
+                                                    $$->value.val = $1;
+                                                    $$->valueType = DATA_TYPE_CHAR;  
+                                                    $$->contentType = CONTENT_TYPE_CHAR;
+                                                }
+|   expression                                  {
+                                                    $$ = malloc(sizeof(struct AstNodeOperand));
+                                                    printf("AstNodeOperand allocated for 'expression'\n");
+                                                    $$->value.expression = $1;
+                                                    $$->valueType = $1->exprType;  
+                                                    $$->contentType = CONTENT_TYPE_EXPRESSION;
+                                                };
 
 types:
-    VOID                        {
-                                    $$ = DATA_TYPE_VOID;
-                                }
-|   INT                         {
-                                    $$ = DATA_TYPE_INT;
-                                }
-|   FLOAT                       {
-                                    $$ = DATA_TYPE_FLOAT;
-                                }
-|   CHAR                        {
-                                    $$ = DATA_TYPE_CHAR;
-                                };
+    VOID                                        {
+                                                    $$ = DATA_TYPE_VOID;
+                                                    printf("Defined 'type: VOID'\n");
+                                                }
+|   INT                                         {
+                                                    $$ = DATA_TYPE_INT;
+                                                    printf("Defined 'type: INT'\n");
+                                                }
+|   FLOAT                                       {
+                                                    $$ = DATA_TYPE_FLOAT;
+                                                    printf("Defined 'type: FLOAT'\n");
+                                                }
+|   CHAR                                        {
+                                                    $$ = DATA_TYPE_CHAR;
+                                                    printf("Defined 'type: CHAR'\n");
+                                                };
 
 %%
 
@@ -473,9 +503,11 @@ int main(void) {
     return yyparse();
 }
 
-
-char * type_to_str(int  type) {
+char * type_to_str(int type) {
     switch(type) {
+        case DATA_TYPE_NONE:
+            return "none";
+        break;
         case DATA_TYPE_VOID:
             return "void";
         break;
@@ -494,10 +526,16 @@ char * type_to_str(int  type) {
     }
 }
 
-
 int str_to_type(int type) {
-    if      (strcmp(type_to_str(type), "void") == 0)   { return DATA_TYPE_VOID; }
-    else if (strcmp(type_to_str(type), "int") == 0)    { return DATA_TYPE_INT; }
-    else if (strcmp(type_to_str(type), "float") == 0)  { return DATA_TYPE_FLOAT; }
-    else if (strcmp(type_to_str(type), "char") == 0)   { return DATA_TYPE_CHAR; }
+    if (strcmp(type_to_str(type), "void") == 0) { 
+        return DATA_TYPE_VOID; 
+    } else if (strcmp(type_to_str(type), "int") == 0) { 
+        return DATA_TYPE_INT; 
+    } else if (strcmp(type_to_str(type), "float") == 0) {
+        return DATA_TYPE_FLOAT;
+    } else if (strcmp(type_to_str(type), "char") == 0) { 
+        return DATA_TYPE_CHAR;
+    } else {
+        return DATA_TYPE_NONE; 
+    }
 }
