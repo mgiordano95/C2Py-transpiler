@@ -8,9 +8,10 @@
 //#include <stddef.h>
 #include "ast.h"
 #include "symboltable.h"
+#include "c2py.h"
 
-int yyerror(char *s);
 int yylex(void);
+int yyerror(char *s);
 
 struct AstNodeStatements *root;
 struct List *actualList = NULL;
@@ -19,7 +20,6 @@ char * type_to_str(int type);
 void scope_enter();
 void scope_exit();
 
-int counter = 0;
 //struct SymTab *s = NULL; 
 
 %}
@@ -70,6 +70,7 @@ int counter = 0;
 /* NON_TERMINAL TYPES */
 %define api.value.type {union yystype}
 
+
 %type <string> types SEMICOL COMMA ID INT_VALUE FLOAT_VALUE CHAR_VALUE EQ ADD SUB MUL DIV EE NE GT LT GE LE AND OR NOT RETURN LPAR RPAR LSBRA RSBRA LBRA RBRA 
 %type <statements> program statements 
 %type <instruction> instruction 
@@ -85,10 +86,13 @@ int counter = 0;
 
 %%
 
-program: {scope_enter();} statements {root = $2; scope_exit();};    
-/*statements                                      { 
-                                                    root = $1; 
-                                                };*/
+program:                                        {
+                                                    scope_enter();
+                                                }   
+statements                                      {
+                                                    root = $2;
+                                                    scope_exit();
+                                                };
 
 statements: 
 instruction statements                          {
@@ -107,17 +111,33 @@ instruction statements                          {
                                                 };
 
 instruction:
-initialization SEMICOL                          {
-                                                    $$ = malloc(sizeof(struct AstNodeInstruction));
-                                                    printf("AstNodeInstruction allocated for 'initialization SEMICOL'\n");
-                                                    $$->nodeType = INIT_NODE;
-                                                    $$->value.init = $1;
-                                                }
-|   assignment SEMICOL                          {
+assignment SEMICOL                              {
                                                     $$ = malloc(sizeof(struct AstNodeInstruction));
                                                     printf("AstNodeInstruction allocated for 'assignment SEMICOL'\n");
                                                     $$->nodeType = ASSIGN_NODE;
-                                                    $$->value.assign = $1;
+                                                    struct SymTab *s = findSym($1->variableName, actualList);
+                                                    if((s->dataType != $1->variableType) || strcmp(type_to_str(s->dataType), "none") == 0) {
+                                                        printf("Error\n");
+                                                    } else {
+                                                        $$->value.assign = $1;
+                                                        s->valueOper = $1->assignValue;
+                                                    }
+                                                    
+                                                }
+| initialization SEMICOL                        {
+                                                    $$ = malloc(sizeof(struct AstNodeInstruction));
+                                                    struct SymTab *s = NULL;
+                                                    for (struct AstNodeInit *init = $1; init != NULL; init = init->nextInit) {
+                                                        s = findSym(init->assign->variableName, actualList);
+                                                        if (s == NULL) {
+                                                            printf("AstNodeInstruction allocated for 'initialization SEMICOL'\n");
+                                                            $$->nodeType = INIT_NODE;
+                                                            $$->value.init = $1;
+                                                            s = createSym(init->assign->variableName, actualList, SYMBOL_VARIABLE, str_to_type($1), str_to_type($1), NULL, nullValue);
+                                                        } else {
+                                                            printf("Error: variable already declared.\n");
+                                                        }
+                                                    }
                                                 }
 |   functionDecl SEMICOL                        {
                                                     $$ = malloc(sizeof(struct AstNodeInstruction));
@@ -171,6 +191,7 @@ types ID                                        {
                                                     $$ = malloc(sizeof(struct AstNodeInit));
                                                     printf("AstNodeInit allocated for 'types ID'\n");
                                                     $$->dataType = str_to_type($1);
+                                                    $$->nextInit = NULL;
                                                     $$->assign = malloc(sizeof(struct AstNodeAssign));
                                                     printf("AstNodeAssign allocated for 'types ID'\n");
                                                     $$->assign->variableName = $2;
@@ -448,7 +469,7 @@ ID                                              {
                                                     $$ = malloc(sizeof(struct AstNodeOperand));
                                                     printf("AstNodeOperand allocated for 'ID'\n"); //Ci troviamo nel caso in cui abbiamo int a = b
                                                     struct SymTab *s = findSymtab($1,actualList);
-                                                    if(s==NULL) { 
+                                                    if(s == NULL) { 
                                                         $$->valueType = DATA_TYPE_NONE; 
                                                     } else {
                                                         $$->value.val = $1;
@@ -504,10 +525,6 @@ types:
                                                 };
 
 %%
-
-
-
-
 
 int main() {
     yyparse();

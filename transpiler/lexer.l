@@ -86,10 +86,10 @@ id              {letter}({letter}|{digit})*
 
 {delim}             {printf("Found DELIM\n");}
 {ws}                {printf("Found WHITE SPACE\n");}
-{id}                {printf("Found ID\n"); return(ID);}
-{int_value}         {printf("Found INTEGER NUMBER\n"); return(INT_VALUE);}
-{float_value}       {printf("Found FLOAT NUMBER\n"); return(FLOAT_VALUE);}
-{char_value}        {printf("Found CHAR\n"); return(CHAR_VALUE);}
+{int_value}         {yylval.string=strdup(yytext); printf("Found INTEGER NUMBER\n"); return(INT_VALUE);}
+{float_value}       {yylval.string=strdup(yytext); printf("Found FLOAT NUMBER\n"); return(FLOAT_VALUE);}
+{id}                {yylval.string=strdup(yytext); printf("Found ID\n"); return(ID);}
+{char_value}        {yylval.string=strdup(yytext); printf("Found CHAR\n"); return(CHAR_VALUE);}
 
 [ \t\n\f]           { }
 

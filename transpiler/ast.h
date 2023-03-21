@@ -99,7 +99,7 @@ struct AstNodeInstruction {
 struct AstNodeInit {
     enum DataType dataType; 
     struct AstNodeAssign *assign;
-    // struct AstNodeInit *next_init;  serivra' per controllo che non siano state inizializzate 2 variabili 
+    struct AstNodeInit *nextInit;  //serivra' per controllo che non siano state inizializzate 2 variabili 
     // con lo stesso nome
 };
 

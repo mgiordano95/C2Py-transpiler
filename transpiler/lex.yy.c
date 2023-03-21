@@ -364,17 +364,17 @@ static const flex_int16_t yy_accept[120] =
     {   0,
         0,    0,    2,    2,    7,    7,   11,   11,   54,   53,
        46,   52,   37,   10,   53,   53,   38,   39,   26,   24,
-       45,   25,   53,   27,   49,   49,   44,   32,   28,   31,
-       48,   40,   41,   48,   48,   48,   48,   48,   48,   48,
-       48,   48,   42,   53,   43,    2,    4,    3,    7,    8,
+       45,   25,   53,   27,   48,   48,   44,   32,   28,   31,
+       50,   40,   41,   50,   50,   50,   50,   50,   50,   50,
+       50,   50,   42,   53,   43,    2,    4,    3,    7,    8,
        11,   13,   12,   53,   47,   30,    9,   35,    0,    0,
-       49,   49,   50,   50,    1,    6,   50,    0,   49,   34,
-       29,   33,   48,   48,   48,   48,   18,   48,   48,   48,
-       48,   48,   48,   36,    2,    3,    3,    5,    7,   11,
-        0,   51,    0,   50,   48,   48,   48,   15,   48,   48,
+       48,   48,   49,   49,    1,    6,   49,    0,   48,   34,
+       29,   33,   50,   50,   50,   50,   18,   50,   50,   50,
+       50,   50,   50,   36,    2,    3,    3,    5,    7,   11,
+        0,   51,    0,   49,   50,   50,   50,   15,   50,   50,
 
-       48,   48,   48,   17,   19,   48,   48,   48,   48,   14,
-       48,   16,   48,   48,   22,   20,   21,   23,    0
+       50,   50,   50,   17,   19,   50,   50,   50,   50,   14,
+       50,   16,   50,   50,   22,   20,   21,   23,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -1066,22 +1066,22 @@ YY_RULE_SETUP
 case 48:
 YY_RULE_SETUP
 #line 89 "lexer.l"
-{printf("Found ID\n"); return(ID);}
+{yylval.string=strdup(yytext); printf("Found INTEGER NUMBER\n"); return(INT_VALUE);}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
 #line 90 "lexer.l"
-{printf("Found INTEGER NUMBER\n"); return(INT_VALUE);}
+{yylval.string=strdup(yytext); printf("Found FLOAT NUMBER\n"); return(FLOAT_VALUE);}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
 #line 91 "lexer.l"
-{printf("Found FLOAT NUMBER\n"); return(FLOAT_VALUE);}
+{yylval.string=strdup(yytext); printf("Found ID\n"); return(ID);}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
 #line 92 "lexer.l"
-{printf("Found CHAR\n"); return(CHAR_VALUE);}
+{yylval.string=strdup(yytext); printf("Found CHAR\n"); return(CHAR_VALUE);}
 	YY_BREAK
 case 52:
 /* rule 52 can match eol */
