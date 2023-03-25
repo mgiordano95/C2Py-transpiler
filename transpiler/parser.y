@@ -168,7 +168,7 @@ types MAIN LPAR RPAR body                       {
                                                     $$ = malloc(sizeof(struct AstNodeFunctionDecl));
                                                     printf("Entered in main \n");
                                                     $$->functionName = "main";
-                                                    $$->returnType = type_to_str($1);
+                                                    $$->returnType = str_to_type($1);
                                                     $$->functionParams = NULL;
                                                     $$->functiontBody = $5;
                                                     scope_exit();

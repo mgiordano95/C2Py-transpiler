@@ -89,7 +89,8 @@ extern int yydebug;
     ID = 290,                      /* ID  */
     INT_VALUE = 291,               /* INT_VALUE  */
     FLOAT_VALUE = 292,             /* FLOAT_VALUE  */
-    CHAR_VALUE = 293               /* CHAR_VALUE  */
+    CHAR_VALUE = 293,              /* CHAR_VALUE  */
+    MAIN = 294                     /* MAIN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
