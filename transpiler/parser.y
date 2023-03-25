@@ -186,8 +186,9 @@ types MAIN LPAR RPAR body                       {
                                                 }
 |   initialization LPAR functionParams RPAR body    {
                                                         scope_enter();
-                                                        for(struct AstNodeFunctionParams *p = $3; p != NULL; p = $3->nextParams) {
+                                                        for(struct AstNodeFunctionParams *p = $3; p != NULL; p = p->nextParams) {
                                                             struct symtab *s = createSym(p->initParam->assign->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->assign->variableName, p->initParam->assign->assignValue);
+                                                            printf("Inserito parametro della funzione nella symtab \n");
                                                         }
                                                         $$ = malloc(sizeof(struct AstNodeFunctionDecl));
                                                         printf("AstNodeFunctionDecl allocated function with parameters \n");
