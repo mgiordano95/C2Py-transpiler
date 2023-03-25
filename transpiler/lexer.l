@@ -55,34 +55,35 @@ id              {letter}({letter}|{digit})*
 "printf"    {printf("keyword 'PRINTF' detected\n"); return(PRINTF);}
 "scanf"     {printf("keyword 'SCANF' detected\n"); return(SCANF);}
 "return"    {printf("keyword 'RETURN' detected\n"); return(RETURN);}
+"main"      {printf("keyword 'MAIN' detected\n"); return(MAIN);}
 
-"+"         {printf("keyword '+' detected\n"); return(ADD);}
-"-"         {printf("keyword '-' detected\n"); return(SUB);}
-"*"         {printf("keyword '*' detected\n"); return(MUL);}
-"/"         {printf("keyword '/' detected\n"); return(DIV);}
+"+"         {yylval.string=strdup(yytext); printf("keyword '+' detected\n"); return(ADD);}
+"-"         {yylval.string=strdup(yytext); printf("keyword '-' detected\n"); return(SUB);}
+"*"         {yylval.string=strdup(yytext); printf("keyword '*' detected\n"); return(MUL);}
+"/"         {yylval.string=strdup(yytext); printf("keyword '/' detected\n"); return(DIV);}
 
-"="         {printf("keyword '=' detected\n"); return(EQ);}
+"="         {yylval.string=strdup(yytext); printf("keyword '=' detected\n"); return(EQ);}
 
-"=="        {printf("keyword '==' detected\n"); return(EE);}
-"!="        {printf("keyword '!=' detected\n"); return(NE);}
-">"         {printf("keyword '>' detected\n"); return(GT);}
-"<"         {printf("keyword '<' detected\n"); return(LT);}
-">="        {printf("keyword '>=' detected\n"); return(GE);}
-"<="        {printf("keyword '<=' detected\n"); return(LE);}
+"=="        {yylval.string=strdup(yytext); printf("keyword '==' detected\n"); return(EE);}
+"!="        {yylval.string=strdup(yytext); printf("keyword '!=' detected\n"); return(NE);}
+">"         {yylval.string=strdup(yytext); printf("keyword '>' detected\n"); return(GT);}
+"<"         {yylval.string=strdup(yytext); printf("keyword '<' detected\n"); return(LT);}
+">="        {yylval.string=strdup(yytext); printf("keyword '>=' detected\n"); return(GE);}
+"<="        {yylval.string=strdup(yytext); printf("keyword '<=' detected\n"); return(LE);}
 
-"&&"        {printf("keyword '&&' detected\n"); return(AND);}
-"||"        {printf("keyword '||' detected\n"); return(OR);}
-"!"         {printf("keyword '!' detected\n"); return(NOT);}
+"&&"        {yylval.string=strdup(yytext); printf("keyword '&&' detected\n"); return(AND);}
+"||"        {yylval.string=strdup(yytext); printf("keyword '||' detected\n"); return(OR);}
+"!"         {yylval.string=strdup(yytext); printf("keyword '!' detected\n"); return(NOT);}
 
-"("         {printf("keyword '(' detexted\n"); return(LPAR);}
-")"         {printf("keyword ')' detexted\n"); return(RPAR);}
-"["         {printf("keyword '[' detexted\n"); return(LSBRA);}
-"]"         {printf("keyword ']' detexted\n"); return(RSBRA);}
-"{"         {printf("keyword '{' detexted\n"); return(LBRA);}
-"}"         {printf("keyword '}' detexted\n"); return(RBRA);}
+"("         {yylval.string=strdup(yytext); printf("keyword '(' detexted\n"); return(LPAR);}
+")"         {yylval.string=strdup(yytext); printf("keyword ')' detexted\n"); return(RPAR);}
+"["         {yylval.string=strdup(yytext); printf("keyword '[' detexted\n"); return(LSBRA);}
+"]"         {yylval.string=strdup(yytext); printf("keyword ']' detexted\n"); return(RSBRA);}
+"{"         {yylval.string=strdup(yytext); printf("keyword '{' detexted\n"); return(LBRA);}
+"}"         {yylval.string=strdup(yytext); printf("keyword '}' detexted\n"); return(RBRA);}
 
-";"         {printf("Found semicolon\n"); return(SEMICOL);}
-","         {printf("Found comma\n"); return(COMMA);}
+";"         {yylval.string=strdup(yytext); printf("Found semicolon\n"); return(SEMICOL);}
+","         {yylval.string=strdup(yytext); printf("Found comma\n"); return(COMMA);}
 
 {delim}             {printf("Found DELIM\n");}
 {ws}                {printf("Found WHITE SPACE\n");}

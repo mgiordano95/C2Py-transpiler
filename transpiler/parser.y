@@ -65,13 +65,14 @@ void scope_exit();
 %token INT_VALUE
 %token FLOAT_VALUE
 %token CHAR_VALUE
+%token MAIN
 
 
 /* NON_TERMINAL TYPES */
 %define api.value.type {union yystype}
 
 
-%type <string> types SEMICOL COMMA ID INT_VALUE FLOAT_VALUE CHAR_VALUE EQ ADD SUB MUL DIV EE NE GT LT GE LE AND OR NOT RETURN LPAR RPAR LSBRA RSBRA LBRA RBRA 
+%type <string> types SEMICOL COMMA ID INT_VALUE FLOAT_VALUE CHAR_VALUE EQ ADD SUB MUL DIV EE NE GT LT GE LE AND OR NOT RETURN LPAR RPAR LSBRA RSBRA LBRA RBRA MAIN
 %type <statements> program statements 
 %type <instruction> instruction 
 %type <init> initialization
@@ -81,6 +82,7 @@ void scope_exit();
 %type <body> body
 %type <functionDecl> functionDecl
 %type <functionCall> functionCall
+%type <functionParams> functionParams
 
 %start program
 
@@ -144,6 +146,14 @@ assignment SEMICOL                              {
                                                     printf("AstNodeInstruction allocated for 'functionDecl SEMICOL'\n");
                                                     $$->nodeType = FUNCTION_DECL_NODE;
                                                     $$->value.functionDecl = $1;
+                                                    struct SymTab *s = NULL;
+                                                    s = findSymtab($1->functionName, actualList);
+                                                    if (s == NULL) {
+                                                        struct SymTab *s = createSym($1->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $1->returnType, NULL, nullValue);
+                                                        printf("Funzione inserita nella symtab \n");
+                                                    } else {
+                                                         printf("Error: function %s already declared \n", $1->functionName);
+                                                    }
                                                 }
 |   functionCall SEMICOL                        {
                                                     $$ = malloc(sizeof(struct AstNodeInstruction));
@@ -153,7 +163,17 @@ assignment SEMICOL                              {
                                                 };
 
 functionDecl:
-initialization LPAR RPAR body                   {
+types MAIN LPAR RPAR body                       {
+                                                    scope_enter();
+                                                    $$ = malloc(sizeof(struct AstNodeFunctionDecl));
+                                                    printf("Entered in main \n");
+                                                    $$->functionName = "main";
+                                                    $$->returnType = type_to_str($1);
+                                                    $$->functionParams = NULL;
+                                                    $$->functiontBody = $5;
+                                                    scope_exit();
+                                                }
+|   initialization LPAR RPAR body               {
                                                     $$ = malloc(sizeof(struct AstNodeFunctionDecl));
                                                     printf("AstNodeFunctionDecl allocated for 'initialization LPAR RPAR body'\n");
                                                     $$->functionName = $1->assign->variableName;
@@ -162,6 +182,7 @@ initialization LPAR RPAR body                   {
                                                     $$->functionParams = NULL;
                                                     $$->functiontBody = $4;
                                                 };
+
 
 functionCall:
 ID LPAR RPAR                                    {
