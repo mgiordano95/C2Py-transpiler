@@ -82,7 +82,7 @@ void scope_exit();
 %type <body> body
 %type <functionDecl> functionDecl
 %type <functionCall> functionCall
-%type <functionParams> functionParams
+%type <functionParams> functionParams singleParam
 
 %start program
 
@@ -174,6 +174,7 @@ types MAIN LPAR RPAR body                       {
                                                     scope_exit();
                                                 }
 |   initialization LPAR RPAR body               {
+                                                    scope_enter();
                                                     $$ = malloc(sizeof(struct AstNodeFunctionDecl));
                                                     printf("AstNodeFunctionDecl allocated for 'initialization LPAR RPAR body'\n");
                                                     $$->functionName = $1->assign->variableName;
@@ -181,7 +182,22 @@ types MAIN LPAR RPAR body                       {
                                                     printf("returnType assigned\n");
                                                     $$->functionParams = NULL;
                                                     $$->functiontBody = $4;
-                                                };
+                                                    scope_exit();
+                                                }
+|   initialization LPAR functionParams RPAR body    {
+                                                        scope_enter();
+                                                        for(struct AstNodeFunctionParams *p = $3; p != NULL; p = $3->nextParams) {
+                                                            struct symtab *s = createSym(p->initParam->assign->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->assign->variableName, p->initParam->assign->assignValue);
+                                                        }
+                                                        $$ = malloc(sizeof(struct AstNodeFunctionDecl));
+                                                        printf("AstNodeFunctionDecl allocated function with parameters \n");
+                                                        $$->functionName = $1->assign->variableName;
+                                                        $$->returnType = $1->dataType;
+                                                        printf("returnType assigned\n");
+                                                        $$->functionParams = $3;
+                                                        $$->functiontBody = $5;
+                                                        scope_exit();
+                                                    };
 
 
 functionCall:
@@ -192,6 +208,49 @@ ID LPAR RPAR                                    {
                                                     $$->returnType = DATA_TYPE_INT;
                                                     $$->functionParams = NULL; 
                                                 }
+
+functionParams:
+types ID                                        {
+                                                    $$ = malloc(sizeof(struct AstNodeFunctionParams));
+                                                    $$->nextParams = NULL;
+                                                    $$->callParams = NULL;
+                                                    $$->initParam = malloc(sizeof(struct AstNodeInit));
+                                                    $$->initParam->dataType = str_to_type($1);
+                                                    $$->initParam->nextInit = NULL;
+                                                    $$->initParam->assign = malloc(sizeof(struct AstNodeAssign));
+                                                    $$->initParam->assign->variableName = $2;
+                                                    $$->initParam->assign->variableType = str_to_type($1);
+                                                    $$->initParam->assign->assignValue.val = NULL;
+                                                    $$->initParam->assign->assignType = CONTENT_TYPE_ID;
+                                                }
+| content                                       {
+                                                    $$ = malloc(sizeof(struct AstNodeFunctionParams));
+                                                    $$->nextParams = NULL;
+                                                    $$->callParams = $1;
+                                                    $$->initParam = NULL;
+                                                }
+| types ID COMMA functionParams                 {
+                                                    $$ = malloc(sizeof(struct AstNodeFunctionParams));
+                                                    $$->nextParams = $4;
+                                                    $$->callParams = NULL;
+                                                    $$->initParam = malloc(sizeof(struct AstNodeInit));
+                                                    $$->initParam->dataType = str_to_type($1);
+                                                    $$->initParam->nextInit = NULL;
+                                                    $$->initParam->assign = malloc(sizeof(struct AstNodeAssign));
+                                                    $$->initParam->assign->variableName = $2;
+                                                    $$->initParam->assign->variableType = str_to_type($1);
+                                                    $$->initParam->assign->assignValue.val = NULL;
+                                                    $$->initParam->assign->assignType = CONTENT_TYPE_ID;
+                                                }
+| content COMMA functionParams                  {
+                                                    $$ = malloc(sizeof(struct AstNodeFunctionParams));
+                                                    $$->nextParams = $3;
+                                                    $$->callParams = $1;
+                                                    $$->initParam = NULL;
+                                                };
+
+
+
 
 body:
 LBRA statements RBRA                            {
@@ -206,6 +265,7 @@ LBRA statements RBRA                            {
                                                     $$->bodyStatements = $2;
                                                     $$->returnValue = $4;
                                                 };
+
 
 initialization:
 types ID                                        {
