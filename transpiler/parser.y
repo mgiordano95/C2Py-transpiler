@@ -141,7 +141,7 @@ assignment SEMICOL                              {
                                                         }
                                                     }
                                                 }
-|   functionDecl SEMICOL                        {
+|   functionDecl                         {
                                                     $$ = malloc(sizeof(struct AstNodeInstruction));
                                                     printf("AstNodeInstruction allocated for 'functionDecl SEMICOL'\n");
                                                     $$->nodeType = FUNCTION_DECL_NODE;
