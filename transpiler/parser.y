@@ -149,7 +149,7 @@ assignment SEMICOL                              {
                                                     struct SymTab *s = NULL;
                                                     s = findSymtab($1->functionName, actualList);
                                                     if (s == NULL) {
-                                                        struct SymTab *s = createSym($1->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $1->returnType, NULL, nullValue);
+                                                        struct SymTab *s = createSym($1->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $1->returnType, $1->functionName, nullValue);
                                                         printf("Funzione inserita nella symtab \n");
                                                     } else {
                                                          printf("Error: function %s already declared \n", $1->functionName);
@@ -204,11 +204,26 @@ types MAIN LPAR RPAR body                       {
 functionCall:
 ID LPAR RPAR                                    {
                                                     $$ = malloc(sizeof(struct AstNodeFunctionCall));
-                                                    printf("AstNodeFunctionCall allocated for 'ID LPRA RPAR'\n");
-                                                    $$->functionName = $1;
-                                                    $$->returnType = DATA_TYPE_INT;
-                                                    $$->functionParams = NULL; 
+                                                    struct symtab *s = findSymtab($1, actualList);
+                                                    if (s != NULL) {
+                                                        if (s->funcName != NULL) {
+                                                            printf("AstNodeFunctionCall allocated call function no param \n");
+                                                            $$->functionName = $1;
+                                                            $$->returnType = s->returnType;
+                                                            $$->functionParams = NULL; 
+                                                        }
+                                                        else {
+                                                            printf("Errore: %s is not a function", $1);
+                                                        }
+                                                    }
+                                                    else {
+                                                        printf("Errore: function %s not declared", $1);
+                                                    }
                                                 }
+| ID LPAR functionParams RPAR                   {
+                                                    $$ = malloc(sizeof(struct AstNodeFunctionCall));
+                                                    
+                                                };
 
 functionParams:
 types ID                                        {
