@@ -5,6 +5,7 @@
 %{
     #include <stdlib.h>
     #include <stdio.h>
+    #include <string.h>
     #include "parser.tab.h"
     #include "ast.h"
 %}
@@ -39,9 +40,7 @@ id              {letter}({letter}|{digit})*
 <QUOTE>([^"\\\n]|\\.)*      { printf("stringa accettata\n"); }
 <QUOTE>\"                   BEGIN(INITIAL); printf("end quote\n");
 <QUOTE>\n |  
-<QUOTE><<EOF>>              {printf("errore\n");}     
-
-
+<QUOTE><<EOF>>              {printf("errore\n");}
 
 
 "void"      {printf("keyword 'VOID' detected\n"); return(VOID);}
