@@ -223,7 +223,6 @@ ID LPAR RPAR                                        {
                                                             $$->functionName = $1;
                                                             $$->returnType = s->returnType;
                                                             $$->functionParams = NULL;
-                                                            printf("Il returnType è %s", s->returnType);
                                                         } else {
                                                             printf("Error: function %s not declared\n", $1);
                                                         }
@@ -640,6 +639,13 @@ ID                                                  {
                                                         $$->value.expression = $1;
                                                         $$->valueType = $1->exprType;  
                                                         $$->contentType = CONTENT_TYPE_EXPRESSION;
+                                                    }
+|   functionCall                                    {
+                                                        $$ = malloc(sizeof(struct AstNodeOperand));
+                                                        printf("AstNodeOperand allocated for 'functionCall'\n");
+                                                        $$->value.funtionCall = $1;
+                                                        $$->valueType = $1->returnType;  
+                                                        $$->contentType = CONTENT_TYPE_FUNCTION;
                                                     };
 
 types:
