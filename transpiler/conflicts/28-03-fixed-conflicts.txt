@@ -1,0 +1,10 @@
+parser.y: attenzione: 1 ridurre/ridurre il conflitto [-Wconflicts-rr]
+parser.y: attenzione: ridurre/ridurre il conflitto sul token SEMICOL [-Wcounterexamples]
+  Esempio: ID EQ ID •
+  Ridurre prima la derivazione
+    assignment
+    ↳ 27: ID EQ ID •
+  Riduzione della seconda derivazione
+    assignment
+    ↳ 29: ID EQ content
+                ↳ 43: ID •
