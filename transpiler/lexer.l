@@ -91,6 +91,6 @@ id              {letter}({letter}|{digit})*
 {id}                {yylval.string=strdup(yytext); printf("Found ID\n"); return(ID);}
 {char_value}        {yylval.string=strdup(yytext); printf("Found CHAR\n"); return(CHAR_VALUE);}
 
-[ \t\n\f]           { }
+.                   {printf("Unknown character\n"); return(UNKNOWN)}
 
 %%

@@ -1,0 +1,1883 @@
+parser.y: attenzione: 156 salta/riduce i conflitti [-Wconflicts-sr]
+parser.y: attenzione: 1 ridurre/ridurre il conflitto [-Wconflicts-rr]
+parser.y: attenzione: ridurre/ridurre il conflitto sul token SEMICOL [-Wcounterexamples]
+  Esempio: ID EQ ID •
+  Ridurre prima la derivazione
+    assignment
+    ↳ 21: ID EQ ID •
+  Riduzione della seconda derivazione
+    assignment
+    ↳ 23: ID EQ content
+                ↳ 37: ID •
+parser.y: attenzione: conflitto di shift/reduce sul token ADD [-Wcounterexamples]
+  Esempio: NOT content • ADD content
+  Derivazione del turno
+    expression
+    ↳ 36: NOT content
+              ↳ 41: expression
+                    ↳ 24: content • ADD content
+  Ridurre la derivazione
+    expression
+    ↳ 24: content                   ADD content
+          ↳ 41: expression
+                ↳ 36: NOT content •
+parser.y: attenzione: conflitto di shift/reduce sul token SUB [-Wcounterexamples]
+  Esempio: NOT content • SUB content
+  Derivazione del turno
+    expression
+    ↳ 36: NOT content
+              ↳ 41: expression
+                    ↳ 25: content • SUB content
+  Ridurre la derivazione
+    expression
+    ↳ 25: content                   SUB content
+          ↳ 41: expression
+                ↳ 36: NOT content •
+parser.y: attenzione: conflitto di shift/reduce sul token MUL [-Wcounterexamples]
+  Esempio: NOT content • MUL content
+  Derivazione del turno
+    expression
+    ↳ 36: NOT content
+              ↳ 41: expression
+                    ↳ 26: content • MUL content
+  Ridurre la derivazione
+    expression
+    ↳ 26: content                   MUL content
+          ↳ 41: expression
+                ↳ 36: NOT content •
+parser.y: attenzione: conflitto di shift/reduce sul token DIV [-Wcounterexamples]
+  Esempio: NOT content • DIV content
+  Derivazione del turno
+    expression
+    ↳ 36: NOT content
+              ↳ 41: expression
+                    ↳ 27: content • DIV content
+  Ridurre la derivazione
+    expression
+    ↳ 27: content                   DIV content
+          ↳ 41: expression
+                ↳ 36: NOT content •
+parser.y: attenzione: conflitto di shift/reduce sul token EE [-Wcounterexamples]
+  Esempio: NOT content • EE content
+  Derivazione del turno
+    expression
+    ↳ 36: NOT content
+              ↳ 41: expression
+                    ↳ 28: content • EE content
+  Ridurre la derivazione
+    expression
+    ↳ 28: content                   EE content
+          ↳ 41: expression
+                ↳ 36: NOT content •
+parser.y: attenzione: conflitto di shift/reduce sul token NE [-Wcounterexamples]
+  Esempio: NOT content • NE content
+  Derivazione del turno
+    expression
+    ↳ 36: NOT content
+              ↳ 41: expression
+                    ↳ 29: content • NE content
+  Ridurre la derivazione
+    expression
+    ↳ 29: content                   NE content
+          ↳ 41: expression
+                ↳ 36: NOT content •
+parser.y: attenzione: conflitto di shift/reduce sul token GT [-Wcounterexamples]
+  Esempio: NOT content • GT content
+  Derivazione del turno
+    expression
+    ↳ 36: NOT content
+              ↳ 41: expression
+                    ↳ 30: content • GT content
+  Ridurre la derivazione
+    expression
+    ↳ 30: content                   GT content
+          ↳ 41: expression
+                ↳ 36: NOT content •
+parser.y: attenzione: conflitto di shift/reduce sul token LT [-Wcounterexamples]
+  Esempio: NOT content • LT content
+  Derivazione del turno
+    expression
+    ↳ 36: NOT content
+              ↳ 41: expression
+                    ↳ 31: content • LT content
+  Ridurre la derivazione
+    expression
+    ↳ 31: content                   LT content
+          ↳ 41: expression
+                ↳ 36: NOT content •
+parser.y: attenzione: conflitto di shift/reduce sul token GE [-Wcounterexamples]
+  Esempio: NOT content • GE content
+  Derivazione del turno
+    expression
+    ↳ 36: NOT content
+              ↳ 41: expression
+                    ↳ 32: content • GE content
+  Ridurre la derivazione
+    expression
+    ↳ 32: content                   GE content
+          ↳ 41: expression
+                ↳ 36: NOT content •
+parser.y: attenzione: conflitto di shift/reduce sul token LE [-Wcounterexamples]
+  Esempio: NOT content • LE content
+  Derivazione del turno
+    expression
+    ↳ 36: NOT content
+              ↳ 41: expression
+                    ↳ 33: content • LE content
+  Ridurre la derivazione
+    expression
+    ↳ 33: content                   LE content
+          ↳ 41: expression
+                ↳ 36: NOT content •
+parser.y: attenzione: conflitto di shift/reduce sul token AND [-Wcounterexamples]
+  Esempio: NOT content • AND content
+  Derivazione del turno
+    expression
+    ↳ 36: NOT content
+              ↳ 41: expression
+                    ↳ 34: content • AND content
+  Ridurre la derivazione
+    expression
+    ↳ 34: content                   AND content
+          ↳ 41: expression
+                ↳ 36: NOT content •
+parser.y: attenzione: conflitto di shift/reduce sul token OR [-Wcounterexamples]
+  Esempio: NOT content • OR content
+  Derivazione del turno
+    expression
+    ↳ 36: NOT content
+              ↳ 41: expression
+                    ↳ 35: content • OR content
+  Ridurre la derivazione
+    expression
+    ↳ 35: content                   OR content
+          ↳ 41: expression
+                ↳ 36: NOT content •
+parser.y: attenzione: conflitto di shift/reduce sul token ADD [-Wcounterexamples]
+  Esempio: content ADD content • ADD content
+  Derivazione del turno
+    expression
+    ↳ 24: content ADD content
+                      ↳ 41: expression
+                            ↳ 24: content • ADD content
+  Ridurre la derivazione
+    expression
+    ↳ 24: content                           ADD content
+          ↳ 41: expression
+                ↳ 24: content ADD content •
+parser.y: attenzione: conflitto di shift/reduce sul token SUB [-Wcounterexamples]
+  Esempio: content ADD content • SUB content
+  Derivazione del turno
+    expression
+    ↳ 24: content ADD content
+                      ↳ 41: expression
+                            ↳ 25: content • SUB content
+  Ridurre la derivazione
+    expression
+    ↳ 25: content                           SUB content
+          ↳ 41: expression
+                ↳ 24: content ADD content •
+parser.y: attenzione: conflitto di shift/reduce sul token MUL [-Wcounterexamples]
+  Esempio: content ADD content • MUL content
+  Derivazione del turno
+    expression
+    ↳ 24: content ADD content
+                      ↳ 41: expression
+                            ↳ 26: content • MUL content
+  Ridurre la derivazione
+    expression
+    ↳ 26: content                           MUL content
+          ↳ 41: expression
+                ↳ 24: content ADD content •
+parser.y: attenzione: conflitto di shift/reduce sul token DIV [-Wcounterexamples]
+  Esempio: content ADD content • DIV content
+  Derivazione del turno
+    expression
+    ↳ 24: content ADD content
+                      ↳ 41: expression
+                            ↳ 27: content • DIV content
+  Ridurre la derivazione
+    expression
+    ↳ 27: content                           DIV content
+          ↳ 41: expression
+                ↳ 24: content ADD content •
+parser.y: attenzione: conflitto di shift/reduce sul token EE [-Wcounterexamples]
+  Esempio: content ADD content • EE content
+  Derivazione del turno
+    expression
+    ↳ 24: content ADD content
+                      ↳ 41: expression
+                            ↳ 28: content • EE content
+  Ridurre la derivazione
+    expression
+    ↳ 28: content                           EE content
+          ↳ 41: expression
+                ↳ 24: content ADD content •
+parser.y: attenzione: conflitto di shift/reduce sul token NE [-Wcounterexamples]
+  Esempio: content ADD content • NE content
+  Derivazione del turno
+    expression
+    ↳ 24: content ADD content
+                      ↳ 41: expression
+                            ↳ 29: content • NE content
+  Ridurre la derivazione
+    expression
+    ↳ 29: content                           NE content
+          ↳ 41: expression
+                ↳ 24: content ADD content •
+parser.y: attenzione: conflitto di shift/reduce sul token GT [-Wcounterexamples]
+  Esempio: content ADD content • GT content
+  Derivazione del turno
+    expression
+    ↳ 24: content ADD content
+                      ↳ 41: expression
+                            ↳ 30: content • GT content
+  Ridurre la derivazione
+    expression
+    ↳ 30: content                           GT content
+          ↳ 41: expression
+                ↳ 24: content ADD content •
+parser.y: attenzione: conflitto di shift/reduce sul token LT [-Wcounterexamples]
+  Esempio: content ADD content • LT content
+  Derivazione del turno
+    expression
+    ↳ 24: content ADD content
+                      ↳ 41: expression
+                            ↳ 31: content • LT content
+  Ridurre la derivazione
+    expression
+    ↳ 31: content                           LT content
+          ↳ 41: expression
+                ↳ 24: content ADD content •
+parser.y: attenzione: conflitto di shift/reduce sul token GE [-Wcounterexamples]
+  Esempio: content ADD content • GE content
+  Derivazione del turno
+    expression
+    ↳ 24: content ADD content
+                      ↳ 41: expression
+                            ↳ 32: content • GE content
+  Ridurre la derivazione
+    expression
+    ↳ 32: content                           GE content
+          ↳ 41: expression
+                ↳ 24: content ADD content •
+parser.y: attenzione: conflitto di shift/reduce sul token LE [-Wcounterexamples]
+  Esempio: content ADD content • LE content
+  Derivazione del turno
+    expression
+    ↳ 24: content ADD content
+                      ↳ 41: expression
+                            ↳ 33: content • LE content
+  Ridurre la derivazione
+    expression
+    ↳ 33: content                           LE content
+          ↳ 41: expression
+                ↳ 24: content ADD content •
+parser.y: attenzione: conflitto di shift/reduce sul token AND [-Wcounterexamples]
+  Esempio: content ADD content • AND content
+  Derivazione del turno
+    expression
+    ↳ 24: content ADD content
+                      ↳ 41: expression
+                            ↳ 34: content • AND content
+  Ridurre la derivazione
+    expression
+    ↳ 34: content                           AND content
+          ↳ 41: expression
+                ↳ 24: content ADD content •
+parser.y: attenzione: conflitto di shift/reduce sul token OR [-Wcounterexamples]
+  Esempio: content ADD content • OR content
+  Derivazione del turno
+    expression
+    ↳ 24: content ADD content
+                      ↳ 41: expression
+                            ↳ 35: content • OR content
+  Ridurre la derivazione
+    expression
+    ↳ 35: content                           OR content
+          ↳ 41: expression
+                ↳ 24: content ADD content •
+parser.y: attenzione: conflitto di shift/reduce sul token ADD [-Wcounterexamples]
+  Esempio: content SUB content • ADD content
+  Derivazione del turno
+    expression
+    ↳ 25: content SUB content
+                      ↳ 41: expression
+                            ↳ 24: content • ADD content
+  Ridurre la derivazione
+    expression
+    ↳ 24: content                           ADD content
+          ↳ 41: expression
+                ↳ 25: content SUB content •
+parser.y: attenzione: conflitto di shift/reduce sul token SUB [-Wcounterexamples]
+  Esempio: content SUB content • SUB content
+  Derivazione del turno
+    expression
+    ↳ 25: content SUB content
+                      ↳ 41: expression
+                            ↳ 25: content • SUB content
+  Ridurre la derivazione
+    expression
+    ↳ 25: content                           SUB content
+          ↳ 41: expression
+                ↳ 25: content SUB content •
+parser.y: attenzione: conflitto di shift/reduce sul token MUL [-Wcounterexamples]
+  Esempio: content SUB content • MUL content
+  Derivazione del turno
+    expression
+    ↳ 25: content SUB content
+                      ↳ 41: expression
+                            ↳ 26: content • MUL content
+  Ridurre la derivazione
+    expression
+    ↳ 26: content                           MUL content
+          ↳ 41: expression
+                ↳ 25: content SUB content •
+parser.y: attenzione: conflitto di shift/reduce sul token DIV [-Wcounterexamples]
+  Esempio: content SUB content • DIV content
+  Derivazione del turno
+    expression
+    ↳ 25: content SUB content
+                      ↳ 41: expression
+                            ↳ 27: content • DIV content
+  Ridurre la derivazione
+    expression
+    ↳ 27: content                           DIV content
+          ↳ 41: expression
+                ↳ 25: content SUB content •
+parser.y: attenzione: conflitto di shift/reduce sul token EE [-Wcounterexamples]
+  Esempio: content SUB content • EE content
+  Derivazione del turno
+    expression
+    ↳ 25: content SUB content
+                      ↳ 41: expression
+                            ↳ 28: content • EE content
+  Ridurre la derivazione
+    expression
+    ↳ 28: content                           EE content
+          ↳ 41: expression
+                ↳ 25: content SUB content •
+parser.y: attenzione: conflitto di shift/reduce sul token NE [-Wcounterexamples]
+  Esempio: content SUB content • NE content
+  Derivazione del turno
+    expression
+    ↳ 25: content SUB content
+                      ↳ 41: expression
+                            ↳ 29: content • NE content
+  Ridurre la derivazione
+    expression
+    ↳ 29: content                           NE content
+          ↳ 41: expression
+                ↳ 25: content SUB content •
+parser.y: attenzione: conflitto di shift/reduce sul token GT [-Wcounterexamples]
+  Esempio: content SUB content • GT content
+  Derivazione del turno
+    expression
+    ↳ 25: content SUB content
+                      ↳ 41: expression
+                            ↳ 30: content • GT content
+  Ridurre la derivazione
+    expression
+    ↳ 30: content                           GT content
+          ↳ 41: expression
+                ↳ 25: content SUB content •
+parser.y: attenzione: conflitto di shift/reduce sul token LT [-Wcounterexamples]
+  Esempio: content SUB content • LT content
+  Derivazione del turno
+    expression
+    ↳ 25: content SUB content
+                      ↳ 41: expression
+                            ↳ 31: content • LT content
+  Ridurre la derivazione
+    expression
+    ↳ 31: content                           LT content
+          ↳ 41: expression
+                ↳ 25: content SUB content •
+parser.y: attenzione: conflitto di shift/reduce sul token GE [-Wcounterexamples]
+  Esempio: content SUB content • GE content
+  Derivazione del turno
+    expression
+    ↳ 25: content SUB content
+                      ↳ 41: expression
+                            ↳ 32: content • GE content
+  Ridurre la derivazione
+    expression
+    ↳ 32: content                           GE content
+          ↳ 41: expression
+                ↳ 25: content SUB content •
+parser.y: attenzione: conflitto di shift/reduce sul token LE [-Wcounterexamples]
+  Esempio: content SUB content • LE content
+  Derivazione del turno
+    expression
+    ↳ 25: content SUB content
+                      ↳ 41: expression
+                            ↳ 33: content • LE content
+  Ridurre la derivazione
+    expression
+    ↳ 33: content                           LE content
+          ↳ 41: expression
+                ↳ 25: content SUB content •
+parser.y: attenzione: conflitto di shift/reduce sul token AND [-Wcounterexamples]
+  Esempio: content SUB content • AND content
+  Derivazione del turno
+    expression
+    ↳ 25: content SUB content
+                      ↳ 41: expression
+                            ↳ 34: content • AND content
+  Ridurre la derivazione
+    expression
+    ↳ 34: content                           AND content
+          ↳ 41: expression
+                ↳ 25: content SUB content •
+parser.y: attenzione: conflitto di shift/reduce sul token OR [-Wcounterexamples]
+  Esempio: content SUB content • OR content
+  Derivazione del turno
+    expression
+    ↳ 25: content SUB content
+                      ↳ 41: expression
+                            ↳ 35: content • OR content
+  Ridurre la derivazione
+    expression
+    ↳ 35: content                           OR content
+          ↳ 41: expression
+                ↳ 25: content SUB content •
+parser.y: attenzione: conflitto di shift/reduce sul token ADD [-Wcounterexamples]
+  Esempio: content MUL content • ADD content
+  Derivazione del turno
+    expression
+    ↳ 26: content MUL content
+                      ↳ 41: expression
+                            ↳ 24: content • ADD content
+  Ridurre la derivazione
+    expression
+    ↳ 24: content                           ADD content
+          ↳ 41: expression
+                ↳ 26: content MUL content •
+parser.y: attenzione: conflitto di shift/reduce sul token SUB [-Wcounterexamples]
+  Esempio: content MUL content • SUB content
+  Derivazione del turno
+    expression
+    ↳ 26: content MUL content
+                      ↳ 41: expression
+                            ↳ 25: content • SUB content
+  Ridurre la derivazione
+    expression
+    ↳ 25: content                           SUB content
+          ↳ 41: expression
+                ↳ 26: content MUL content •
+parser.y: attenzione: conflitto di shift/reduce sul token MUL [-Wcounterexamples]
+  Esempio: content MUL content • MUL content
+  Derivazione del turno
+    expression
+    ↳ 26: content MUL content
+                      ↳ 41: expression
+                            ↳ 26: content • MUL content
+  Ridurre la derivazione
+    expression
+    ↳ 26: content                           MUL content
+          ↳ 41: expression
+                ↳ 26: content MUL content •
+parser.y: attenzione: conflitto di shift/reduce sul token DIV [-Wcounterexamples]
+  Esempio: content MUL content • DIV content
+  Derivazione del turno
+    expression
+    ↳ 26: content MUL content
+                      ↳ 41: expression
+                            ↳ 27: content • DIV content
+  Ridurre la derivazione
+    expression
+    ↳ 27: content                           DIV content
+          ↳ 41: expression
+                ↳ 26: content MUL content •
+parser.y: attenzione: conflitto di shift/reduce sul token EE [-Wcounterexamples]
+  Esempio: content MUL content • EE content
+  Derivazione del turno
+    expression
+    ↳ 26: content MUL content
+                      ↳ 41: expression
+                            ↳ 28: content • EE content
+  Ridurre la derivazione
+    expression
+    ↳ 28: content                           EE content
+          ↳ 41: expression
+                ↳ 26: content MUL content •
+parser.y: attenzione: conflitto di shift/reduce sul token NE [-Wcounterexamples]
+  Esempio: content MUL content • NE content
+  Derivazione del turno
+    expression
+    ↳ 26: content MUL content
+                      ↳ 41: expression
+                            ↳ 29: content • NE content
+  Ridurre la derivazione
+    expression
+    ↳ 29: content                           NE content
+          ↳ 41: expression
+                ↳ 26: content MUL content •
+parser.y: attenzione: conflitto di shift/reduce sul token GT [-Wcounterexamples]
+  Esempio: content MUL content • GT content
+  Derivazione del turno
+    expression
+    ↳ 26: content MUL content
+                      ↳ 41: expression
+                            ↳ 30: content • GT content
+  Ridurre la derivazione
+    expression
+    ↳ 30: content                           GT content
+          ↳ 41: expression
+                ↳ 26: content MUL content •
+parser.y: attenzione: conflitto di shift/reduce sul token LT [-Wcounterexamples]
+  Esempio: content MUL content • LT content
+  Derivazione del turno
+    expression
+    ↳ 26: content MUL content
+                      ↳ 41: expression
+                            ↳ 31: content • LT content
+  Ridurre la derivazione
+    expression
+    ↳ 31: content                           LT content
+          ↳ 41: expression
+                ↳ 26: content MUL content •
+parser.y: attenzione: conflitto di shift/reduce sul token GE [-Wcounterexamples]
+  Esempio: content MUL content • GE content
+  Derivazione del turno
+    expression
+    ↳ 26: content MUL content
+                      ↳ 41: expression
+                            ↳ 32: content • GE content
+  Ridurre la derivazione
+    expression
+    ↳ 32: content                           GE content
+          ↳ 41: expression
+                ↳ 26: content MUL content •
+parser.y: attenzione: conflitto di shift/reduce sul token LE [-Wcounterexamples]
+  Esempio: content MUL content • LE content
+  Derivazione del turno
+    expression
+    ↳ 26: content MUL content
+                      ↳ 41: expression
+                            ↳ 33: content • LE content
+  Ridurre la derivazione
+    expression
+    ↳ 33: content                           LE content
+          ↳ 41: expression
+                ↳ 26: content MUL content •
+parser.y: attenzione: conflitto di shift/reduce sul token AND [-Wcounterexamples]
+  Esempio: content MUL content • AND content
+  Derivazione del turno
+    expression
+    ↳ 26: content MUL content
+                      ↳ 41: expression
+                            ↳ 34: content • AND content
+  Ridurre la derivazione
+    expression
+    ↳ 34: content                           AND content
+          ↳ 41: expression
+                ↳ 26: content MUL content •
+parser.y: attenzione: conflitto di shift/reduce sul token OR [-Wcounterexamples]
+  Esempio: content MUL content • OR content
+  Derivazione del turno
+    expression
+    ↳ 26: content MUL content
+                      ↳ 41: expression
+                            ↳ 35: content • OR content
+  Ridurre la derivazione
+    expression
+    ↳ 35: content                           OR content
+          ↳ 41: expression
+                ↳ 26: content MUL content •
+parser.y: attenzione: conflitto di shift/reduce sul token ADD [-Wcounterexamples]
+  Esempio: content DIV content • ADD content
+  Derivazione del turno
+    expression
+    ↳ 27: content DIV content
+                      ↳ 41: expression
+                            ↳ 24: content • ADD content
+  Ridurre la derivazione
+    expression
+    ↳ 24: content                           ADD content
+          ↳ 41: expression
+                ↳ 27: content DIV content •
+parser.y: attenzione: conflitto di shift/reduce sul token SUB [-Wcounterexamples]
+  Esempio: content DIV content • SUB content
+  Derivazione del turno
+    expression
+    ↳ 27: content DIV content
+                      ↳ 41: expression
+                            ↳ 25: content • SUB content
+  Ridurre la derivazione
+    expression
+    ↳ 25: content                           SUB content
+          ↳ 41: expression
+                ↳ 27: content DIV content •
+parser.y: attenzione: conflitto di shift/reduce sul token MUL [-Wcounterexamples]
+  Esempio: content DIV content • MUL content
+  Derivazione del turno
+    expression
+    ↳ 27: content DIV content
+                      ↳ 41: expression
+                            ↳ 26: content • MUL content
+  Ridurre la derivazione
+    expression
+    ↳ 26: content                           MUL content
+          ↳ 41: expression
+                ↳ 27: content DIV content •
+parser.y: attenzione: conflitto di shift/reduce sul token DIV [-Wcounterexamples]
+  Esempio: content DIV content • DIV content
+  Derivazione del turno
+    expression
+    ↳ 27: content DIV content
+                      ↳ 41: expression
+                            ↳ 27: content • DIV content
+  Ridurre la derivazione
+    expression
+    ↳ 27: content                           DIV content
+          ↳ 41: expression
+                ↳ 27: content DIV content •
+parser.y: attenzione: conflitto di shift/reduce sul token EE [-Wcounterexamples]
+  Esempio: content DIV content • EE content
+  Derivazione del turno
+    expression
+    ↳ 27: content DIV content
+                      ↳ 41: expression
+                            ↳ 28: content • EE content
+  Ridurre la derivazione
+    expression
+    ↳ 28: content                           EE content
+          ↳ 41: expression
+                ↳ 27: content DIV content •
+parser.y: attenzione: conflitto di shift/reduce sul token NE [-Wcounterexamples]
+  Esempio: content DIV content • NE content
+  Derivazione del turno
+    expression
+    ↳ 27: content DIV content
+                      ↳ 41: expression
+                            ↳ 29: content • NE content
+  Ridurre la derivazione
+    expression
+    ↳ 29: content                           NE content
+          ↳ 41: expression
+                ↳ 27: content DIV content •
+parser.y: attenzione: conflitto di shift/reduce sul token GT [-Wcounterexamples]
+  Esempio: content DIV content • GT content
+  Derivazione del turno
+    expression
+    ↳ 27: content DIV content
+                      ↳ 41: expression
+                            ↳ 30: content • GT content
+  Ridurre la derivazione
+    expression
+    ↳ 30: content                           GT content
+          ↳ 41: expression
+                ↳ 27: content DIV content •
+parser.y: attenzione: conflitto di shift/reduce sul token LT [-Wcounterexamples]
+  Esempio: content DIV content • LT content
+  Derivazione del turno
+    expression
+    ↳ 27: content DIV content
+                      ↳ 41: expression
+                            ↳ 31: content • LT content
+  Ridurre la derivazione
+    expression
+    ↳ 31: content                           LT content
+          ↳ 41: expression
+                ↳ 27: content DIV content •
+parser.y: attenzione: conflitto di shift/reduce sul token GE [-Wcounterexamples]
+  Esempio: content DIV content • GE content
+  Derivazione del turno
+    expression
+    ↳ 27: content DIV content
+                      ↳ 41: expression
+                            ↳ 32: content • GE content
+  Ridurre la derivazione
+    expression
+    ↳ 32: content                           GE content
+          ↳ 41: expression
+                ↳ 27: content DIV content •
+parser.y: attenzione: conflitto di shift/reduce sul token LE [-Wcounterexamples]
+  Esempio: content DIV content • LE content
+  Derivazione del turno
+    expression
+    ↳ 27: content DIV content
+                      ↳ 41: expression
+                            ↳ 33: content • LE content
+  Ridurre la derivazione
+    expression
+    ↳ 33: content                           LE content
+          ↳ 41: expression
+                ↳ 27: content DIV content •
+parser.y: attenzione: conflitto di shift/reduce sul token AND [-Wcounterexamples]
+  Esempio: content DIV content • AND content
+  Derivazione del turno
+    expression
+    ↳ 27: content DIV content
+                      ↳ 41: expression
+                            ↳ 34: content • AND content
+  Ridurre la derivazione
+    expression
+    ↳ 34: content                           AND content
+          ↳ 41: expression
+                ↳ 27: content DIV content •
+parser.y: attenzione: conflitto di shift/reduce sul token OR [-Wcounterexamples]
+  Esempio: content DIV content • OR content
+  Derivazione del turno
+    expression
+    ↳ 27: content DIV content
+                      ↳ 41: expression
+                            ↳ 35: content • OR content
+  Ridurre la derivazione
+    expression
+    ↳ 35: content                           OR content
+          ↳ 41: expression
+                ↳ 27: content DIV content •
+parser.y: attenzione: conflitto di shift/reduce sul token ADD [-Wcounterexamples]
+  Esempio: content EE content • ADD content
+  Derivazione del turno
+    expression
+    ↳ 28: content EE content
+                     ↳ 41: expression
+                           ↳ 24: content • ADD content
+  Ridurre la derivazione
+    expression
+    ↳ 24: content                          ADD content
+          ↳ 41: expression
+                ↳ 28: content EE content •
+parser.y: attenzione: conflitto di shift/reduce sul token SUB [-Wcounterexamples]
+  Esempio: content EE content • SUB content
+  Derivazione del turno
+    expression
+    ↳ 28: content EE content
+                     ↳ 41: expression
+                           ↳ 25: content • SUB content
+  Ridurre la derivazione
+    expression
+    ↳ 25: content                          SUB content
+          ↳ 41: expression
+                ↳ 28: content EE content •
+parser.y: attenzione: conflitto di shift/reduce sul token MUL [-Wcounterexamples]
+  Esempio: content EE content • MUL content
+  Derivazione del turno
+    expression
+    ↳ 28: content EE content
+                     ↳ 41: expression
+                           ↳ 26: content • MUL content
+  Ridurre la derivazione
+    expression
+    ↳ 26: content                          MUL content
+          ↳ 41: expression
+                ↳ 28: content EE content •
+parser.y: attenzione: conflitto di shift/reduce sul token DIV [-Wcounterexamples]
+  Esempio: content EE content • DIV content
+  Derivazione del turno
+    expression
+    ↳ 28: content EE content
+                     ↳ 41: expression
+                           ↳ 27: content • DIV content
+  Ridurre la derivazione
+    expression
+    ↳ 27: content                          DIV content
+          ↳ 41: expression
+                ↳ 28: content EE content •
+parser.y: attenzione: conflitto di shift/reduce sul token EE [-Wcounterexamples]
+  Esempio: content EE content • EE content
+  Derivazione del turno
+    expression
+    ↳ 28: content EE content
+                     ↳ 41: expression
+                           ↳ 28: content • EE content
+  Ridurre la derivazione
+    expression
+    ↳ 28: content                          EE content
+          ↳ 41: expression
+                ↳ 28: content EE content •
+parser.y: attenzione: conflitto di shift/reduce sul token NE [-Wcounterexamples]
+  Esempio: content EE content • NE content
+  Derivazione del turno
+    expression
+    ↳ 28: content EE content
+                     ↳ 41: expression
+                           ↳ 29: content • NE content
+  Ridurre la derivazione
+    expression
+    ↳ 29: content                          NE content
+          ↳ 41: expression
+                ↳ 28: content EE content •
+parser.y: attenzione: conflitto di shift/reduce sul token GT [-Wcounterexamples]
+  Esempio: content EE content • GT content
+  Derivazione del turno
+    expression
+    ↳ 28: content EE content
+                     ↳ 41: expression
+                           ↳ 30: content • GT content
+  Ridurre la derivazione
+    expression
+    ↳ 30: content                          GT content
+          ↳ 41: expression
+                ↳ 28: content EE content •
+parser.y: attenzione: conflitto di shift/reduce sul token LT [-Wcounterexamples]
+  Esempio: content EE content • LT content
+  Derivazione del turno
+    expression
+    ↳ 28: content EE content
+                     ↳ 41: expression
+                           ↳ 31: content • LT content
+  Ridurre la derivazione
+    expression
+    ↳ 31: content                          LT content
+          ↳ 41: expression
+                ↳ 28: content EE content •
+parser.y: attenzione: conflitto di shift/reduce sul token GE [-Wcounterexamples]
+  Esempio: content EE content • GE content
+  Derivazione del turno
+    expression
+    ↳ 28: content EE content
+                     ↳ 41: expression
+                           ↳ 32: content • GE content
+  Ridurre la derivazione
+    expression
+    ↳ 32: content                          GE content
+          ↳ 41: expression
+                ↳ 28: content EE content •
+parser.y: attenzione: conflitto di shift/reduce sul token LE [-Wcounterexamples]
+  Esempio: content EE content • LE content
+  Derivazione del turno
+    expression
+    ↳ 28: content EE content
+                     ↳ 41: expression
+                           ↳ 33: content • LE content
+  Ridurre la derivazione
+    expression
+    ↳ 33: content                          LE content
+          ↳ 41: expression
+                ↳ 28: content EE content •
+parser.y: attenzione: conflitto di shift/reduce sul token AND [-Wcounterexamples]
+  Esempio: content EE content • AND content
+  Derivazione del turno
+    expression
+    ↳ 28: content EE content
+                     ↳ 41: expression
+                           ↳ 34: content • AND content
+  Ridurre la derivazione
+    expression
+    ↳ 34: content                          AND content
+          ↳ 41: expression
+                ↳ 28: content EE content •
+parser.y: attenzione: conflitto di shift/reduce sul token OR [-Wcounterexamples]
+  Esempio: content EE content • OR content
+  Derivazione del turno
+    expression
+    ↳ 28: content EE content
+                     ↳ 41: expression
+                           ↳ 35: content • OR content
+  Ridurre la derivazione
+    expression
+    ↳ 35: content                          OR content
+          ↳ 41: expression
+                ↳ 28: content EE content •
+parser.y: attenzione: conflitto di shift/reduce sul token ADD [-Wcounterexamples]
+  Esempio: content NE content • ADD content
+  Derivazione del turno
+    expression
+    ↳ 29: content NE content
+                     ↳ 41: expression
+                           ↳ 24: content • ADD content
+  Ridurre la derivazione
+    expression
+    ↳ 24: content                          ADD content
+          ↳ 41: expression
+                ↳ 29: content NE content •
+parser.y: attenzione: conflitto di shift/reduce sul token SUB [-Wcounterexamples]
+  Esempio: content NE content • SUB content
+  Derivazione del turno
+    expression
+    ↳ 29: content NE content
+                     ↳ 41: expression
+                           ↳ 25: content • SUB content
+  Ridurre la derivazione
+    expression
+    ↳ 25: content                          SUB content
+          ↳ 41: expression
+                ↳ 29: content NE content •
+parser.y: attenzione: conflitto di shift/reduce sul token MUL [-Wcounterexamples]
+  Esempio: content NE content • MUL content
+  Derivazione del turno
+    expression
+    ↳ 29: content NE content
+                     ↳ 41: expression
+                           ↳ 26: content • MUL content
+  Ridurre la derivazione
+    expression
+    ↳ 26: content                          MUL content
+          ↳ 41: expression
+                ↳ 29: content NE content •
+parser.y: attenzione: conflitto di shift/reduce sul token DIV [-Wcounterexamples]
+  Esempio: content NE content • DIV content
+  Derivazione del turno
+    expression
+    ↳ 29: content NE content
+                     ↳ 41: expression
+                           ↳ 27: content • DIV content
+  Ridurre la derivazione
+    expression
+    ↳ 27: content                          DIV content
+          ↳ 41: expression
+                ↳ 29: content NE content •
+parser.y: attenzione: conflitto di shift/reduce sul token EE [-Wcounterexamples]
+  Esempio: content NE content • EE content
+  Derivazione del turno
+    expression
+    ↳ 29: content NE content
+                     ↳ 41: expression
+                           ↳ 28: content • EE content
+  Ridurre la derivazione
+    expression
+    ↳ 28: content                          EE content
+          ↳ 41: expression
+                ↳ 29: content NE content •
+parser.y: attenzione: conflitto di shift/reduce sul token NE [-Wcounterexamples]
+  Esempio: content NE content • NE content
+  Derivazione del turno
+    expression
+    ↳ 29: content NE content
+                     ↳ 41: expression
+                           ↳ 29: content • NE content
+  Ridurre la derivazione
+    expression
+    ↳ 29: content                          NE content
+          ↳ 41: expression
+                ↳ 29: content NE content •
+parser.y: attenzione: conflitto di shift/reduce sul token GT [-Wcounterexamples]
+  Esempio: content NE content • GT content
+  Derivazione del turno
+    expression
+    ↳ 29: content NE content
+                     ↳ 41: expression
+                           ↳ 30: content • GT content
+  Ridurre la derivazione
+    expression
+    ↳ 30: content                          GT content
+          ↳ 41: expression
+                ↳ 29: content NE content •
+parser.y: attenzione: conflitto di shift/reduce sul token LT [-Wcounterexamples]
+  Esempio: content NE content • LT content
+  Derivazione del turno
+    expression
+    ↳ 29: content NE content
+                     ↳ 41: expression
+                           ↳ 31: content • LT content
+  Ridurre la derivazione
+    expression
+    ↳ 31: content                          LT content
+          ↳ 41: expression
+                ↳ 29: content NE content •
+parser.y: attenzione: conflitto di shift/reduce sul token GE [-Wcounterexamples]
+  Esempio: content NE content • GE content
+  Derivazione del turno
+    expression
+    ↳ 29: content NE content
+                     ↳ 41: expression
+                           ↳ 32: content • GE content
+  Ridurre la derivazione
+    expression
+    ↳ 32: content                          GE content
+          ↳ 41: expression
+                ↳ 29: content NE content •
+parser.y: attenzione: conflitto di shift/reduce sul token LE [-Wcounterexamples]
+  Esempio: content NE content • LE content
+  Derivazione del turno
+    expression
+    ↳ 29: content NE content
+                     ↳ 41: expression
+                           ↳ 33: content • LE content
+  Ridurre la derivazione
+    expression
+    ↳ 33: content                          LE content
+          ↳ 41: expression
+                ↳ 29: content NE content •
+parser.y: attenzione: conflitto di shift/reduce sul token AND [-Wcounterexamples]
+  Esempio: content NE content • AND content
+  Derivazione del turno
+    expression
+    ↳ 29: content NE content
+                     ↳ 41: expression
+                           ↳ 34: content • AND content
+  Ridurre la derivazione
+    expression
+    ↳ 34: content                          AND content
+          ↳ 41: expression
+                ↳ 29: content NE content •
+parser.y: attenzione: conflitto di shift/reduce sul token OR [-Wcounterexamples]
+  Esempio: content NE content • OR content
+  Derivazione del turno
+    expression
+    ↳ 29: content NE content
+                     ↳ 41: expression
+                           ↳ 35: content • OR content
+  Ridurre la derivazione
+    expression
+    ↳ 35: content                          OR content
+          ↳ 41: expression
+                ↳ 29: content NE content •
+parser.y: attenzione: conflitto di shift/reduce sul token ADD [-Wcounterexamples]
+  Esempio: content GT content • ADD content
+  Derivazione del turno
+    expression
+    ↳ 30: content GT content
+                     ↳ 41: expression
+                           ↳ 24: content • ADD content
+  Ridurre la derivazione
+    expression
+    ↳ 24: content                          ADD content
+          ↳ 41: expression
+                ↳ 30: content GT content •
+parser.y: attenzione: conflitto di shift/reduce sul token SUB [-Wcounterexamples]
+  Esempio: content GT content • SUB content
+  Derivazione del turno
+    expression
+    ↳ 30: content GT content
+                     ↳ 41: expression
+                           ↳ 25: content • SUB content
+  Ridurre la derivazione
+    expression
+    ↳ 25: content                          SUB content
+          ↳ 41: expression
+                ↳ 30: content GT content •
+parser.y: attenzione: conflitto di shift/reduce sul token MUL [-Wcounterexamples]
+  Esempio: content GT content • MUL content
+  Derivazione del turno
+    expression
+    ↳ 30: content GT content
+                     ↳ 41: expression
+                           ↳ 26: content • MUL content
+  Ridurre la derivazione
+    expression
+    ↳ 26: content                          MUL content
+          ↳ 41: expression
+                ↳ 30: content GT content •
+parser.y: attenzione: conflitto di shift/reduce sul token DIV [-Wcounterexamples]
+  Esempio: content GT content • DIV content
+  Derivazione del turno
+    expression
+    ↳ 30: content GT content
+                     ↳ 41: expression
+                           ↳ 27: content • DIV content
+  Ridurre la derivazione
+    expression
+    ↳ 27: content                          DIV content
+          ↳ 41: expression
+                ↳ 30: content GT content •
+parser.y: attenzione: conflitto di shift/reduce sul token EE [-Wcounterexamples]
+  Esempio: content GT content • EE content
+  Derivazione del turno
+    expression
+    ↳ 30: content GT content
+                     ↳ 41: expression
+                           ↳ 28: content • EE content
+  Ridurre la derivazione
+    expression
+    ↳ 28: content                          EE content
+          ↳ 41: expression
+                ↳ 30: content GT content •
+parser.y: attenzione: conflitto di shift/reduce sul token NE [-Wcounterexamples]
+  Esempio: content GT content • NE content
+  Derivazione del turno
+    expression
+    ↳ 30: content GT content
+                     ↳ 41: expression
+                           ↳ 29: content • NE content
+  Ridurre la derivazione
+    expression
+    ↳ 29: content                          NE content
+          ↳ 41: expression
+                ↳ 30: content GT content •
+parser.y: attenzione: conflitto di shift/reduce sul token GT [-Wcounterexamples]
+  Esempio: content GT content • GT content
+  Derivazione del turno
+    expression
+    ↳ 30: content GT content
+                     ↳ 41: expression
+                           ↳ 30: content • GT content
+  Ridurre la derivazione
+    expression
+    ↳ 30: content                          GT content
+          ↳ 41: expression
+                ↳ 30: content GT content •
+parser.y: attenzione: conflitto di shift/reduce sul token LT [-Wcounterexamples]
+  Esempio: content GT content • LT content
+  Derivazione del turno
+    expression
+    ↳ 30: content GT content
+                     ↳ 41: expression
+                           ↳ 31: content • LT content
+  Ridurre la derivazione
+    expression
+    ↳ 31: content                          LT content
+          ↳ 41: expression
+                ↳ 30: content GT content •
+parser.y: attenzione: conflitto di shift/reduce sul token GE [-Wcounterexamples]
+  Esempio: content GT content • GE content
+  Derivazione del turno
+    expression
+    ↳ 30: content GT content
+                     ↳ 41: expression
+                           ↳ 32: content • GE content
+  Ridurre la derivazione
+    expression
+    ↳ 32: content                          GE content
+          ↳ 41: expression
+                ↳ 30: content GT content •
+parser.y: attenzione: conflitto di shift/reduce sul token LE [-Wcounterexamples]
+  Esempio: content GT content • LE content
+  Derivazione del turno
+    expression
+    ↳ 30: content GT content
+                     ↳ 41: expression
+                           ↳ 33: content • LE content
+  Ridurre la derivazione
+    expression
+    ↳ 33: content                          LE content
+          ↳ 41: expression
+                ↳ 30: content GT content •
+parser.y: attenzione: conflitto di shift/reduce sul token AND [-Wcounterexamples]
+  Esempio: content GT content • AND content
+  Derivazione del turno
+    expression
+    ↳ 30: content GT content
+                     ↳ 41: expression
+                           ↳ 34: content • AND content
+  Ridurre la derivazione
+    expression
+    ↳ 34: content                          AND content
+          ↳ 41: expression
+                ↳ 30: content GT content •
+parser.y: attenzione: conflitto di shift/reduce sul token OR [-Wcounterexamples]
+  Esempio: content GT content • OR content
+  Derivazione del turno
+    expression
+    ↳ 30: content GT content
+                     ↳ 41: expression
+                           ↳ 35: content • OR content
+  Ridurre la derivazione
+    expression
+    ↳ 35: content                          OR content
+          ↳ 41: expression
+                ↳ 30: content GT content •
+parser.y: attenzione: conflitto di shift/reduce sul token ADD [-Wcounterexamples]
+  Esempio: content LT content • ADD content
+  Derivazione del turno
+    expression
+    ↳ 31: content LT content
+                     ↳ 41: expression
+                           ↳ 24: content • ADD content
+  Ridurre la derivazione
+    expression
+    ↳ 24: content                          ADD content
+          ↳ 41: expression
+                ↳ 31: content LT content •
+parser.y: attenzione: conflitto di shift/reduce sul token SUB [-Wcounterexamples]
+  Esempio: content LT content • SUB content
+  Derivazione del turno
+    expression
+    ↳ 31: content LT content
+                     ↳ 41: expression
+                           ↳ 25: content • SUB content
+  Ridurre la derivazione
+    expression
+    ↳ 25: content                          SUB content
+          ↳ 41: expression
+                ↳ 31: content LT content •
+parser.y: attenzione: conflitto di shift/reduce sul token MUL [-Wcounterexamples]
+  Esempio: content LT content • MUL content
+  Derivazione del turno
+    expression
+    ↳ 31: content LT content
+                     ↳ 41: expression
+                           ↳ 26: content • MUL content
+  Ridurre la derivazione
+    expression
+    ↳ 26: content                          MUL content
+          ↳ 41: expression
+                ↳ 31: content LT content •
+parser.y: attenzione: conflitto di shift/reduce sul token DIV [-Wcounterexamples]
+  Esempio: content LT content • DIV content
+  Derivazione del turno
+    expression
+    ↳ 31: content LT content
+                     ↳ 41: expression
+                           ↳ 27: content • DIV content
+  Ridurre la derivazione
+    expression
+    ↳ 27: content                          DIV content
+          ↳ 41: expression
+                ↳ 31: content LT content •
+parser.y: attenzione: conflitto di shift/reduce sul token EE [-Wcounterexamples]
+  Esempio: content LT content • EE content
+  Derivazione del turno
+    expression
+    ↳ 31: content LT content
+                     ↳ 41: expression
+                           ↳ 28: content • EE content
+  Ridurre la derivazione
+    expression
+    ↳ 28: content                          EE content
+          ↳ 41: expression
+                ↳ 31: content LT content •
+parser.y: attenzione: conflitto di shift/reduce sul token NE [-Wcounterexamples]
+  Esempio: content LT content • NE content
+  Derivazione del turno
+    expression
+    ↳ 31: content LT content
+                     ↳ 41: expression
+                           ↳ 29: content • NE content
+  Ridurre la derivazione
+    expression
+    ↳ 29: content                          NE content
+          ↳ 41: expression
+                ↳ 31: content LT content •
+parser.y: attenzione: conflitto di shift/reduce sul token GT [-Wcounterexamples]
+  Esempio: content LT content • GT content
+  Derivazione del turno
+    expression
+    ↳ 31: content LT content
+                     ↳ 41: expression
+                           ↳ 30: content • GT content
+  Ridurre la derivazione
+    expression
+    ↳ 30: content                          GT content
+          ↳ 41: expression
+                ↳ 31: content LT content •
+parser.y: attenzione: conflitto di shift/reduce sul token LT [-Wcounterexamples]
+  Esempio: content LT content • LT content
+  Derivazione del turno
+    expression
+    ↳ 31: content LT content
+                     ↳ 41: expression
+                           ↳ 31: content • LT content
+  Ridurre la derivazione
+    expression
+    ↳ 31: content                          LT content
+          ↳ 41: expression
+                ↳ 31: content LT content •
+parser.y: attenzione: conflitto di shift/reduce sul token GE [-Wcounterexamples]
+  Esempio: content LT content • GE content
+  Derivazione del turno
+    expression
+    ↳ 31: content LT content
+                     ↳ 41: expression
+                           ↳ 32: content • GE content
+  Ridurre la derivazione
+    expression
+    ↳ 32: content                          GE content
+          ↳ 41: expression
+                ↳ 31: content LT content •
+parser.y: attenzione: conflitto di shift/reduce sul token LE [-Wcounterexamples]
+  Esempio: content LT content • LE content
+  Derivazione del turno
+    expression
+    ↳ 31: content LT content
+                     ↳ 41: expression
+                           ↳ 33: content • LE content
+  Ridurre la derivazione
+    expression
+    ↳ 33: content                          LE content
+          ↳ 41: expression
+                ↳ 31: content LT content •
+parser.y: attenzione: conflitto di shift/reduce sul token AND [-Wcounterexamples]
+  Esempio: content LT content • AND content
+  Derivazione del turno
+    expression
+    ↳ 31: content LT content
+                     ↳ 41: expression
+                           ↳ 34: content • AND content
+  Ridurre la derivazione
+    expression
+    ↳ 34: content                          AND content
+          ↳ 41: expression
+                ↳ 31: content LT content •
+parser.y: attenzione: conflitto di shift/reduce sul token OR [-Wcounterexamples]
+  Esempio: content LT content • OR content
+  Derivazione del turno
+    expression
+    ↳ 31: content LT content
+                     ↳ 41: expression
+                           ↳ 35: content • OR content
+  Ridurre la derivazione
+    expression
+    ↳ 35: content                          OR content
+          ↳ 41: expression
+                ↳ 31: content LT content •
+parser.y: attenzione: conflitto di shift/reduce sul token ADD [-Wcounterexamples]
+  Esempio: content GE content • ADD content
+  Derivazione del turno
+    expression
+    ↳ 32: content GE content
+                     ↳ 41: expression
+                           ↳ 24: content • ADD content
+  Ridurre la derivazione
+    expression
+    ↳ 24: content                          ADD content
+          ↳ 41: expression
+                ↳ 32: content GE content •
+parser.y: attenzione: conflitto di shift/reduce sul token SUB [-Wcounterexamples]
+  Esempio: content GE content • SUB content
+  Derivazione del turno
+    expression
+    ↳ 32: content GE content
+                     ↳ 41: expression
+                           ↳ 25: content • SUB content
+  Ridurre la derivazione
+    expression
+    ↳ 25: content                          SUB content
+          ↳ 41: expression
+                ↳ 32: content GE content •
+parser.y: attenzione: conflitto di shift/reduce sul token MUL [-Wcounterexamples]
+  Esempio: content GE content • MUL content
+  Derivazione del turno
+    expression
+    ↳ 32: content GE content
+                     ↳ 41: expression
+                           ↳ 26: content • MUL content
+  Ridurre la derivazione
+    expression
+    ↳ 26: content                          MUL content
+          ↳ 41: expression
+                ↳ 32: content GE content •
+parser.y: attenzione: conflitto di shift/reduce sul token DIV [-Wcounterexamples]
+  Esempio: content GE content • DIV content
+  Derivazione del turno
+    expression
+    ↳ 32: content GE content
+                     ↳ 41: expression
+                           ↳ 27: content • DIV content
+  Ridurre la derivazione
+    expression
+    ↳ 27: content                          DIV content
+          ↳ 41: expression
+                ↳ 32: content GE content •
+parser.y: attenzione: conflitto di shift/reduce sul token EE [-Wcounterexamples]
+  Esempio: content GE content • EE content
+  Derivazione del turno
+    expression
+    ↳ 32: content GE content
+                     ↳ 41: expression
+                           ↳ 28: content • EE content
+  Ridurre la derivazione
+    expression
+    ↳ 28: content                          EE content
+          ↳ 41: expression
+                ↳ 32: content GE content •
+parser.y: attenzione: conflitto di shift/reduce sul token NE [-Wcounterexamples]
+  Esempio: content GE content • NE content
+  Derivazione del turno
+    expression
+    ↳ 32: content GE content
+                     ↳ 41: expression
+                           ↳ 29: content • NE content
+  Ridurre la derivazione
+    expression
+    ↳ 29: content                          NE content
+          ↳ 41: expression
+                ↳ 32: content GE content •
+parser.y: attenzione: conflitto di shift/reduce sul token GT [-Wcounterexamples]
+  Esempio: content GE content • GT content
+  Derivazione del turno
+    expression
+    ↳ 32: content GE content
+                     ↳ 41: expression
+                           ↳ 30: content • GT content
+  Ridurre la derivazione
+    expression
+    ↳ 30: content                          GT content
+          ↳ 41: expression
+                ↳ 32: content GE content •
+parser.y: attenzione: conflitto di shift/reduce sul token LT [-Wcounterexamples]
+  Esempio: content GE content • LT content
+  Derivazione del turno
+    expression
+    ↳ 32: content GE content
+                     ↳ 41: expression
+                           ↳ 31: content • LT content
+  Ridurre la derivazione
+    expression
+    ↳ 31: content                          LT content
+          ↳ 41: expression
+                ↳ 32: content GE content •
+parser.y: attenzione: conflitto di shift/reduce sul token GE [-Wcounterexamples]
+  Esempio: content GE content • GE content
+  Derivazione del turno
+    expression
+    ↳ 32: content GE content
+                     ↳ 41: expression
+                           ↳ 32: content • GE content
+  Ridurre la derivazione
+    expression
+    ↳ 32: content                          GE content
+          ↳ 41: expression
+                ↳ 32: content GE content •
+parser.y: attenzione: conflitto di shift/reduce sul token LE [-Wcounterexamples]
+  Esempio: content GE content • LE content
+  Derivazione del turno
+    expression
+    ↳ 32: content GE content
+                     ↳ 41: expression
+                           ↳ 33: content • LE content
+  Ridurre la derivazione
+    expression
+    ↳ 33: content                          LE content
+          ↳ 41: expression
+                ↳ 32: content GE content •
+parser.y: attenzione: conflitto di shift/reduce sul token AND [-Wcounterexamples]
+  Esempio: content GE content • AND content
+  Derivazione del turno
+    expression
+    ↳ 32: content GE content
+                     ↳ 41: expression
+                           ↳ 34: content • AND content
+  Ridurre la derivazione
+    expression
+    ↳ 34: content                          AND content
+          ↳ 41: expression
+                ↳ 32: content GE content •
+parser.y: attenzione: conflitto di shift/reduce sul token OR [-Wcounterexamples]
+  Esempio: content GE content • OR content
+  Derivazione del turno
+    expression
+    ↳ 32: content GE content
+                     ↳ 41: expression
+                           ↳ 35: content • OR content
+  Ridurre la derivazione
+    expression
+    ↳ 35: content                          OR content
+          ↳ 41: expression
+                ↳ 32: content GE content •
+parser.y: attenzione: conflitto di shift/reduce sul token ADD [-Wcounterexamples]
+  Esempio: content LE content • ADD content
+  Derivazione del turno
+    expression
+    ↳ 33: content LE content
+                     ↳ 41: expression
+                           ↳ 24: content • ADD content
+  Ridurre la derivazione
+    expression
+    ↳ 24: content                          ADD content
+          ↳ 41: expression
+                ↳ 33: content LE content •
+parser.y: attenzione: conflitto di shift/reduce sul token SUB [-Wcounterexamples]
+  Esempio: content LE content • SUB content
+  Derivazione del turno
+    expression
+    ↳ 33: content LE content
+                     ↳ 41: expression
+                           ↳ 25: content • SUB content
+  Ridurre la derivazione
+    expression
+    ↳ 25: content                          SUB content
+          ↳ 41: expression
+                ↳ 33: content LE content •
+parser.y: attenzione: conflitto di shift/reduce sul token MUL [-Wcounterexamples]
+  Esempio: content LE content • MUL content
+  Derivazione del turno
+    expression
+    ↳ 33: content LE content
+                     ↳ 41: expression
+                           ↳ 26: content • MUL content
+  Ridurre la derivazione
+    expression
+    ↳ 26: content                          MUL content
+          ↳ 41: expression
+                ↳ 33: content LE content •
+parser.y: attenzione: conflitto di shift/reduce sul token DIV [-Wcounterexamples]
+  Esempio: content LE content • DIV content
+  Derivazione del turno
+    expression
+    ↳ 33: content LE content
+                     ↳ 41: expression
+                           ↳ 27: content • DIV content
+  Ridurre la derivazione
+    expression
+    ↳ 27: content                          DIV content
+          ↳ 41: expression
+                ↳ 33: content LE content •
+parser.y: attenzione: conflitto di shift/reduce sul token EE [-Wcounterexamples]
+  Esempio: content LE content • EE content
+  Derivazione del turno
+    expression
+    ↳ 33: content LE content
+                     ↳ 41: expression
+                           ↳ 28: content • EE content
+  Ridurre la derivazione
+    expression
+    ↳ 28: content                          EE content
+          ↳ 41: expression
+                ↳ 33: content LE content •
+parser.y: attenzione: conflitto di shift/reduce sul token NE [-Wcounterexamples]
+  Esempio: content LE content • NE content
+  Derivazione del turno
+    expression
+    ↳ 33: content LE content
+                     ↳ 41: expression
+                           ↳ 29: content • NE content
+  Ridurre la derivazione
+    expression
+    ↳ 29: content                          NE content
+          ↳ 41: expression
+                ↳ 33: content LE content •
+parser.y: attenzione: conflitto di shift/reduce sul token GT [-Wcounterexamples]
+  Esempio: content LE content • GT content
+  Derivazione del turno
+    expression
+    ↳ 33: content LE content
+                     ↳ 41: expression
+                           ↳ 30: content • GT content
+  Ridurre la derivazione
+    expression
+    ↳ 30: content                          GT content
+          ↳ 41: expression
+                ↳ 33: content LE content •
+parser.y: attenzione: conflitto di shift/reduce sul token LT [-Wcounterexamples]
+  Esempio: content LE content • LT content
+  Derivazione del turno
+    expression
+    ↳ 33: content LE content
+                     ↳ 41: expression
+                           ↳ 31: content • LT content
+  Ridurre la derivazione
+    expression
+    ↳ 31: content                          LT content
+          ↳ 41: expression
+                ↳ 33: content LE content •
+parser.y: attenzione: conflitto di shift/reduce sul token GE [-Wcounterexamples]
+  Esempio: content LE content • GE content
+  Derivazione del turno
+    expression
+    ↳ 33: content LE content
+                     ↳ 41: expression
+                           ↳ 32: content • GE content
+  Ridurre la derivazione
+    expression
+    ↳ 32: content                          GE content
+          ↳ 41: expression
+                ↳ 33: content LE content •
+parser.y: attenzione: conflitto di shift/reduce sul token LE [-Wcounterexamples]
+  Esempio: content LE content • LE content
+  Derivazione del turno
+    expression
+    ↳ 33: content LE content
+                     ↳ 41: expression
+                           ↳ 33: content • LE content
+  Ridurre la derivazione
+    expression
+    ↳ 33: content                          LE content
+          ↳ 41: expression
+                ↳ 33: content LE content •
+parser.y: attenzione: conflitto di shift/reduce sul token AND [-Wcounterexamples]
+  Esempio: content LE content • AND content
+  Derivazione del turno
+    expression
+    ↳ 33: content LE content
+                     ↳ 41: expression
+                           ↳ 34: content • AND content
+  Ridurre la derivazione
+    expression
+    ↳ 34: content                          AND content
+          ↳ 41: expression
+                ↳ 33: content LE content •
+parser.y: attenzione: conflitto di shift/reduce sul token OR [-Wcounterexamples]
+  Esempio: content LE content • OR content
+  Derivazione del turno
+    expression
+    ↳ 33: content LE content
+                     ↳ 41: expression
+                           ↳ 35: content • OR content
+  Ridurre la derivazione
+    expression
+    ↳ 35: content                          OR content
+          ↳ 41: expression
+                ↳ 33: content LE content •
+parser.y: attenzione: conflitto di shift/reduce sul token ADD [-Wcounterexamples]
+  Esempio: content AND content • ADD content
+  Derivazione del turno
+    expression
+    ↳ 34: content AND content
+                      ↳ 41: expression
+                            ↳ 24: content • ADD content
+  Ridurre la derivazione
+    expression
+    ↳ 24: content                           ADD content
+          ↳ 41: expression
+                ↳ 34: content AND content •
+parser.y: attenzione: conflitto di shift/reduce sul token SUB [-Wcounterexamples]
+  Esempio: content AND content • SUB content
+  Derivazione del turno
+    expression
+    ↳ 34: content AND content
+                      ↳ 41: expression
+                            ↳ 25: content • SUB content
+  Ridurre la derivazione
+    expression
+    ↳ 25: content                           SUB content
+          ↳ 41: expression
+                ↳ 34: content AND content •
+parser.y: attenzione: conflitto di shift/reduce sul token MUL [-Wcounterexamples]
+  Esempio: content AND content • MUL content
+  Derivazione del turno
+    expression
+    ↳ 34: content AND content
+                      ↳ 41: expression
+                            ↳ 26: content • MUL content
+  Ridurre la derivazione
+    expression
+    ↳ 26: content                           MUL content
+          ↳ 41: expression
+                ↳ 34: content AND content •
+parser.y: attenzione: conflitto di shift/reduce sul token DIV [-Wcounterexamples]
+  Esempio: content AND content • DIV content
+  Derivazione del turno
+    expression
+    ↳ 34: content AND content
+                      ↳ 41: expression
+                            ↳ 27: content • DIV content
+  Ridurre la derivazione
+    expression
+    ↳ 27: content                           DIV content
+          ↳ 41: expression
+                ↳ 34: content AND content •
+parser.y: attenzione: conflitto di shift/reduce sul token EE [-Wcounterexamples]
+  Esempio: content AND content • EE content
+  Derivazione del turno
+    expression
+    ↳ 34: content AND content
+                      ↳ 41: expression
+                            ↳ 28: content • EE content
+  Ridurre la derivazione
+    expression
+    ↳ 28: content                           EE content
+          ↳ 41: expression
+                ↳ 34: content AND content •
+parser.y: attenzione: conflitto di shift/reduce sul token NE [-Wcounterexamples]
+  Esempio: content AND content • NE content
+  Derivazione del turno
+    expression
+    ↳ 34: content AND content
+                      ↳ 41: expression
+                            ↳ 29: content • NE content
+  Ridurre la derivazione
+    expression
+    ↳ 29: content                           NE content
+          ↳ 41: expression
+                ↳ 34: content AND content •
+parser.y: attenzione: conflitto di shift/reduce sul token GT [-Wcounterexamples]
+  Esempio: content AND content • GT content
+  Derivazione del turno
+    expression
+    ↳ 34: content AND content
+                      ↳ 41: expression
+                            ↳ 30: content • GT content
+  Ridurre la derivazione
+    expression
+    ↳ 30: content                           GT content
+          ↳ 41: expression
+                ↳ 34: content AND content •
+parser.y: attenzione: conflitto di shift/reduce sul token LT [-Wcounterexamples]
+  Esempio: content AND content • LT content
+  Derivazione del turno
+    expression
+    ↳ 34: content AND content
+                      ↳ 41: expression
+                            ↳ 31: content • LT content
+  Ridurre la derivazione
+    expression
+    ↳ 31: content                           LT content
+          ↳ 41: expression
+                ↳ 34: content AND content •
+parser.y: attenzione: conflitto di shift/reduce sul token GE [-Wcounterexamples]
+  Esempio: content AND content • GE content
+  Derivazione del turno
+    expression
+    ↳ 34: content AND content
+                      ↳ 41: expression
+                            ↳ 32: content • GE content
+  Ridurre la derivazione
+    expression
+    ↳ 32: content                           GE content
+          ↳ 41: expression
+                ↳ 34: content AND content •
+parser.y: attenzione: conflitto di shift/reduce sul token LE [-Wcounterexamples]
+  Esempio: content AND content • LE content
+  Derivazione del turno
+    expression
+    ↳ 34: content AND content
+                      ↳ 41: expression
+                            ↳ 33: content • LE content
+  Ridurre la derivazione
+    expression
+    ↳ 33: content                           LE content
+          ↳ 41: expression
+                ↳ 34: content AND content •
+parser.y: attenzione: conflitto di shift/reduce sul token AND [-Wcounterexamples]
+  Esempio: content AND content • AND content
+  Derivazione del turno
+    expression
+    ↳ 34: content AND content
+                      ↳ 41: expression
+                            ↳ 34: content • AND content
+  Ridurre la derivazione
+    expression
+    ↳ 34: content                           AND content
+          ↳ 41: expression
+                ↳ 34: content AND content •
+parser.y: attenzione: conflitto di shift/reduce sul token OR [-Wcounterexamples]
+  Esempio: content AND content • OR content
+  Derivazione del turno
+    expression
+    ↳ 34: content AND content
+                      ↳ 41: expression
+                            ↳ 35: content • OR content
+  Ridurre la derivazione
+    expression
+    ↳ 35: content                           OR content
+          ↳ 41: expression
+                ↳ 34: content AND content •
+parser.y: attenzione: conflitto di shift/reduce sul token ADD [-Wcounterexamples]
+  Esempio: content OR content • ADD content
+  Derivazione del turno
+    expression
+    ↳ 35: content OR content
+                     ↳ 41: expression
+                           ↳ 24: content • ADD content
+  Ridurre la derivazione
+    expression
+    ↳ 24: content                          ADD content
+          ↳ 41: expression
+                ↳ 35: content OR content •
+parser.y: attenzione: conflitto di shift/reduce sul token SUB [-Wcounterexamples]
+  Esempio: content OR content • SUB content
+  Derivazione del turno
+    expression
+    ↳ 35: content OR content
+                     ↳ 41: expression
+                           ↳ 25: content • SUB content
+  Ridurre la derivazione
+    expression
+    ↳ 25: content                          SUB content
+          ↳ 41: expression
+                ↳ 35: content OR content •
+parser.y: attenzione: conflitto di shift/reduce sul token MUL [-Wcounterexamples]
+  Esempio: content OR content • MUL content
+  Derivazione del turno
+    expression
+    ↳ 35: content OR content
+                     ↳ 41: expression
+                           ↳ 26: content • MUL content
+  Ridurre la derivazione
+    expression
+    ↳ 26: content                          MUL content
+          ↳ 41: expression
+                ↳ 35: content OR content •
+parser.y: attenzione: conflitto di shift/reduce sul token DIV [-Wcounterexamples]
+  Esempio: content OR content • DIV content
+  Derivazione del turno
+    expression
+    ↳ 35: content OR content
+                     ↳ 41: expression
+                           ↳ 27: content • DIV content
+  Ridurre la derivazione
+    expression
+    ↳ 27: content                          DIV content
+          ↳ 41: expression
+                ↳ 35: content OR content •
+parser.y: attenzione: conflitto di shift/reduce sul token EE [-Wcounterexamples]
+  Esempio: content OR content • EE content
+  Derivazione del turno
+    expression
+    ↳ 35: content OR content
+                     ↳ 41: expression
+                           ↳ 28: content • EE content
+  Ridurre la derivazione
+    expression
+    ↳ 28: content                          EE content
+          ↳ 41: expression
+                ↳ 35: content OR content •
+parser.y: attenzione: conflitto di shift/reduce sul token NE [-Wcounterexamples]
+  Esempio: content OR content • NE content
+  Derivazione del turno
+    expression
+    ↳ 35: content OR content
+                     ↳ 41: expression
+                           ↳ 29: content • NE content
+  Ridurre la derivazione
+    expression
+    ↳ 29: content                          NE content
+          ↳ 41: expression
+                ↳ 35: content OR content •
+parser.y: attenzione: conflitto di shift/reduce sul token GT [-Wcounterexamples]
+  Esempio: content OR content • GT content
+  Derivazione del turno
+    expression
+    ↳ 35: content OR content
+                     ↳ 41: expression
+                           ↳ 30: content • GT content
+  Ridurre la derivazione
+    expression
+    ↳ 30: content                          GT content
+          ↳ 41: expression
+                ↳ 35: content OR content •
+parser.y: attenzione: conflitto di shift/reduce sul token LT [-Wcounterexamples]
+  Esempio: content OR content • LT content
+  Derivazione del turno
+    expression
+    ↳ 35: content OR content
+                     ↳ 41: expression
+                           ↳ 31: content • LT content
+  Ridurre la derivazione
+    expression
+    ↳ 31: content                          LT content
+          ↳ 41: expression
+                ↳ 35: content OR content •
+parser.y: attenzione: conflitto di shift/reduce sul token GE [-Wcounterexamples]
+  Esempio: content OR content • GE content
+  Derivazione del turno
+    expression
+    ↳ 35: content OR content
+                     ↳ 41: expression
+                           ↳ 32: content • GE content
+  Ridurre la derivazione
+    expression
+    ↳ 32: content                          GE content
+          ↳ 41: expression
+                ↳ 35: content OR content •
+parser.y: attenzione: conflitto di shift/reduce sul token LE [-Wcounterexamples]
+  Esempio: content OR content • LE content
+  Derivazione del turno
+    expression
+    ↳ 35: content OR content
+                     ↳ 41: expression
+                           ↳ 33: content • LE content
+  Ridurre la derivazione
+    expression
+    ↳ 33: content                          LE content
+          ↳ 41: expression
+                ↳ 35: content OR content •
+parser.y: attenzione: conflitto di shift/reduce sul token AND [-Wcounterexamples]
+  Esempio: content OR content • AND content
+  Derivazione del turno
+    expression
+    ↳ 35: content OR content
+                     ↳ 41: expression
+                           ↳ 34: content • AND content
+  Ridurre la derivazione
+    expression
+    ↳ 34: content                          AND content
+          ↳ 41: expression
+                ↳ 35: content OR content •
+parser.y: attenzione: conflitto di shift/reduce sul token OR [-Wcounterexamples]
+  Esempio: content OR content • OR content
+  Derivazione del turno
+    expression
+    ↳ 35: content OR content
+                     ↳ 41: expression
+                           ↳ 35: content • OR content
+  Ridurre la derivazione
+    expression
+    ↳ 35: content                          OR content
+          ↳ 41: expression
+                ↳ 35: content OR content •

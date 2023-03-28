@@ -31,6 +31,7 @@ void scope_exit();
 %token PRINTF
 %token SCANF
 %token RETURN
+%token MAIN
 %token ADD
 %token SUB
 %token MUL
@@ -53,20 +54,20 @@ void scope_exit();
 %token RBRA
 %token SEMICOL
 %token COMMA
-%token ID
 %token INT_VALUE
 %token FLOAT_VALUE
+%token ID
 %token CHAR_VALUE
-%token MAIN
+%token UNKNOWN
 
 
 /* NON_TERMINAL TYPES */
 %define api.value.type {union yystype}
 
 
-%type <string> types SEMICOL COMMA ID INT_VALUE FLOAT_VALUE CHAR_VALUE EQ ADD SUB MUL DIV EE NE GT LT GE LE AND OR NOT RETURN LPAR RPAR LSBRA RSBRA LBRA RBRA MAIN
-%type <statements> program statements 
-%type <instruction> instruction 
+%type <string> types VOID INT FLOAT CHAR IF ELSE WHILE PRINTF SCANF RETURN MAIN ADD SUB MUL DIV EQ EE NE GT LT GE LE AND OR NOT LPAR RPAR LSBRA RSBRA LBRA RBRA SEMICOL COMMA INT_VALUE FLOAT_VALUE ID CHAR_VALUE
+%type <statements> program statements
+%type <instruction> instruction
 %type <init> initialization
 %type <assign> assignment
 %type <operand> content
@@ -178,7 +179,7 @@ types MAIN LPAR RPAR body                           {
 |   initialization LPAR functionParams RPAR body    {
                                                         scope_enter();
                                                         for(struct AstNodeFunctionParams *p = $3; p != NULL; p = p->nextParams) {
-                                                            struct symtab *s = createSym(p->initParam->assign->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->assign->variableName, p->initParam->assign->assignValue);
+                                                            struct SymTab *s = createSym(p->initParam->assign->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->assign->variableName, p->initParam->assign->assignValue);
                                                             printf("Added function parameter in the symbol table\n");
                                                         }
                                                         $$ = malloc(sizeof(struct AstNodeFunctionDecl));
@@ -193,22 +194,28 @@ types MAIN LPAR RPAR body                           {
 functionCall:
 ID LPAR RPAR                                        {
                                                         $$ = malloc(sizeof(struct AstNodeFunctionCall));
-                                                        struct symtab *s = findSymtab($1, actualList);
+                                                        struct SymTab *s = findSymtab($1, actualList);
                                                         if (s != NULL) {
-                                                            if (s->funcName != NULL) {
-                                                                printf("AstNodeFunctionCall allocated for 'ID LPAR RPAR'\n");
-                                                                $$->functionName = $1;
-                                                                $$->returnType = s->returnType;
-                                                                $$->functionParams = NULL; 
-                                                            } else {
-                                                                printf("Errore: %s is not a function", $1);
-                                                            }
+                                                            printf("AstNodeFunctionCall allocated for 'ID LPAR RPAR'\n");
+                                                            $$->functionName = $1;
+                                                            $$->returnType = s->returnType;
+                                                            $$->functionParams = NULL;
+                                                            printf("Il returnType è %s", s->returnType);
                                                         } else {
-                                                            printf("Errore: function %s not declared", $1);
+                                                            printf("Error: function %s not declared\n", $1);
                                                         }
                                                     }
 | ID LPAR functionParams RPAR                       {
                                                         $$ = malloc(sizeof(struct AstNodeFunctionCall));
+                                                        struct SymTab *s = findSymtab($1, actualList);
+                                                        if (s != NULL) {
+                                                            printf("AstNodeFunctionCall allocated for 'ID LPAR functionParams RPAR'\n");
+                                                            $$->functionName = $1;
+                                                            $$->returnType = s->returnType;
+                                                            $$->functionParams = NULL;
+                                                        } else {
+                                                            printf("Error: function %s not declared\n", $1);
+                                                        }
                                                     };
 
 functionParams:
@@ -254,9 +261,6 @@ types ID                                            {
                                                         $$->callParams = $1;
                                                         $$->initParam = NULL;
                                                     };
-
-
-
 
 body:
 LBRA statements RBRA                                {
@@ -615,8 +619,10 @@ types:
 
 int main() {
     yyparse();
-    
+    nullValue.val = NULL;
     counter = 0;
+
+    return 0;
 }
 
 int yyerror(char *s) {
