@@ -43,18 +43,18 @@ id              {letter}({letter}|{digit})*
 <QUOTE><<EOF>>              {printf("errore\n");}
 
 
-"void"      {printf("keyword 'VOID' detected\n"); return(VOID);}
-"int"       {printf("keyword 'INT' detected\n"); return(INT); }
-"float"     {printf("keyword 'FLOAT' detected\n"); return(FLOAT);}
-"char"      {printf("keyword 'CHAR' detected\n"); return(CHAR);}
+"void"      {yylval.string=strdup(yytext); printf("keyword 'VOID' detected\n"); return(VOID);}
+"int"       {yylval.string=strdup(yytext); printf("keyword 'INT' detected\n"); return(INT); }
+"float"     {yylval.string=strdup(yytext); printf("keyword 'FLOAT' detected\n"); return(FLOAT);}
+"char"      {yylval.string=strdup(yytext); printf("keyword 'CHAR' detected\n"); return(CHAR);}
 
-"if"        {printf("keyword 'IF' detected\n"); return(IF);}
-"else"      {printf("keyword 'ELSE' detected\n"); return(ELSE);}
-"while"     {printf("keyword 'WHILE' detected\n"); return(WHILE);}
-"printf"    {printf("keyword 'PRINTF' detected\n"); return(PRINTF);}
-"scanf"     {printf("keyword 'SCANF' detected\n"); return(SCANF);}
-"return"    {printf("keyword 'RETURN' detected\n"); return(RETURN);}
-"main"      {printf("keyword 'MAIN' detected\n"); return(MAIN);}
+"if"        {yylval.string=strdup(yytext); printf("keyword 'IF' detected\n"); return(IF);}
+"else"      {yylval.string=strdup(yytext); printf("keyword 'ELSE' detected\n"); return(ELSE);}
+"while"     {yylval.string=strdup(yytext); printf("keyword 'WHILE' detected\n"); return(WHILE);}
+"printf"    {yylval.string=strdup(yytext); printf("keyword 'PRINTF' detected\n"); return(PRINTF);}
+"scanf"     {yylval.string=strdup(yytext); printf("keyword 'SCANF' detected\n"); return(SCANF);}
+"return"    {yylval.string=strdup(yytext); printf("keyword 'RETURN' detected\n"); return(RETURN);}
+"main"      {yylval.string=strdup(yytext); printf("keyword 'MAIN' detected\n"); return(MAIN);}
 
 "+"         {yylval.string=strdup(yytext); printf("keyword '+' detected\n"); return(ADD);}
 "-"         {yylval.string=strdup(yytext); printf("keyword '-' detected\n"); return(SUB);}
@@ -91,6 +91,6 @@ id              {letter}({letter}|{digit})*
 {id}                {yylval.string=strdup(yytext); printf("Found ID\n"); return(ID);}
 {char_value}        {yylval.string=strdup(yytext); printf("Found CHAR\n"); return(CHAR_VALUE);}
 
-.                   {printf("Unknown character\n"); return(UNKNOWN)}
+.                   {printf("Unknown character\n"); return(UNKNOWN);}
 
 %%

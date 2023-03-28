@@ -14,7 +14,9 @@ int yyerror(char *s);
 struct AstNodeStatements *root;
 struct List *actualList = NULL;
 
-char * type_to_str(int type);
+char* type_to_str(int type);
+//int str_to_type(int type);
+
 void scope_enter();
 void scope_exit();
 
@@ -76,6 +78,9 @@ void scope_exit();
 %type <functionDecl> functionDecl
 %type <functionCall> functionCall
 %type <functionParams> functionParams
+%type <ifStatement> ifStatement
+%type <elseifStatement> elseifStatement
+%type <elseStatement> elseStatement
 
 %start program
 
@@ -152,6 +157,24 @@ assignment SEMICOL                                  {
                                                         printf("AstNodeInstruction allocated for 'functionCall SEMICOL'\n");
                                                         $$->nodeType = FUNCTION_CALL_NODE;
                                                         $$->value.functionCall = $1;
+                                                    }
+|   ifStatement                                     {
+                                                        $$ = malloc(sizeof(struct AstNodeInstruction));
+                                                        printf("AstNodeInstruction allocated for 'ifStatement'\n");
+                                                        $$->nodeType = IF_NODE;
+                                                        $$->value.ifStatement = $1;
+                                                    }
+|   elseifStatement                                 {
+                                                        $$ = malloc(sizeof(struct AstNodeInstruction));
+                                                        printf("AstNodeInstruction allocated for 'ifStatement'\n");
+                                                        $$->nodeType = ELSE_IF_NODE;
+                                                        $$->value.elseifStatement = $1;
+                                                    }
+|   elseStatement                                   {
+                                                        $$ = malloc(sizeof(struct AstNodeInstruction));
+                                                        printf("AstNodeInstruction allocated for 'ifStatement'\n");
+                                                        $$->nodeType = ELSE_NODE;
+                                                        $$->value.elseStatement = $1;
                                                     };
 
 functionDecl:
@@ -194,9 +217,9 @@ types MAIN LPAR RPAR body                           {
 functionCall:
 ID LPAR RPAR                                        {
                                                         $$ = malloc(sizeof(struct AstNodeFunctionCall));
+                                                        printf("AstNodeFunctionCall allocated for 'ID LPAR RPAR'\n");
                                                         struct SymTab *s = findSymtab($1, actualList);
                                                         if (s != NULL) {
-                                                            printf("AstNodeFunctionCall allocated for 'ID LPAR RPAR'\n");
                                                             $$->functionName = $1;
                                                             $$->returnType = s->returnType;
                                                             $$->functionParams = NULL;
@@ -207,9 +230,9 @@ ID LPAR RPAR                                        {
                                                     }
 | ID LPAR functionParams RPAR                       {
                                                         $$ = malloc(sizeof(struct AstNodeFunctionCall));
+                                                        printf("AstNodeFunctionCall allocated for 'ID LPAR functionParams RPAR'\n");
                                                         struct SymTab *s = findSymtab($1, actualList);
                                                         if (s != NULL) {
-                                                            printf("AstNodeFunctionCall allocated for 'ID LPAR functionParams RPAR'\n");
                                                             $$->functionName = $1;
                                                             $$->returnType = s->returnType;
                                                             $$->functionParams = NULL;
@@ -276,6 +299,28 @@ LBRA statements RBRA                                {
                                                         $$->returnValue = $4;
                                                     };
 
+ifStatement:
+IF LPAR expression RPAR body                        {
+                                                        $$ = malloc(sizeof(struct AstNodeIf));
+                                                        printf("AstNodeIf allocated for 'IF LPAR expression RPAR body'\n");
+                                                        $$->ifCondition = $3;
+                                                        $$->ifBody = $5;
+                                                    };
+
+elseifStatement:                                    
+ELSE IF LPAR expression RPAR body                   {
+                                                        $$ = malloc(sizeof(struct AstNodeElseIf));
+                                                        printf("AstNodeElseIf allocated for 'ELSE IF LPAR expression RPAR body'\n");
+                                                        $$->elseifCondition = $4;
+                                                        $$->elseifBody = $6;
+                                                    };
+
+elseStatement:                                    
+ELSE body                   {
+                                                        $$ = malloc(sizeof(struct AstNodeElse));
+                                                        printf("AstNodeElse allocated for 'ELSE body'\n");
+                                                        $$->elseBody = $2;
+                                                    };
 
 initialization:
 types ID                                            {
@@ -639,7 +684,7 @@ void scope_exit() {
     counter--;
 }
 
-char * type_to_str(int type) {
+char* type_to_str(int type) {
     switch(type) {
         case DATA_TYPE_NONE:
             return "none";

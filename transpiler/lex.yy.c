@@ -900,57 +900,57 @@ case YY_STATE_EOF(QUOTE):
 case 14:
 YY_RULE_SETUP
 #line 46 "lexer.l"
-{printf("keyword 'VOID' detected\n"); return(VOID);}
+{yylval.string=strdup(yytext); printf("keyword 'VOID' detected\n"); return(VOID);}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 47 "lexer.l"
-{printf("keyword 'INT' detected\n"); return(INT); }
+{yylval.string=strdup(yytext); printf("keyword 'INT' detected\n"); return(INT); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 48 "lexer.l"
-{printf("keyword 'FLOAT' detected\n"); return(FLOAT);}
+{yylval.string=strdup(yytext); printf("keyword 'FLOAT' detected\n"); return(FLOAT);}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 49 "lexer.l"
-{printf("keyword 'CHAR' detected\n"); return(CHAR);}
+{yylval.string=strdup(yytext); printf("keyword 'CHAR' detected\n"); return(CHAR);}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 51 "lexer.l"
-{printf("keyword 'IF' detected\n"); return(IF);}
+{yylval.string=strdup(yytext); printf("keyword 'IF' detected\n"); return(IF);}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 52 "lexer.l"
-{printf("keyword 'ELSE' detected\n"); return(ELSE);}
+{yylval.string=strdup(yytext); printf("keyword 'ELSE' detected\n"); return(ELSE);}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 53 "lexer.l"
-{printf("keyword 'WHILE' detected\n"); return(WHILE);}
+{yylval.string=strdup(yytext); printf("keyword 'WHILE' detected\n"); return(WHILE);}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 54 "lexer.l"
-{printf("keyword 'PRINTF' detected\n"); return(PRINTF);}
+{yylval.string=strdup(yytext); printf("keyword 'PRINTF' detected\n"); return(PRINTF);}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 55 "lexer.l"
-{printf("keyword 'SCANF' detected\n"); return(SCANF);}
+{yylval.string=strdup(yytext); printf("keyword 'SCANF' detected\n"); return(SCANF);}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 56 "lexer.l"
-{printf("keyword 'RETURN' detected\n"); return(RETURN);}
+{yylval.string=strdup(yytext); printf("keyword 'RETURN' detected\n"); return(RETURN);}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 57 "lexer.l"
-{printf("keyword 'MAIN' detected\n"); return(MAIN);}
+{yylval.string=strdup(yytext); printf("keyword 'MAIN' detected\n"); return(MAIN);}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
@@ -1095,7 +1095,7 @@ YY_RULE_SETUP
 case 53:
 YY_RULE_SETUP
 #line 94 "lexer.l"
-{printf("Unknown character\n"); return(UNKNOWN)}
+{printf("Unknown character\n"); return(UNKNOWN);}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
