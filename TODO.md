@@ -8,16 +8,16 @@
 
 ### In Progress
 
-- [ ] :computer: Create Abstract Syntax Tree (ast.h)
+- [ ] Create Abstract Syntax Tree (ast.h)
     - [x] Add struct AstNodeStatements
     - [x] Add struct AstNodeInstruction
     - [x] Add struct AstNodeInit
     - [x] Add struct AstNodeAssign
     - [x] Add struct AstNodeExpression
     - [x] Add struct AstNodeOperand
-    - [ ] :computer: Add struct AstNodeArrayInit (to test)
-    - [ ] :computer: Add struct AstNodeArrayAssign (to test)
-    - [ ] :computer: Add struct AstNodeArrayElements (to test)
+    - [x] Add struct AstNodeArrayInit (to test)
+    - [x] Add struct AstNodeArrayAssign (to test)
+    - [x] Add struct AstNodeArrayElements (to test)
     - [x] Add struct AstNodeFunctionDecl
     - [x] Add struct AstNodeFunctionCall
     - [x] Add struct AstNodeFunctionParams
@@ -26,23 +26,23 @@
     - [x] Add struct AstNodeElseIf
     - [x] Add struct AstNodeElse
     - [x] Add struct AstNodeWhile
-- [ ] :computer: Create parser.y
+- [ ] Create parser.y
     - [x] Implement statements
-    - [ ] :computer: Implement instruction
-    - [ ] :computer: Implement initialization
-    - [ ] :computer: Implement assignment
-    - [x] :computer: Implement expression (to test)
+    - [x] Implement instruction (to test)
+    - [x] Implement initialization (to test)
+    - [x] Implement assignment (to test)
+    - [x] Implement expression (to test)
     - [x] Implement content
-    - [ ] Implement arrayInit
-    - [ ] Implement arrayAssign
-    - [ ] Implement arrayElements
-    - [ ] :computer: Implement functionDecl
-    - [ ] :computer: Implement functionCall
-    - [ ] Implement functionParams
-    - [x] Implement body
-    - [ ] Implement if
-    - [ ] Implement elseif
-    - [ ] Implement else
+    - [x] Implement arrayInit (to test)
+    - [x] Implement arrayAssign (to test)
+    - [x] Implement arrayElements (to test)
+    - [x] Implement functionDecl (to test)
+    - [x] Implement functionCall (to test)
+    - [x] Implement functionParams (to test)
+    - [x] Implement body (to test)
+    - [x] Implement if (to test)
+    - [x] Implement elseif (to test)
+    - [x] Implement else (to test)
     - [ ] Implement while
 
 

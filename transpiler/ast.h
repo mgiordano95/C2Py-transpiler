@@ -149,7 +149,8 @@ struct AstNodeArrayInit {
 /*--------------- Node Array Assign ---------------*/
 struct AstNodeArrayAssign {
     char *arrayName;
-    int *index;
+    int *elementIndex;
+    int *arrayLength;
     enum DataType arrayType;
     struct AstNodeArrayElements *elements;
 };

@@ -334,13 +334,15 @@ ELSE body                                           {
 
 arrayInit:
 types ID LSBRA RSBRA                                {
-                                                        $$ = malloc(sizeof(struct AstNodeArrayInit)); //Error: array size missing in ‘myArray’ !!!
+                                                        $$ = printf("Error: array size missing in %s\n", $1) //Error: array size missing in ‘myArray’ !!!
+                                                        $$ = malloc(sizeof(struct AstNodeArrayInit));
                                                         printf("AstNodeArrayInit allocated for 'types ID LSBRA RSBRA'\n"); //int myArray[];
                                                         $$->arrayType = str_to_type($1);
                                                         $$->assignArray = malloc(sizeof(struct AstNodeArrayAssign));
                                                         printf("AstNodeArrayAssign allocated for 'types ID LSBRA RSBRA'\n");
                                                         $$->assignArray->arrayName = $2;
-                                                        $$->assignArray->index = NULL;
+                                                        $$->assignArray->elementIndex = NULL;
+                                                        $$->assignArray->arrayLength = NULL;
                                                         $$->assignArray->arrayType = str_to_type($1);
                                                         $$->assignArray->elements = NULL;
                                                     } 
@@ -351,7 +353,8 @@ types ID LSBRA RSBRA                                {
                                                         $$->assignArray = malloc(sizeof(struct AstNodeArrayAssign));
                                                         printf("AstNodeArrayAssign allocated for 'types ID LSBRA INT_VALUE RSBRA'\n");
                                                         $$->assignArray->arrayName = str_to_type($1);
-                                                        $$->assignArray->index = $4;
+                                                        $$->assignArray->elementIndex = NULL;
+                                                        $$->assignArray->arrayLength = $4;
                                                         $$->assignArray->arrayType = str_to_type($1);
                                                         $$->assignArray->elements = NULL;
                                                     };
@@ -361,15 +364,18 @@ types ID LSBRA RSBRA EQ LBRA RBRA                               {
                                                                     $$ = malloc(sizeof(struct AstNodeArrayAssign));
                                                                     printf("AstNodeArrayAssign allocated for 'types ID LSBRA RSBRA EQ LBRA RBRA'\n"); //int myArray[] = {};
                                                                     $$->arrayName = $2; 
-                                                                    $$->index = NULL;
+                                                                    $$->elementIndex = NULL;
+                                                                    $$->arrayLength = NULL;
                                                                     $$->arrayType = str_to_type($1);
                                                                     $$->elements = NULL; //Outuput: array[0]: 0, array[1]: memoryAddress
                                                                 }
 |   types ID LSBRA INT_VALUE RSBRA EQ content                   {
+                                                                    $$ = printf("Error: invalid initializer of %s\n", $1) //Error: invalid initializer !!!
                                                                     $$ = malloc(sizeof(struct AstNodeArrayAssign));
                                                                     printf("AstNodeArrayAssign allocated for 'types ID LSBRA INT_VALUE RSBRA EQ content'\n"); //int myArray[2] = 24;
-                                                                    $$->arrayName = $2; 
-                                                                    $$->index = $4;
+                                                                    $$->arrayName = $2;
+                                                                    $$->elementIndex = $4;
+                                                                    $$->arrayLength = NULL;
                                                                     $$->arrayType = str_to_type($1);
                                                                     $$->elements = $4;
                                                                 }
@@ -377,15 +383,17 @@ types ID LSBRA RSBRA EQ LBRA RBRA                               {
                                                                     $$ = malloc(sizeof(struct AstNodeArrayAssign));
                                                                     printf("AstNodeArrayAssign allocated for 'types ID LSBRA RSBRA EQ LBRA elements RBRA'\n"); //int myArray[] = {24, 27, 29};
                                                                     $$->arrayName = $2; 
-                                                                    $$->index = NULL; //TO-DO: compute index as # of elements
+                                                                    $$->elementIndex = NULL;
+                                                                    $$->arrayLength = NULL; //TO-DO: compute arrayLength as # of elements
                                                                     $$->arrayType = str_to_type($1);
                                                                     $$->elements = $7;
                                                                 }
 |   types ID LSBRA INT_VALUE RSBRA EQ LBRA arrayElements RBRA   {
                                                                     $$ = malloc(sizeof(struct AstNodeArrayAssign));
                                                                     printf("AstNodeArrayAssign allocated for 'types ID LSBRA INT_VALUE RSBRA EQ LBRA elements RBRA'\n"); //int myArray[3] = {24, 27, 29};
-                                                                    $$->arrayName = $2; 
-                                                                    $$->index = $4;
+                                                                    $$->arrayName = $2;
+                                                                    $$->elementIndex = NULL;
+                                                                    $$->arrayLength = $4;
                                                                     $$->arrayType = str_to_type($1);
                                                                     $$->elements = $8;
                                                                 }
@@ -393,31 +401,35 @@ types ID LSBRA RSBRA EQ LBRA RBRA                               {
                                                                     $$ = malloc(sizeof(struct AstNodeArrayAssign)); //Syntax Error !!!
                                                                     printf("AstNodeArrayAssign allocated for 'ID LSBRA RSBRA EQ LBRA RBRA'\n"); //myArray[] = {};
                                                                     $$->arrayName = $1; 
-                                                                    $$->index = NULL;
+                                                                    $$->elementIndex = NULL;
+                                                                    $$->arrayLength = NULL;
                                                                     $$->arrayType = str_to_type($1);
                                                                     $$->elements = NULL;
                                                                 }
 |   ID LSBRA INT_VALUE RSBRA EQ content                         {
                                                                     $$ = malloc(sizeof(struct AstNodeArrayAssign));
                                                                     printf("AstNodeArrayAssign allocated for 'ID LSBRA INT_VALUE RSBRA EQ content'\n"); // myArray[2] = 24;
-                                                                    $$->arrayName = $1; 
-                                                                    $$->index = $3;
+                                                                    $$->arrayName = $1;
+                                                                    $$->elementIndex = $3;
+                                                                    $$->arrayLength = NULL;
                                                                     $$->arrayType = $6->valueType;
                                                                     $$->elements = $6;
                                                                 }
-|   ID LSBRA RSBRA EQ LBRA arrayElements RBRA                    {
+|   ID LSBRA RSBRA EQ LBRA arrayElements RBRA                   {
                                                                     $$ = malloc(sizeof(struct AstNodeArrayAssign));
                                                                     printf("AstNodeArrayAssign allocated for 'ID LSBRA RSBRA EQ LBRA elements RBRA'\n"); //myArray[] = {24, 27, 29};
-                                                                    $$->arrayName = $1; 
-                                                                    $$->index = NULL; //TO-DO: compute index as # of elements
+                                                                    $$->arrayName = $1;
+                                                                    $$->elementIndex = NULL;
+                                                                    $$->arrayLength = NULL; //TO-DO: compute arrayLength as # of elements
                                                                     $$->arrayType = $6->element->valueType; //TO-DO: accedere ai tipi di element e non di content, tipo $7->element->valueType
                                                                     $$->elements = $6;
                                                                 }
 |   ID LSBRA INT_VALUE RSBRA EQ LBRA arrayElements RBRA         {
                                                                     $$ = malloc(sizeof(struct AstNodeArrayAssign));
                                                                     printf("AstNodeArrayAssign allocated for 'ID LSBRA INT_VALUE RSBRA EQ LBRA elements RBRA'\n"); //myArray[3] = {24, 27, 29};
-                                                                    $$->arrayName = $1; 
-                                                                    $$->index = $3;
+                                                                    $$->arrayName = $1;
+                                                                    $$->elementIndex = NULL; 
+                                                                    $$->arrayLength = NULL; //$3
                                                                     $$->arrayType = $7->element->valueType; //TO-DO: accedere ai tipi di element e non di content, tipo $7->element->valueType
                                                                     $$->elements = $7;
                                                                 }; 
