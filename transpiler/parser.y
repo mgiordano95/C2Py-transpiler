@@ -410,7 +410,7 @@ types ID LSBRA RSBRA EQ LBRA RBRA                               {
                                                                     printf("AstNodeArrayAssign allocated for 'ID LSBRA RSBRA EQ LBRA elements RBRA'\n"); //myArray[] = {24, 27, 29};
                                                                     $$->arrayName = $1; 
                                                                     $$->index = NULL; //TO-DO: compute index as # of elements
-                                                                    $$->arrayType = $6->valueType; //TO-DO: accedere ai tipi di element e non di content, tipo $7->element->valueType
+                                                                    $$->arrayType = $6->element->valueType; //TO-DO: accedere ai tipi di element e non di content, tipo $7->element->valueType
                                                                     $$->elements = $6;
                                                                 }
 |   ID LSBRA INT_VALUE RSBRA EQ LBRA arrayElements RBRA         {
@@ -418,20 +418,20 @@ types ID LSBRA RSBRA EQ LBRA RBRA                               {
                                                                     printf("AstNodeArrayAssign allocated for 'ID LSBRA INT_VALUE RSBRA EQ LBRA elements RBRA'\n"); //myArray[3] = {24, 27, 29};
                                                                     $$->arrayName = $1; 
                                                                     $$->index = $3;
-                                                                    $$->arrayType = $7->valueType; //TO-DO: accedere ai tipi di element e non di content, tipo $7->element->valueType
+                                                                    $$->arrayType = $7->element->valueType; //TO-DO: accedere ai tipi di element e non di content, tipo $7->element->valueType
                                                                     $$->elements = $7;
                                                                 }; 
 
 arrayElements:
 content                                                         {
                                                                     $$ = malloc(sizeof(struct AstNodeArrayElements));
-                                                                    printf("AstNodeArrayElements allocated for 'content'\n"); // 4 -> single element in array
+                                                                    printf("AstNodeArrayElements allocated for 'content': %s\n", $1->value.val); // 4 -> single element in array
                                                                     $$->element = $1;
                                                                     $$->nextElement = NULL;
                                                                 }
 | content COMMA arrayElements                                   {
                                                                     $$ = malloc(sizeof(struct AstNodeArrayElements)); // 4, 5, 6 -> multiple elements in array
-                                                                    printf("AstNodeArrayElements allocated for 'content COMMA elements'\n");
+                                                                    printf("AstNodeArrayElements allocated for 'content COMMA elements': %s\n", $1->value.val);
                                                                     $$->element = $1;
                                                                     $$->nextElement = $3;
                                                                 };
