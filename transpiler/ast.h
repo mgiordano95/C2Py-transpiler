@@ -157,7 +157,7 @@ struct AstNodeArrayAssign {
 /*--------------- Node Array Assign ---------------*/
 struct AstNodeArrayElements {
     struct AstNodeOperand *element;
-
+    struct AstNodeArrayElements *nextElement;
 };
 
 /*--------------- Node Function Declaration ---------------*/
