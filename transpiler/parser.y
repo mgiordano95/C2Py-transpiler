@@ -15,7 +15,6 @@ struct AstNodeStatements *root;
 struct List *actualList = NULL;
 
 char* type_to_str(int type);
-//int str_to_type(int type);
 
 void scope_enter();
 void scope_exit();
@@ -62,10 +61,7 @@ void scope_exit();
 %token CHAR_VALUE
 %token UNKNOWN
 
-
-/* NON_TERMINAL TYPES */
 %define api.value.type {union yystype}
-
 
 %type <string> types VOID INT FLOAT CHAR IF ELSE WHILE PRINTF SCANF RETURN MAIN ADD SUB MUL DIV EQ EE NE GT LT GE LE AND OR NOT LPAR RPAR LSBRA RSBRA LBRA RBRA SEMICOL COMMA INT_VALUE FLOAT_VALUE ID CHAR_VALUE
 %type <statements> program statements
@@ -94,7 +90,7 @@ statements                                          {
                                                         scope_exit();
                                                     };
 
-statements: 
+statements:
 instruction statements                              {
                                                         $$ = malloc(sizeof(struct AstNodeStatements));
                                                         printf("AstNodeStatements allocated for 'instruction statements'\n");
@@ -306,7 +302,7 @@ IF LPAR expression RPAR body                        {
                                                         $$->ifBody = $5;
                                                     };
 
-elseifStatement:                                    
+elseifStatement:
 ELSE IF LPAR expression RPAR body                   {
                                                         $$ = malloc(sizeof(struct AstNodeElseIf));
                                                         printf("AstNodeElseIf allocated for 'ELSE IF LPAR expression RPAR body'\n");
@@ -314,8 +310,8 @@ ELSE IF LPAR expression RPAR body                   {
                                                         $$->elseifBody = $6;
                                                     };
 
-elseStatement:                                    
-ELSE body                   {
+elseStatement:
+ELSE body                                           {
                                                         $$ = malloc(sizeof(struct AstNodeElse));
                                                         printf("AstNodeElse allocated for 'ELSE body'\n");
                                                         $$->elseBody = $2;
@@ -335,7 +331,7 @@ types ID                                            {
                                                         $$->assign->assignType = CONTENT_TYPE_ID;  
                                                     };
 
-assignment:                     
+assignment:
 ID EQ ID                                            {
                                                         $$ = malloc(sizeof(struct AstNodeAssign));
                                                         printf("AstNodeAssign allocated for 'ID EQ ID'\n");
@@ -343,10 +339,10 @@ ID EQ ID                                            {
                                                         $$->assignType = CONTENT_TYPE_ID;
                                                         $$->assignValue.val = $3;
                                                         struct SymTab *s = findSym($3, actualList);
-                                                        if (s == NULL) { 
+                                                        if (s == NULL) {
                                                             $$->variableType = DATA_TYPE_NONE; 
                                                             printf("ID EQ ID non esiste dollaro3 nella symtab\n");
-                                                        } else { 
+                                                        } else {
                                                             $$->variableType = s->dataType;
                                                             printf("ID EQ ID esiste dollaro3 nella symtab\n");
                                                         }
@@ -356,12 +352,12 @@ ID EQ ID                                            {
                                                         s = findSym($2, actualList);  //controlla se il simbolo è stato già dichiarato
                                                         if (s==NULL) {
                                                             s = createSym($2, actualList, SYMBOL_VARIABLE, str_to_type($1), str_to_type($1), NULL, $4->value);
-                                                            printf("types ID EQ content non esiste dollaro2 nella symtab e la creo\n");
+                                                            printf("'types ID EQ content': the variable %s has not already been declared and then I create the symbol table for this variable\n", $2);
                                                         } else {
-                                                            printf("\n Errore: variabile %s gia' dichiarata \n", $2);
+                                                            printf("Error: variable %s already declared\n", $2);
                                                         }
                                                         if ((str_to_type($1) != $4->valueType)) {
-                                                            //printf("Errore: impossibile assegnare un tipo %s ad un tipo %s \n", type_to_str($4->valueType), type_to_str($1));
+                                                            printf("Error: Cannot assign type %s to type %s \n", type_to_str($4->valueType), type_to_str($1));
                                                         } else {
                                                             $$ = malloc(sizeof(struct AstNodeAssign));
                                                             printf("AstNodeAssign allocated for 'types ID EQ content'\n");
@@ -708,21 +704,21 @@ char* type_to_str(int type) {
             return "char";
         break;
         default:
-            return "Type not defined";
+            return "undefined";
         break;
     }
 }
 
 int str_to_type(int type) {
-    if (strcmp(type_to_str(type), "void") == 0) { 
-        return DATA_TYPE_VOID; 
-    } else if (strcmp(type_to_str(type), "int") == 0) { 
-        return DATA_TYPE_INT; 
+    if (strcmp(type_to_str(type), "void") == 0) {
+        return DATA_TYPE_VOID;
+    } else if (strcmp(type_to_str(type), "int") == 0) {
+        return DATA_TYPE_INT;
     } else if (strcmp(type_to_str(type), "float") == 0) {
         return DATA_TYPE_FLOAT;
-    } else if (strcmp(type_to_str(type), "char") == 0) { 
+    } else if (strcmp(type_to_str(type), "char") == 0) {
         return DATA_TYPE_CHAR;
     } else {
-        return DATA_TYPE_NONE; 
+        return DATA_TYPE_NONE;
     }
 }
