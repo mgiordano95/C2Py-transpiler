@@ -15,9 +15,9 @@
     - [x] Add struct AstNodeAssign
     - [x] Add struct AstNodeExpression
     - [x] Add struct AstNodeOperand
-    - [x] Add struct AstNodeArrayInit (to test)
-    - [x] Add struct AstNodeArrayAssign (to test)
-    - [x] Add struct AstNodeArrayElements (to test)
+    - [x] Add struct AstNodeArrayInit (<span style="color:red">to test</span>)
+    - [x] Add struct AstNodeArrayAssign (<span style="color:red">to test</span>)
+    - [x] Add struct AstNodeArrayElements (<span style="color:red">to test</span>)
     - [x] Add struct AstNodeFunctionDecl
     - [x] Add struct AstNodeFunctionCall
     - [x] Add struct AstNodeFunctionParams
@@ -28,21 +28,21 @@
     - [x] Add struct AstNodeWhile
 - [ ] Create parser.y
     - [x] Implement statements
-    - [x] Implement instruction (to test)
-    - [x] Implement initialization (to test)
-    - [x] Implement assignment (to test)
-    - [x] Implement expression (to test)
+    - [x] Implement instruction (<span style="color:red">to test</span>)
+    - [x] Implement initialization (<span style="color:red">to test</span>)
+    - [x] Implement assignment (<span style="color:red">to test</span>)
+    - [x] Implement expression (<span style="color:red">to test</span>)
     - [x] Implement content
-    - [x] Implement arrayInit (to test)
-    - [x] Implement arrayAssign (to test)
-    - [x] Implement arrayElements (to test)
-    - [x] Implement functionDecl (to test)
-    - [x] Implement functionCall (to test)
-    - [x] Implement functionParams (to test)
-    - [x] Implement body (to test)
-    - [x] Implement if (to test)
-    - [x] Implement elseif (to test)
-    - [x] Implement else (to test)
+    - [x] Implement arrayInit (<span style="color:red">to test</span>)
+    - [x] Implement arrayAssign (<span style="color:red">to test</span>)
+    - [x] Implement arrayElements (<span style="color:red">to test</span>)
+    - [x] Implement functionDecl (<span style="color:red">to test</span>)
+    - [x] Implement functionCall (<span style="color:red">to test</span>)
+    - [x] Implement functionParams (<span style="color:red">to test</span>)
+    - [x] Implement body (<span style="color:red">to test</span>)
+    - [x] Implement if (<span style="color:red">to test</span>)
+    - [x] Implement elseif (<span style="color:red">to test</span>)
+    - [x] Implement else (<span style="color:red">to test</span>)
     - [ ] Implement while
 
 
