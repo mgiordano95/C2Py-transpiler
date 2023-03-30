@@ -1025,32 +1025,32 @@ YY_RULE_SETUP
 case 39:
 YY_RULE_SETUP
 #line 77 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '(' detexted\n"); return(LPAR);}
+{yylval.string=strdup(yytext); printf("keyword '(' detected\n"); return(LPAR);}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 78 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword ')' detexted\n"); return(RPAR);}
+{yylval.string=strdup(yytext); printf("keyword ')' detected\n"); return(RPAR);}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
 #line 79 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '[' detexted\n"); return(LSBRA);}
+{yylval.string=strdup(yytext); printf("keyword '[' detected\n"); return(LSBRA);}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
 #line 80 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword ']' detexted\n"); return(RSBRA);}
+{yylval.string=strdup(yytext); printf("keyword ']' detected\n"); return(RSBRA);}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
 #line 81 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '{' detexted\n"); return(LBRA);}
+{yylval.string=strdup(yytext); printf("keyword '{' detected\n"); return(LBRA);}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
 #line 82 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '}' detexted\n"); return(RBRA);}
+{yylval.string=strdup(yytext); printf("keyword '}' detected\n"); return(RBRA);}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP

@@ -14,7 +14,8 @@ int yyerror(char *s);
 struct AstNodeStatements *root;
 struct List *actualList = NULL;
 
-char* type_to_str(int type);
+char *type_to_str(int);
+int str_to_type(char*);
 
 void scope_enter();
 void scope_exit();
@@ -131,7 +132,7 @@ assignment SEMICOL                                  {
                                                                 printf("AstNodeInstruction allocated for 'initialization SEMICOL'\n");
                                                                 $$->nodeType = INIT_NODE;
                                                                 $$->value.init = $1;
-                                                                s = createSym(init->assign->variableName, actualList, SYMBOL_VARIABLE, str_to_type($1), str_to_type($1), NULL, nullValue);
+                                                                s = createSym(init->assign->variableName, actualList, SYMBOL_VARIABLE, $1->dataType, $1->dataType, NULL, nullValue);
                                                             } else {
                                                                 printf("Error: variable already declared.\n");
                                                             }
@@ -334,7 +335,7 @@ ELSE body                                           {
 
 arrayInit:
 types ID LSBRA RSBRA                                {
-                                                        $$ = printf("Error: array size missing in %s\n", $1) //Error: array size missing in ‘myArray’ !!!
+                                                        printf("Error: array size missing in %s\n", $1); //Error: array size missing in ‘myArray’ !!!
                                                         $$ = malloc(sizeof(struct AstNodeArrayInit));
                                                         printf("AstNodeArrayInit allocated for 'types ID LSBRA RSBRA'\n"); //int myArray[];
                                                         $$->arrayType = str_to_type($1);
@@ -346,13 +347,13 @@ types ID LSBRA RSBRA                                {
                                                         $$->assignArray->arrayType = str_to_type($1);
                                                         $$->assignArray->elements = NULL;
                                                     } 
-|   types ID LSBRA INT_VALUE RSBRA                  {
+|   types ID LSBRA content RSBRA                    {
                                                         $$ = malloc(sizeof(struct AstNodeArrayInit));
-                                                        printf("AstNodeArrayInit allocated for 'types ID LSBRA INT_VALUE RSBRA'\n"); //int myArray[4];
+                                                        printf("AstNodeArrayInit allocated for 'types ID LSBRA content RSBRA'\n"); //int myArray[4];
                                                         $$->arrayType = str_to_type($1);
                                                         $$->assignArray = malloc(sizeof(struct AstNodeArrayAssign));
-                                                        printf("AstNodeArrayAssign allocated for 'types ID LSBRA INT_VALUE RSBRA'\n");
-                                                        $$->assignArray->arrayName = str_to_type($1);
+                                                        printf("AstNodeArrayAssign allocated for 'types ID LSBRA content RSBRA'\n");
+                                                        $$->assignArray->arrayName = $2;
                                                         $$->assignArray->elementIndex = NULL;
                                                         $$->assignArray->arrayLength = $4;
                                                         $$->assignArray->arrayType = str_to_type($1);
@@ -369,28 +370,28 @@ types ID LSBRA RSBRA EQ LBRA RBRA                               {
                                                                     $$->arrayType = str_to_type($1);
                                                                     $$->elements = NULL; //Outuput: array[0]: 0, array[1]: memoryAddress
                                                                 }
-|   types ID LSBRA INT_VALUE RSBRA EQ content                   {
-                                                                    $$ = printf("Error: invalid initializer of %s\n", $1) //Error: invalid initializer !!!
+|   types ID LSBRA content RSBRA EQ arrayElements               {
+                                                                    printf("Error: invalid initializer of %s\n", $1); //Error: invalid initializer !!!
                                                                     $$ = malloc(sizeof(struct AstNodeArrayAssign));
-                                                                    printf("AstNodeArrayAssign allocated for 'types ID LSBRA INT_VALUE RSBRA EQ content'\n"); //int myArray[2] = 24;
+                                                                    printf("AstNodeArrayAssign allocated for 'types ID LSBRA content RSBRA EQ arrayElements'\n"); //int myArray[2] = 24;
                                                                     $$->arrayName = $2;
                                                                     $$->elementIndex = $4;
                                                                     $$->arrayLength = NULL;
                                                                     $$->arrayType = str_to_type($1);
-                                                                    $$->elements = $4;
+                                                                    $$->elements = NULL;
                                                                 }
 |   types ID LSBRA RSBRA EQ LBRA arrayElements RBRA             {
                                                                     $$ = malloc(sizeof(struct AstNodeArrayAssign));
-                                                                    printf("AstNodeArrayAssign allocated for 'types ID LSBRA RSBRA EQ LBRA elements RBRA'\n"); //int myArray[] = {24, 27, 29};
+                                                                    printf("AstNodeArrayAssign allocated for 'types ID LSBRA RSBRA EQ LBRA arrayElements RBRA'\n"); //int myArray[] = {24, 27, 29};
                                                                     $$->arrayName = $2; 
                                                                     $$->elementIndex = NULL;
                                                                     $$->arrayLength = NULL; //TO-DO: compute arrayLength as # of elements
                                                                     $$->arrayType = str_to_type($1);
                                                                     $$->elements = $7;
                                                                 }
-|   types ID LSBRA INT_VALUE RSBRA EQ LBRA arrayElements RBRA   {
+|   types ID LSBRA content RSBRA EQ LBRA arrayElements RBRA     {
                                                                     $$ = malloc(sizeof(struct AstNodeArrayAssign));
-                                                                    printf("AstNodeArrayAssign allocated for 'types ID LSBRA INT_VALUE RSBRA EQ LBRA elements RBRA'\n"); //int myArray[3] = {24, 27, 29};
+                                                                    printf("AstNodeArrayAssign allocated for 'types ID LSBRA content RSBRA EQ LBRA arrayElements RBRA'\n"); //int myArray[3] = {24, 27, 29};
                                                                     $$->arrayName = $2;
                                                                     $$->elementIndex = NULL;
                                                                     $$->arrayLength = $4;
@@ -406,27 +407,27 @@ types ID LSBRA RSBRA EQ LBRA RBRA                               {
                                                                     $$->arrayType = str_to_type($1);
                                                                     $$->elements = NULL;
                                                                 }
-|   ID LSBRA INT_VALUE RSBRA EQ content                         {
+|   ID LSBRA content RSBRA EQ arrayElements                     {
                                                                     $$ = malloc(sizeof(struct AstNodeArrayAssign));
-                                                                    printf("AstNodeArrayAssign allocated for 'ID LSBRA INT_VALUE RSBRA EQ content'\n"); // myArray[2] = 24;
+                                                                    printf("AstNodeArrayAssign allocated for 'ID LSBRA content RSBRA EQ arrayElements'\n"); // myArray[2] = 24;
                                                                     $$->arrayName = $1;
                                                                     $$->elementIndex = $3;
                                                                     $$->arrayLength = NULL;
-                                                                    $$->arrayType = $6->valueType;
+                                                                    $$->arrayType = $6->element->valueType;
                                                                     $$->elements = $6;
                                                                 }
 |   ID LSBRA RSBRA EQ LBRA arrayElements RBRA                   {
                                                                     $$ = malloc(sizeof(struct AstNodeArrayAssign));
-                                                                    printf("AstNodeArrayAssign allocated for 'ID LSBRA RSBRA EQ LBRA elements RBRA'\n"); //myArray[] = {24, 27, 29};
+                                                                    printf("AstNodeArrayAssign allocated for 'ID LSBRA RSBRA EQ LBRA arrayElements RBRA'\n"); //myArray[] = {24, 27, 29};
                                                                     $$->arrayName = $1;
                                                                     $$->elementIndex = NULL;
                                                                     $$->arrayLength = NULL; //TO-DO: compute arrayLength as # of elements
                                                                     $$->arrayType = $6->element->valueType; //TO-DO: accedere ai tipi di element e non di content, tipo $7->element->valueType
                                                                     $$->elements = $6;
                                                                 }
-|   ID LSBRA INT_VALUE RSBRA EQ LBRA arrayElements RBRA         {
+|   ID LSBRA content RSBRA EQ LBRA arrayElements RBRA           {
                                                                     $$ = malloc(sizeof(struct AstNodeArrayAssign));
-                                                                    printf("AstNodeArrayAssign allocated for 'ID LSBRA INT_VALUE RSBRA EQ LBRA elements RBRA'\n"); //myArray[3] = {24, 27, 29};
+                                                                    printf("AstNodeArrayAssign allocated for 'ID LSBRA content RSBRA EQ LBRA arrayElements RBRA'\n"); //myArray[3] = {24, 27, 29};
                                                                     $$->arrayName = $1;
                                                                     $$->elementIndex = NULL; 
                                                                     $$->arrayLength = NULL; //$3
@@ -436,14 +437,22 @@ types ID LSBRA RSBRA EQ LBRA RBRA                               {
 
 arrayElements:
 content                                                         {
-                                                                    $$ = malloc(sizeof(struct AstNodeArrayElements));
-                                                                    printf("AstNodeArrayElements allocated for 'content': %s\n", $1->value.val); // 4 -> single element in array
+                                                                    $$ = malloc(sizeof(struct AstNodeArrayElements)); // 4 -> single element in array
+                                                                    if($1->contentType == CONTENT_TYPE_EXPRESSION) {
+                                                                        printf("AstNodeArrayElements allocated for 'content': %s %s %s\n", $1->value.expression->leftOper->value.val, $1->value.expression->op, $1->value.expression->rightOper->value.val);
+                                                                    } else {
+                                                                        printf("AstNodeArrayElements allocated for 'content': %s\n", $1->value.val);
+                                                                    }
                                                                     $$->element = $1;
                                                                     $$->nextElement = NULL;
                                                                 }
-| content COMMA arrayElements                                   {
+|   content COMMA arrayElements                                 {
                                                                     $$ = malloc(sizeof(struct AstNodeArrayElements)); // 4, 5, 6 -> multiple elements in array
-                                                                    printf("AstNodeArrayElements allocated for 'content COMMA elements': %s\n", $1->value.val);
+                                                                    if($1->contentType == CONTENT_TYPE_EXPRESSION) {
+                                                                        printf("AstNodeArrayElements allocated for 'content COMMA arrayElements': %s %s %s\n", $1->value.expression->leftOper->value.val, $1->value.expression->op, $1->value.expression->rightOper->value.val);
+                                                                    } else {
+                                                                        printf("AstNodeArrayElements allocated for 'content COMMA arrayElements': %s\n", $1->value.val);
+                                                                    }
                                                                     $$->element = $1;
                                                                     $$->nextElement = $3;
                                                                 };
@@ -488,7 +497,7 @@ ID EQ ID                                            {
                                                             printf("Error: variable %s already declared\n", $2);
                                                         }
                                                         if ((str_to_type($1) != $4->valueType)) {
-                                                            printf("Error: Cannot assign type %s to type %s \n", type_to_str($4->valueType), type_to_str($1));
+                                                            printf("Error: Cannot assign type %s to type %s \n", type_to_str($4->valueType), $1);
                                                         } else {
                                                             $$ = malloc(sizeof(struct AstNodeAssign));
                                                             printf("AstNodeAssign allocated for 'types ID EQ content'\n");
@@ -776,20 +785,16 @@ ID                                                  {
                                                     };
 
 types:
-    VOID                                            {
-                                                        $$ = DATA_TYPE_VOID;
+VOID                                                {
                                                         printf("Defined 'type: VOID'\n");
                                                     }
 |   INT                                             {
-                                                        $$ = DATA_TYPE_INT;
                                                         printf("Defined 'type: INT'\n");
                                                     }
 |   FLOAT                                           {
-                                                        $$ = DATA_TYPE_FLOAT;
                                                         printf("Defined 'type: FLOAT'\n");
                                                     }
 |   CHAR                                            {
-                                                        $$ = DATA_TYPE_CHAR;
                                                         printf("Defined 'type: CHAR'\n");
                                                     };
 
@@ -817,7 +822,7 @@ void scope_exit() {
     counter--;
 }
 
-char* type_to_str(int type) {
+char *type_to_str(int type) {
     switch(type) {
         case DATA_TYPE_NONE:
             return "none";
@@ -840,7 +845,7 @@ char* type_to_str(int type) {
     }
 }
 
-int str_to_type(int type) {
+/*int str_to_type(int type) {
     if (strcmp(type_to_str(type), "void") == 0) {
         return DATA_TYPE_VOID;
     } else if (strcmp(type_to_str(type), "int") == 0) {
@@ -848,6 +853,20 @@ int str_to_type(int type) {
     } else if (strcmp(type_to_str(type), "float") == 0) {
         return DATA_TYPE_FLOAT;
     } else if (strcmp(type_to_str(type), "char") == 0) {
+        return DATA_TYPE_CHAR;
+    } else {
+        return DATA_TYPE_NONE;
+    }
+}*/
+
+int str_to_type(char *type) {
+    if (strcmp(type, "void") == 0) {
+        return DATA_TYPE_VOID;
+    } else if (strcmp(type, "int") == 0) {
+        return DATA_TYPE_INT;
+    } else if (strcmp(type, "float") == 0) {
+        return DATA_TYPE_FLOAT;
+    } else if (strcmp(type, "char") == 0) {
         return DATA_TYPE_CHAR;
     } else {
         return DATA_TYPE_NONE;
