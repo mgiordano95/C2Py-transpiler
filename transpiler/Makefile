@@ -1,8 +1,29 @@
-transpiler: parser.y lexer.l ast.h symboltable.h c2py.h
-	gcc parser.tab.c lex.yy.c -lfl -lm
+# Makefile for building parser and lexer
+
+# Compiler settings
+CC=gcc
+CFLAGS=-Wall -Wextra -Wpedantic -std=c11
+
+# Bison and Flex settings
+BISON=bison
+BISONFLAGS=-d
+FLEX=flex
+
+# Executables
+TARGET=parser
+SOURCES=parser.tab.c lex.yy.c
+LIBRARIES=-lfl -lm
+
+all: $(TARGET)
+
+$(TARGET): $(SOURCES)
+	$(CC) $(CFLAGS) $^ $(LIBRARIES) -o $@
 
 parser.tab.c: parser.y
-	bison -d parser.yy
+	$(BISON) $(BISONFLAGS) $^
 
 lex.yy.c: lexer.l
-	flex lexer.l
+	$(FLEX) $^
+
+clean:
+	rm -f $(TARGET) $(SOURCES)
