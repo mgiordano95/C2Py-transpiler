@@ -78,6 +78,7 @@ void endScope();
 %type <ifStatement> ifStatement
 %type <elseifStatement> elseifStatement
 %type <elseStatement> elseStatement
+%type <whileLoop>   whileLoop
 %type <arrayInit> arrayInit
 %type <arrayAssign> arrayAssign
 %type <arrayElements> arrayElements
@@ -166,16 +167,22 @@ assignment SEMICOL                                          {
                                                             }
 |   elseifStatement                                         {
                                                                 $$ = malloc(sizeof(struct AstNodeInstruction));
-                                                                printf("AstNodeInstruction allocated for 'ifStatement'\n");
+                                                                printf("AstNodeInstruction allocated for 'elseifStatement'\n");
                                                                 $$->nodeType = ELSE_IF_NODE;
                                                                 $$->value.elseifStatement = $1;
                                                             }
 |   elseStatement                                           {
                                                                 $$ = malloc(sizeof(struct AstNodeInstruction));
-                                                                printf("AstNodeInstruction allocated for 'ifStatement'\n");
+                                                                printf("AstNodeInstruction allocated for 'elseStatement'\n");
                                                                 $$->nodeType = ELSE_NODE;
                                                                 $$->value.elseStatement = $1;
                                                             }
+|   whileLoop                                               {
+                                                                $$ = malloc(sizeof(struct AstNodeInstruction));
+                                                                printf("AstNodeInstruction allocated for 'whileLoop'\n");
+                                                                $$->nodeType = WHILE_NODE;
+                                                                $$->value.whileLoop = $1;
+                                                            }                       
 |   arrayInit SEMICOL                                       {
                                                                 $$ = malloc(sizeof(struct AstNodeInstruction));
                                                                 printf("AstNodeInstruction allocated for 'arrayInit'\n");
@@ -331,6 +338,14 @@ ELSE body                                                   {
                                                                 $$ = malloc(sizeof(struct AstNodeElse));
                                                                 printf("AstNodeElse allocated for 'ELSE body'\n");
                                                                 $$->elseBody = $2;
+                                                            };
+
+whileLoop:
+WHILE LPAR expression RPAR body                             {
+                                                                $$ = malloc(sizeof(struct AstNodeWhile));
+                                                                printf("AstNodeWhile allocated for 'WHILE LPAR expression RPAR body'\n");
+                                                                $$->whileCondition = $3;
+                                                                $$->whileBody = $5;
                                                             };
 
 arrayInit:
