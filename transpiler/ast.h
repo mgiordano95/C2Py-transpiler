@@ -41,6 +41,8 @@ enum NodeType {
     ELSE_IF_NODE,
     ELSE_NODE,
     WHILE_NODE,
+    OUTPUT_NODE,
+    INPUT_NODE,
 };
 
 union yystype {
@@ -62,8 +64,10 @@ union yystype {
     struct AstNodeElseIf              *elseifStatement;
     struct AstNodeElse                *elseStatement;
     struct AstNodeWhile               *whileLoop;
-    /* struct AstNodeFunctionInput       *inputFunction;
-    struct AstNodeFunctionOutput      *outputFunction; */
+    struct AstNodeFunctionOutput      *outputFunction;
+    struct AstNodeFunctionInput       *inputFunction;
+    struct AstNodeOutputElements      *outputElements;
+    struct AstNodeInputElements       *inputElements;
     /* struct AstNodeValue               *value;
     struct AstNodeVariable            *variable; */
     
@@ -223,14 +227,26 @@ struct AstNodeWhile {
     struct AstNodeBody *whileBody;
 };
 
-
-/* struct AstNodeFunctionInput {
-    struct AstNodeFunctionCall *input_function;
+struct AstNodeFunctionOutput {
+    char *string;
+    struct AstNodeOutputElements *outputElements;
 };
 
-struct AstNodeFunctionOutput {
-    struct AstNodeFunctionCall *output_function;
-}; */
+struct AstNodeFunctionInput {
+    char *string;
+    struct AstNodeInputElements *inputElements;
+};
+
+struct AstNodeOutputElements {
+    struct AstNodeOperand *element;
+    struct AstNodeOutputElements *nextElement;
+};
+
+struct AstNodeInputElements {
+    struct AstNodeOperand *element;
+    struct AstNodeInputElements *nextElement;
+};
+
 
 
 

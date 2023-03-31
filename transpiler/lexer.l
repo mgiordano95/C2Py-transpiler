@@ -19,6 +19,7 @@ int_value       ([+]?[0]+|([-+]?[0]+?[1-9][0-9]*))
 float_value     [-+]?([0-9]*\.?[0-9]+|[0-9]+\.)(E[+-]?{digit}+)?
 char_value      (\')({letter}|{digit})(\')
 id              {letter}({letter}|{digit})*
+string_value    \"[^\"]*\"
 
 
 
@@ -90,7 +91,7 @@ id              {letter}({letter}|{digit})*
 {float_value}       {yylval.string=strdup(yytext); printf("Found FLOAT NUMBER\n"); return(FLOAT_VALUE);}
 {id}                {yylval.string=strdup(yytext); printf("Found ID\n"); return(ID);}
 {char_value}        {yylval.string=strdup(yytext); printf("Found CHAR\n"); return(CHAR_VALUE);}
-
+{string_value}      {yylval.string=strdup(yytext); printf("Found STRING\n"); return(STRING_VALUE);}
 .                   {printf("Unknown character\n"); return(UNKNOWN);}
 
 %%

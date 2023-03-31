@@ -60,11 +60,12 @@ void endScope();
 %token FLOAT_VALUE
 %token ID
 %token CHAR_VALUE
+%token STRING_VALUE
 %token UNKNOWN
 
 %define api.value.type {union yystype}
 
-%type <string> types VOID INT FLOAT CHAR IF ELSE WHILE PRINTF SCANF RETURN MAIN ADD SUB MUL DIV EQ EE NE GT LT GE LE AND OR NOT LPAR RPAR LSBRA RSBRA LBRA RBRA SEMICOL COMMA INT_VALUE FLOAT_VALUE ID CHAR_VALUE
+%type <string> types VOID INT FLOAT CHAR IF ELSE WHILE PRINTF SCANF RETURN MAIN ADD SUB MUL DIV EQ EE NE GT LT GE LE AND OR NOT LPAR RPAR LSBRA RSBRA LBRA RBRA SEMICOL COMMA INT_VALUE FLOAT_VALUE ID CHAR_VALUE STRING_VALUE
 %type <statements> program statements
 %type <instruction> instruction
 %type <init> initialization
@@ -82,6 +83,10 @@ void endScope();
 %type <arrayInit> arrayInit
 %type <arrayAssign> arrayAssign
 %type <arrayElements> arrayElements
+%type <outputFunction> outputFunction
+%type <inputFunction> inputFunction
+%type <outputElements> outputElements
+%type <inputElements> inputElements
 
 %start program
 
@@ -194,6 +199,18 @@ assignment SEMICOL                                          {
                                                                 printf("AstNodeInstruction allocated for 'arrayAssign'\n");
                                                                 $$->nodeType = ARRAY_ASSIGN_NODE;
                                                                 $$->value.arrayAssign = $1;
+                                                            }
+|   outputFunction SEMICOL                                  {
+                                                                $$ = malloc(sizeof(struct AstNodeInstruction));
+                                                                printf("AstNodeInstruction allocated for 'outputFunction SEMICOL'\n");
+                                                                $$->nodeType = OUTPUT_NODE;
+                                                                $$->value.outputFunction = $1;
+                                                            }
+|   inputFunction SEMICOL                                   {
+                                                                $$ = malloc(sizeof(struct AstNodeInstruction));
+                                                                printf("AstNodeInstruction allocated for 'inputFunction SEMICOL'\n");
+                                                                $$->nodeType = INPUT_NODE;
+                                                                $$->value.inputFunction = $1;
                                                             };
 
 functionDecl:
@@ -468,6 +485,62 @@ content                                                     {
                                                                 } else {
                                                                     printf("AstNodeArrayElements allocated for 'content COMMA arrayElements': %s\n", $1->value.val);
                                                                 }
+                                                                $$->element = $1;
+                                                                $$->nextElement = $3;
+                                                            };
+
+outputFunction:
+PRINTF LPAR STRING_VALUE RPAR                               {
+                                                                $$ = malloc(sizeof(struct AstNodeFunctionOutput));
+                                                                printf("AstNodeFunctionOutput allocated for 'PRINTF LPAR STRING_VALUE RPAR'\n");
+                                                                $$->string = $3;
+                                                                $$->outputElements = NULL;
+                                                            }
+|   PRINTF LPAR STRING_VALUE COMMA outputElements RPAR      {
+                                                                $$ = malloc(sizeof(struct AstNodeFunctionOutput));
+                                                                printf("AstNodeFunctionOutput allocated for 'PRINTF LPAR STRING_VALUE RPAR COMMA outputElements'\n");
+                                                                $$->string = $3;
+                                                                $$->outputElements = $5;
+                                                            };
+
+inputFunction:
+SCANF LPAR STRING_VALUE RPAR                                {
+                                                                $$ = malloc(sizeof(struct AstNodeFunctionInput));
+                                                                printf("AstNodeFunctionInput allocated for 'SCANF LPAR STRING_VALUE RPAR'\n");
+                                                                $$->string = $3;
+                                                                $$->inputElements = NULL;
+                                                            }
+|   SCANF LPAR STRING_VALUE COMMA inputElements RPAR        {
+                                                                $$ = malloc(sizeof(struct AstNodeFunctionInput));
+                                                                printf("AstNodeFunctionInput allocated for 'SCANF LPAR STRING_VALUE RPAR COMMA inputElements'\n");
+                                                                $$->string = $3;
+                                                                $$->inputElements = $5;
+                                                            };
+
+outputElements:
+content                                                     {
+                                                                $$ = malloc(sizeof(struct AstNodeOutputElements));
+                                                                printf("AstNodeOutputElements allocated for 'content'\n");
+                                                                $$->element = $1;
+                                                                $$->nextElement = NULL;
+                                                            }
+|   content COMMA outputElements                            {
+                                                                $$ = malloc(sizeof(struct AstNodeOutputElements));
+                                                                printf("AstNodeOutputElements allocated for 'content COMMA outputElements'\n");
+                                                                $$->element = $1;
+                                                                $$->nextElement = $3;
+                                                            };
+
+inputElements:
+content                                                     {
+                                                                $$ = malloc(sizeof(struct AstNodeInputElements));
+                                                                printf("AstNodeInputElements allocated for 'content'\n");
+                                                                $$->element = $1;
+                                                                $$->nextElement = NULL;
+                                                            }
+|   content COMMA inputElements                             {
+                                                                $$ = malloc(sizeof(struct AstNodeInputElements));
+                                                                printf("AstNodeInputElements allocated for 'content COMMA inputElements'\n");
                                                                 $$->element = $1;
                                                                 $$->nextElement = $3;
                                                             };
