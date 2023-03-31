@@ -13,11 +13,11 @@ enum SymbolType {
 };
 
 enum DataType {
-    DATA_TYPE_NONE,
     DATA_TYPE_VOID,
     DATA_TYPE_INT,
     DATA_TYPE_FLOAT,
     DATA_TYPE_CHAR,
+    DATA_TYPE_NONE,
 };
 
 enum ContentType {
