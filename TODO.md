@@ -8,16 +8,16 @@
 
 ### In Progress
 
-- [ ] :computer: Create Abstract Syntax Tree (ast.h)
+- [ ] Create Abstract Syntax Tree (ast.h)
     - [x] Add struct AstNodeStatements
     - [x] Add struct AstNodeInstruction
     - [x] Add struct AstNodeInit
     - [x] Add struct AstNodeAssign
     - [x] Add struct AstNodeExpression
     - [x] Add struct AstNodeOperand
-    - [ ] :computer: Add struct AstNodeArrayInit (to test)
-    - [ ] :computer: Add struct AstNodeArrayAssign (to test)
-    - [ ] :computer: Add struct AstNodeArrayElements (to test)
+    - [x] Add struct AstNodeArrayInit (<span style="color:red">to test</span>)
+    - [x] Add struct AstNodeArrayAssign (<span style="color:red">to test</span>)
+    - [x] Add struct AstNodeArrayElements (<span style="color:red">to test</span>)
     - [x] Add struct AstNodeFunctionDecl
     - [x] Add struct AstNodeFunctionCall
     - [x] Add struct AstNodeFunctionParams
@@ -26,23 +26,23 @@
     - [x] Add struct AstNodeElseIf
     - [x] Add struct AstNodeElse
     - [x] Add struct AstNodeWhile
-- [ ] :computer: Create parser.y
+- [ ] Create parser.y
     - [x] Implement statements
-    - [ ] :computer: Implement instruction
-    - [ ] :computer: Implement initialization
-    - [ ] :computer: Implement assignment
-    - [x] :computer: Implement expression (to test)
+    - [x] Implement instruction (<span style="color:red">to test</span>)
+    - [x] Implement initialization (<span style="color:red">to test</span>)
+    - [x] Implement assignment (<span style="color:red">to test</span>)
+    - [x] Implement expression (<span style="color:red">to test</span>)
     - [x] Implement content
-    - [ ] Implement arrayInit
-    - [ ] Implement arrayAssign
-    - [ ] Implement arrayElements
-    - [ ] :computer: Implement functionDecl
-    - [ ] :computer: Implement functionCall
-    - [ ] Implement functionParams
-    - [x] Implement body
-    - [ ] Implement if
-    - [ ] Implement elseif
-    - [ ] Implement else
+    - [x] Implement arrayInit (<span style="color:red">to test</span>)
+    - [x] Implement arrayAssign (<span style="color:red">to test</span>)
+    - [x] Implement arrayElements (<span style="color:red">to test</span>)
+    - [x] Implement functionDecl (<span style="color:red">to test</span>)
+    - [x] Implement functionCall (<span style="color:red">to test</span>)
+    - [x] Implement functionParams (<span style="color:red">to test</span>)
+    - [x] Implement body (<span style="color:red">to test</span>)
+    - [x] Implement if (<span style="color:red">to test</span>)
+    - [x] Implement elseif (<span style="color:red">to test</span>)
+    - [x] Implement else (<span style="color:red">to test</span>)
     - [ ] Implement while
 
 

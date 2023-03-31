@@ -13,11 +13,11 @@ enum SymbolType {
 };
 
 enum DataType {
-    DATA_TYPE_NONE,
     DATA_TYPE_VOID,
     DATA_TYPE_INT,
     DATA_TYPE_FLOAT,
     DATA_TYPE_CHAR,
+    DATA_TYPE_NONE,
 };
 
 enum ContentType {
@@ -149,15 +149,18 @@ struct AstNodeArrayInit {
 /*--------------- Node Array Assign ---------------*/
 struct AstNodeArrayAssign {
     char *arrayName;
-    int *index;
     enum DataType arrayType;
+    //char *elementIndex;
+    //char *arrayLength;
+    struct AstNodeOperand *elementIndex; //only for array assignment
+    struct AstNodeOperand *arrayLength; //only for array declaration
     struct AstNodeArrayElements *elements;
 };
 
 /*--------------- Node Array Assign ---------------*/
 struct AstNodeArrayElements {
     struct AstNodeOperand *element;
-
+    struct AstNodeArrayElements *nextElement;
 };
 
 /*--------------- Node Function Declaration ---------------*/
