@@ -274,9 +274,13 @@ ID LPAR RPAR                                                {
                                                                 char confronto[100];
                                                                 printf("AstNodeFunctionCall allocated for 'ID LPAR functionParams RPAR'\n");
                                                                 struct SymTab *s = findSymtab($1, actualList);
+                                                                printf("Fin qui ci arriviamo \n");
                                                                 if (s != NULL) {
-                                                                    for(struct AstNodeFunctionParams *p = $3; p != NULL; p = p->nextParams) {
-                                                                    strcat(confronto,typeToString(p->initParam->dataType));
+                                                                    printf("Fin qui ci arriviamo pure \n");
+                                                                    for(struct AstNodeFunctionParams *q = $3; q != NULL; q = q->nextParams) {
+                                                                    printf("Qui non so se arrivo \n");
+                                                                    strcat(confronto,typeToString(q->callParams->valueType));
+                                                                    printf("Fin qui se arrivo festeggio \n");
                                                                 }
                                                                 char *callparameters;
                                                                 callparameters = confronto;
