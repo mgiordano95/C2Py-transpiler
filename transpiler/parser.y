@@ -152,8 +152,9 @@ assignment SEMICOL                                          {
                                                                 struct SymTab *s = NULL;
                                                                 s = findSymtab($1->functionName, actualList);
                                                                 if (s == NULL) {
-                                                                    struct SymTab *s = createSym($1->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $1->returnType, $1->functionName, nullValue);
+                                                                    struct SymTab *s = createSym($1->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $1->returnType, $1->parameters, nullValue);
                                                                     printf("Funzione inserita nella symtab \n");
+                                                                    printf("Parametri della funzione: %s \n",$1->parameters);
                                                                 } else {
                                                                     printf("Error: function %s already declared \n", $1->functionName);
                                                                 }
@@ -222,6 +223,7 @@ types MAIN LPAR RPAR body                                   {
                                                                 $$->returnType = stringToType($1);
                                                                 $$->functionParams = NULL;
                                                                 $$->functiontBody = $5;
+                                                                $$->parameters = NULL;
                                                                 endScope();
                                                             }
 |   initialization LPAR RPAR body                           {
@@ -233,13 +235,16 @@ types MAIN LPAR RPAR body                                   {
                                                                 printf("returnType assigned\n");
                                                                 $$->functionParams = NULL;
                                                                 $$->functiontBody = $4;
+                                                                $$->parameters = NULL;
                                                                 endScope();
                                                             }
 |   initialization LPAR functionParams RPAR body            {
                                                                 beginScope();
+                                                                char appoggio[100];
                                                                 for(struct AstNodeFunctionParams *p = $3; p != NULL; p = p->nextParams) {
                                                                     struct SymTab *s = createSym(p->initParam->assign->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->assign->variableName, p->initParam->assign->assignValue);
                                                                     printf("Added function parameter in the symbol table\n");
+                                                                    strcat(appoggio,typeToString(p->initParam->dataType));
                                                                 }
                                                                 $$ = malloc(sizeof(struct AstNodeFunctionDecl));
                                                                 printf("AstNodeFunctionDecl allocated for 'initialization LPAR functionParams RPAR body'\n");
@@ -247,6 +252,7 @@ types MAIN LPAR RPAR body                                   {
                                                                 $$->returnType = $1->dataType;
                                                                 $$->functionParams = $3;
                                                                 $$->functiontBody = $5;
+                                                                $$->parameters = appoggio;
                                                                 endScope();
                                                             };
 
