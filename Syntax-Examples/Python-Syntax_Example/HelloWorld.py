@@ -40,25 +40,23 @@ print("--------------------------")
 print("Print If... Else:")
 if number > floatNumber:
    print("The integer number is greater than the float number.")
-else:
+elif number < floatNumber:
    print("The integer number is less than the float number.")
+else:
+   printf("The integer number is equal to the float number.\n")
 
 print("--------------------------")
-print("Print While Loop:")
-while i < 5:
-   print(i)
+print("Print Fibonacci numbers with While Loop:")
+while i < 11:
+   print(array[i])
    i+=1
 
 print("--------------------------")
-print("Print Fibonacci numbers with For Loop:")
-for el in array:
-   print(el)
-
-print("--------------------------")
-array[0] = 100
-print("Print Wrong Fibonacci numbers with For Loop:")
-for el in array:
-   print(el)
+array[2] = 100
+print("Print Wrong Fibonacci numbers with While Loop:")
+while j < 11:
+   print(array[j])
+   j+=1
 
 print("--------------------------")
 print("Type a number:")

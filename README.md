@@ -2,7 +2,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/mgiordano95/C2Py-transpiler">
-    <img src="logos/logo-dark.png" alt="Logo" width="389" height="52">
+    <img src="Assets/logo-dark.png" alt="Logo" width="389" height="52">
   </a>
 
   <h3 align="center">

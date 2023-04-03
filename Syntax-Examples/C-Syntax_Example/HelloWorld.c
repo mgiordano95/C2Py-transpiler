@@ -9,7 +9,7 @@ int array[] = {1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89};
 int numberInput;
 
 int i = 0;
-int j;
+int j = 0;
 
 // Create a function
 void myFunction() {
@@ -45,28 +45,25 @@ int main() {
    printf("Print If... Else:\n");
    if (number > floatNumber) {
       printf("The integer number is greater than the float number.\n");
-   } else {
+   } else if (number < floatNumber) {
       printf("The integer number is less than the float number.\n");
+   } else {
+      printf("The integer number is equal to the float number.\n");
    }
    
    printf("--------------------------\n");
-   printf("Print While Loop:\n");
-   while (i < 5) {
-      printf("%d\n", i);
+   printf("Print Fibonacci numbers with While Loop:\n");
+   while (i < 11) {
+      printf("%d): %d\n", i, array[i]);
       i++;
    }
    
    printf("--------------------------\n");
-   printf("Print Fibonacci numbers with For Loop:\n");
-   for (j = 0; j < 11; j++) {
+   array[2] = 100;
+   printf("Print Wrong Fibonacci numbers with While Loop:\n");
+   while (j < 11) {
       printf("%d): %d\n", j, array[j]);
-   }
-   
-   printf("--------------------------\n");
-   array[0] = 100;
-   printf("Print Wrong Fibonacci numbers with For Loop:\n");
-   for (j = 0; j < 11; j++) {
-      printf("%d): %d\n", j, array[j]);
+      j++;
    }
    
    printf("--------------------------\n");
@@ -74,6 +71,5 @@ int main() {
    scanf("%d", &numberInput);
    printf("Your number is: %d\n", numberInput);
    
-   system("PAUSE");
    return 0;
 }
