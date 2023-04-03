@@ -281,17 +281,6 @@ ID LPAR RPAR                                                {
                                                                 char *callparameters;
                                                                 callparameters = confronto;
                                                                 printf("Parametri della functioncall: %s \n",callparameters);
-                                                                while (s->funcName == callparameters) {
-                                                                    printf("Le stringhe sono uguali \n");
-                                                                    if ( *s->funcName == '\0' || *callparameters == '\0' ) {
-                                                                        printf("Nooooo "); break;
-                                                                    }
-                                                                        s->funcName++; callparameters++; 
-                                                                }
-                                                                if( *s->funcName == '\0' && *callparameters == '\0' )
-                                                                    printf("Le stringhe sono le stesse \n");
-                                                                else
-                                                                    printf("Le stringhe col cazzo che sono le stesse \n");
                                                                     $$->functionName = $1;
                                                                     $$->returnType = s->returnType;
                                                                     $$->functionParams = NULL;
@@ -967,3 +956,18 @@ int stringToType(char *type) {
         return DATA_TYPE_NONE;
     }
 }
+
+/* int compareStrings(char *one, char *two) {
+    while (*one == *two) {
+    printf("Le stringhe sono uguali \n");
+    if ( *one == '\0' || *two == '\0' ) {
+        printf("Nooooo "); break;
+    }
+    one++; two++; 
+    }
+    if( *one == '\0' && *two == '\0' )
+    printf("Le stringhe sono le stesse \n");
+    else
+    printf("Le stringhe non sono affatto le stesse \n");
+} */
+
