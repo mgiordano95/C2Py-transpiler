@@ -1,7 +1,3 @@
-%x  MLCOMMENT
-%x  SLCOMMENT
-%x  QUOTE
-
 %{
     #include <stdlib.h>
     #include <stdio.h>
@@ -21,27 +17,20 @@ char_value      (\')({letter}|{digit})(\')
 id              {letter}({letter}|{digit})*
 string_value    \"[^\"]*\"
 
-
+%x  MLCOMMENT
+%x  SLCOMMENT
 
 %%
 
-"/*"                        BEGIN(MLCOMMENT);   printf("found ML comment\n");
+"/*"                        BEGIN(MLCOMMENT);   printf("found MULTI-LINE comment\n");
 <MLCOMMENT>[^*\n]*          { } /* se non trovi asterisco vai avanti  */
 <MLCOMMENT>"*"+[^*/n]*      { } /*  asterischi senza lo slash   */
 <MLCOMMENT>\n               { } /* se vado a capo */
-<MLCOMMENT>"*"+"/"          BEGIN(INITIAL);     printf("end of ML comment\n");
+<MLCOMMENT>"*"+"/"          BEGIN(INITIAL);     printf("end of MULTI-LINE comment\n");
 
-"//" 						BEGIN(SLCOMMENT);   printf("found SL comment\n");
+"//" 						BEGIN(SLCOMMENT);   printf("found SINGLE-LINE comment\n");
 <SLCOMMENT>[^\n]* 			/* tutto tranne a capo */
-<SLCOMMENT>\n 				BEGIN(INITIAL);     printf("end of SL comment\n");
-
-\"\"                        {printf("found quotes "); }
-
-\"                          BEGIN(QUOTE); printf("found quote\n");
-<QUOTE>([^"\\\n]|\\.)*      { printf("stringa accettata\n"); }
-<QUOTE>\"                   BEGIN(INITIAL); printf("end quote\n");
-<QUOTE>\n |  
-<QUOTE><<EOF>>              {printf("errore\n");}
+<SLCOMMENT>\n 				BEGIN(INITIAL);     printf("end of SINGLE-LINE comment\n");
 
 
 "void"      {yylval.string=strdup(yytext); printf("keyword 'VOID' detected\n"); return(VOID);}
@@ -82,8 +71,8 @@ string_value    \"[^\"]*\"
 "{"         {yylval.string=strdup(yytext); printf("keyword '{' detected\n"); return(LBRA);}
 "}"         {yylval.string=strdup(yytext); printf("keyword '}' detected\n"); return(RBRA);}
 
-";"         {yylval.string=strdup(yytext); printf("Found semicolon\n"); return(SEMICOL);}
-","         {yylval.string=strdup(yytext); printf("Found comma\n"); return(COMMA);}
+";"         {yylval.string=strdup(yytext); printf("Found SEMICOLON\n"); return(SEMICOL);}
+","         {yylval.string=strdup(yytext); printf("Found COMMA\n"); return(COMMA);}
 
 {delim}             {printf("Found DELIM\n");}
 {ws}                {printf("Found WHITE SPACE\n");}
