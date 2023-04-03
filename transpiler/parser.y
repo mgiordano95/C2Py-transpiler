@@ -271,9 +271,27 @@ ID LPAR RPAR                                                {
                                                             }
 |   ID LPAR functionParams RPAR                             {
                                                                 $$ = malloc(sizeof(struct AstNodeFunctionCall));
+                                                                char confronto[100];
                                                                 printf("AstNodeFunctionCall allocated for 'ID LPAR functionParams RPAR'\n");
                                                                 struct SymTab *s = findSymtab($1, actualList);
                                                                 if (s != NULL) {
+                                                                    for(struct AstNodeFunctionParams *p = $3; p != NULL; p = p->nextParams) {
+                                                                    strcat(confronto,typeToString(p->initParam->dataType));
+                                                                }
+                                                                char *callparameters;
+                                                                callparameters = confronto;
+                                                                printf("Parametri della functioncall: %s \n",callparameters);
+                                                                while (s->funcName == callparameters) {
+                                                                    printf("Le stringhe sono uguali \n");
+                                                                    if ( *s->funcName == '\0' || *callparameters == '\0' ) {
+                                                                        printf("Nooooo "); break;
+                                                                    }
+                                                                        s->funcName++; callparameters++; 
+                                                                }
+                                                                if( *s->funcName == '\0' && *callparameters == '\0' )
+                                                                    printf("Le stringhe sono le stesse \n");
+                                                                else
+                                                                    printf("Le stringhe col cazzo che sono le stesse \n");
                                                                     $$->functionName = $1;
                                                                     $$->returnType = s->returnType;
                                                                     $$->functionParams = NULL;
