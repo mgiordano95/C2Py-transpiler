@@ -240,7 +240,7 @@ types MAIN LPAR RPAR body                                   {
                                                             }
 |   initialization LPAR functionParams RPAR body            {
                                                                 beginScope();
-                                                                char appoggio[100];
+                                                                char appoggio[100] = {};
                                                                 for(struct AstNodeFunctionParams *p = $3; p != NULL; p = p->nextParams) {
                                                                     struct SymTab *s = createSym(p->initParam->assign->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->assign->variableName, p->initParam->assign->assignValue);
                                                                     printf("Added function parameter in the symbol table\n");
@@ -271,7 +271,7 @@ ID LPAR RPAR                                                {
                                                             }
 |   ID LPAR functionParams RPAR                             {
                                                                 $$ = malloc(sizeof(struct AstNodeFunctionCall));
-                                                                char confronto[100];
+                                                                char confronto[100] = {};
                                                                 printf("AstNodeFunctionCall allocated for 'ID LPAR functionParams RPAR'\n");
                                                                 struct SymTab *s = findSymtab($1, actualList);
                                                                 printf("Fin qui ci arriviamo \n");
@@ -280,11 +280,12 @@ ID LPAR RPAR                                                {
                                                                     for(struct AstNodeFunctionParams *q = $3; q != NULL; q = q->nextParams) {
                                                                     printf("Qui non so se arrivo \n");
                                                                     strcat(confronto,typeToString(q->callParams->valueType));
+                                                                    printf("Confronto vale: %s \n",confronto);
                                                                     printf("Fin qui se arrivo festeggio \n");
                                                                 }
                                                                 char *callparameters;
                                                                 callparameters = confronto;
-                                                                printf("Parametri della functioncall: %s \n",callparameters);
+                                                                printf("Parametri della functioncall: %s \n",confronto);
                                                                     $$->functionName = $1;
                                                                     $$->returnType = s->returnType;
                                                                     $$->functionParams = NULL;
