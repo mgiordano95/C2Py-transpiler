@@ -280,7 +280,6 @@ ID LPAR RPAR                                                {
                                                                     for(struct AstNodeFunctionParams *q = $3; q != NULL; q = q->nextParams) {
                                                                     printf("Qui non so se arrivo \n");
                                                                     strcat(confronto,typeToString(q->callParams->valueType));
-                                                                    printf("Confronto vale: %s \n",confronto);
                                                                     printf("Fin qui se arrivo festeggio \n");
                                                                 }
                                                                 char *callparameters;

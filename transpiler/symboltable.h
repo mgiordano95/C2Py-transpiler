@@ -30,7 +30,7 @@ struct List *deleteList(struct List *symList);      //cancella lista
 struct SymTab *findSymtab(char *symbolName, struct List *symList); //Ricerca symble table all'interno della lista
 
 //Gestione dei simboli
-struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType symbolType, enum DataType dataType, enum DataType returnType, char *funcName, char *funcParameters, union ValueOper valueOper);
+struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType symbolType, enum DataType dataType, enum DataType returnType, char *funcName, char *parameters, union ValueOper valueOper);
 struct SymTab *findSym(char *symbolName, struct List *symList);
 
 struct List *createList(int scope, struct List *next) {
