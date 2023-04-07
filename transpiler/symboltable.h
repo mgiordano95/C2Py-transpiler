@@ -20,6 +20,7 @@ struct SymTab {
     enum DataType returnType;
     char *funcName; //nome della funzione a cui a appartiene il parametro
     union ValueOper valueOper;
+    char *funcParameters;
     UT_hash_handle hh;    //comando che rende la struct hashable. Chiamato hh come suggerito dalla documentazione
 };
 
@@ -29,7 +30,7 @@ struct List *deleteList(struct List *symList);      //cancella lista
 struct SymTab *findSymtab(char *symbolName, struct List *symList); //Ricerca symble table all'interno della lista
 
 //Gestione dei simboli
-struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType symbolType, enum DataType dataType, enum DataType returnType, char *funcName, union ValueOper valueOper);
+struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType symbolType, enum DataType dataType, enum DataType returnType, char *funcName, char *funcParameters, union ValueOper valueOper);
 struct SymTab *findSym(char *symbolName, struct List *symList);
 
 struct List *createList(int scope, struct List *next) {
@@ -70,7 +71,7 @@ struct SymTab *findSymtab(char *symbolName, struct List *symList) {
 }
 
 //aggiunge una symbol table con simbolo alla lista 
-struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType symbolType, enum DataType dataType, enum DataType returnType, char *funcName, union ValueOper valueOper) {
+struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType symbolType, enum DataType dataType, enum DataType returnType, char *funcName, char *parameters, union ValueOper valueOper) {
     struct SymTab *s;
     printf("Entro in createSym\n");
     s = findSym(symbolName, list);
@@ -81,6 +82,7 @@ struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType sy
         s->dataType = dataType;
         s->returnType = returnType;
         s->funcName = funcName;
+        s->funcParameters = parameters; 
         s->valueOper = valueOper;
         
         HASH_ADD_STR(list->symTab, symbolName, s);  // hash table lista, chiave che identifica il simbolo, tabella puntatore struct da aggiungere

@@ -138,7 +138,7 @@ assignment SEMICOL                                          {
                                                                         printf("AstNodeInstruction allocated for 'initialization SEMICOL'\n");
                                                                         $$->nodeType = INIT_NODE;
                                                                         $$->value.init = $1;
-                                                                        s = createSym(init->assign->variableName, actualList, SYMBOL_VARIABLE, $1->dataType, $1->dataType, NULL, nullValue);
+                                                                        s = createSym(init->assign->variableName, actualList, SYMBOL_VARIABLE, $1->dataType, $1->dataType, NULL, NULL, nullValue);
                                                                     } else {
                                                                         printf("Error: variable already declared.\n");
                                                                     }
@@ -152,7 +152,7 @@ assignment SEMICOL                                          {
                                                                 struct SymTab *s = NULL;
                                                                 s = findSymtab($1->functionName, actualList);
                                                                 if (s == NULL) {
-                                                                    struct SymTab *s = createSym($1->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $1->returnType, $1->parameters, nullValue);
+                                                                    struct SymTab *s = createSym($1->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $1->returnType, $1->functionName, $1->parameters, nullValue);
                                                                     printf("Funzione inserita nella symtab \n");
                                                                     printf("Parametri della funzione: %s \n",$1->parameters);
                                                                 } else {
@@ -242,7 +242,7 @@ types MAIN LPAR RPAR body                                   {
                                                                 beginScope();
                                                                 char appoggio[100] = {};
                                                                 for(struct AstNodeFunctionParams *p = $3; p != NULL; p = p->nextParams) {
-                                                                    struct SymTab *s = createSym(p->initParam->assign->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->assign->variableName, p->initParam->assign->assignValue);
+                                                                    struct SymTab *s = createSym(p->initParam->assign->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->assign->variableName, NULL, p->initParam->assign->assignValue);
                                                                     printf("Added function parameter in the symbol table\n");
                                                                     strcat(appoggio,typeToString(p->initParam->dataType));
                                                                 }
@@ -285,10 +285,10 @@ ID LPAR RPAR                                                {
                                                                 }
                                                                 char *callparameters;
                                                                 callparameters = confronto;
-                                                                printf("Parametri della functioncall: %s \n",confronto);
+                                                                printf("Parametri della functioncall: %s \n",callparameters);
                                                                     $$->functionName = $1;
                                                                     $$->returnType = s->returnType;
-                                                                    $$->functionParams = NULL;
+                                                                    $$->functionParams = $3;
                                                                 } else {
                                                                     printf("Error: function %s not declared\n", $1);
                                                                 }
@@ -597,7 +597,7 @@ ID EQ ID                                                    {
                                                                 struct SymTab *s = NULL;  //sarà diverso da NULL solo se trova il simbolo
                                                                 s = findSym($2, actualList);  //controlla se il simbolo è stato già dichiarato
                                                                 if (s==NULL) {
-                                                                    s = createSym($2, actualList, SYMBOL_VARIABLE, stringToType($1), stringToType($1), NULL, $4->value);
+                                                                    s = createSym($2, actualList, SYMBOL_VARIABLE, stringToType($1), stringToType($1), NULL, NULL, $4->value);
                                                                     printf("'types ID EQ content': the variable %s has not already been declared and then I create the symbol table for this variable\n", $2);
                                                                 } else {
                                                                     printf("Error: variable %s already declared\n", $2);
