@@ -6,13 +6,13 @@
 #include <stdbool.h> //true, false
 #include "ast.h"
 #include "symboltable.h"
-#include "c2py.h"
 
 int yylex(void);
 int yyerror(char *s);
 
 struct AstNodeStatements *root;
 struct List *actualList = NULL;
+int counter; 
 
 char *typeToString(int);
 int stringToType(char*);

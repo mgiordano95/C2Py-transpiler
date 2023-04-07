@@ -76,13 +76,13 @@
 #include <stdbool.h> //true, false
 #include "ast.h"
 #include "symboltable.h"
-#include "c2py.h"
 
 int yylex(void);
 int yyerror(char *s);
 
 struct AstNodeStatements *root;
 struct List *actualList = NULL;
+int counter; 
 
 char *typeToString(int);
 int stringToType(char*);
@@ -1356,7 +1356,7 @@ yyreduce:
                                                                         printf("AstNodeInstruction allocated for 'initialization SEMICOL'\n");
                                                                         (yyval.instruction)->nodeType = INIT_NODE;
                                                                         (yyval.instruction)->value.init = (yyvsp[-1].init);
-                                                                        s = createSym(init->assign->variableName, actualList, SYMBOL_VARIABLE, (yyvsp[-1].init)->dataType, (yyvsp[-1].init)->dataType, NULL, nullValue);
+                                                                        s = createSym(init->assign->variableName, actualList, SYMBOL_VARIABLE, (yyvsp[-1].init)->dataType, (yyvsp[-1].init)->dataType, NULL, NULL, nullValue);
                                                                     } else {
                                                                         printf("Error: variable already declared.\n");
                                                                     }
@@ -1375,7 +1375,7 @@ yyreduce:
                                                                 struct SymTab *s = NULL;
                                                                 s = findSymtab((yyvsp[0].functionDecl)->functionName, actualList);
                                                                 if (s == NULL) {
-                                                                    struct SymTab *s = createSym((yyvsp[0].functionDecl)->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, (yyvsp[0].functionDecl)->returnType, (yyvsp[0].functionDecl)->parameters, nullValue);
+                                                                    struct SymTab *s = createSym((yyvsp[0].functionDecl)->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, (yyvsp[0].functionDecl)->returnType, (yyvsp[0].functionDecl)->functionName, (yyvsp[0].functionDecl)->parameters, nullValue);
                                                                     printf("Funzione inserita nella symtab \n");
                                                                     printf("Parametri della funzione: %s \n",(yyvsp[0].functionDecl)->parameters);
                                                                 } else {
@@ -1523,7 +1523,7 @@ yyreduce:
                                                                 beginScope();
                                                                 char appoggio[100] = {};
                                                                 for(struct AstNodeFunctionParams *p = (yyvsp[-2].functionParams); p != NULL; p = p->nextParams) {
-                                                                    struct SymTab *s = createSym(p->initParam->assign->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, (yyvsp[-4].init)->assign->variableName, p->initParam->assign->assignValue);
+                                                                    struct SymTab *s = createSym(p->initParam->assign->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, (yyvsp[-4].init)->assign->variableName, NULL, p->initParam->assign->assignValue);
                                                                     printf("Added function parameter in the symbol table\n");
                                                                     strcat(appoggio,typeToString(p->initParam->dataType));
                                                                 }
@@ -1574,10 +1574,10 @@ yyreduce:
                                                                 }
                                                                 char *callparameters;
                                                                 callparameters = confronto;
-                                                                printf("Parametri della functioncall: %s \n",confronto);
+                                                                printf("Parametri della functioncall: %s \n",callparameters);
                                                                     (yyval.functionCall)->functionName = (yyvsp[-3].string);
                                                                     (yyval.functionCall)->returnType = s->returnType;
-                                                                    (yyval.functionCall)->functionParams = NULL;
+                                                                    (yyval.functionCall)->functionParams = (yyvsp[-1].functionParams);
                                                                 } else {
                                                                     printf("Error: function %s not declared\n", (yyvsp[-3].string));
                                                                 }
@@ -2021,7 +2021,7 @@ yyreduce:
                                                                 struct SymTab *s = NULL;  //sarà diverso da NULL solo se trova il simbolo
                                                                 s = findSym((yyvsp[-2].string), actualList);  //controlla se il simbolo è stato già dichiarato
                                                                 if (s==NULL) {
-                                                                    s = createSym((yyvsp[-2].string), actualList, SYMBOL_VARIABLE, stringToType((yyvsp[-3].string)), stringToType((yyvsp[-3].string)), NULL, (yyvsp[0].operand)->value);
+                                                                    s = createSym((yyvsp[-2].string), actualList, SYMBOL_VARIABLE, stringToType((yyvsp[-3].string)), stringToType((yyvsp[-3].string)), NULL, NULL, (yyvsp[0].operand)->value);
                                                                     printf("'types ID EQ content': the variable %s has not already been declared and then I create the symbol table for this variable\n", (yyvsp[-2].string));
                                                                 } else {
                                                                     printf("Error: variable %s already declared\n", (yyvsp[-2].string));
