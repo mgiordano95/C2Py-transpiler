@@ -241,18 +241,21 @@ types MAIN LPAR RPAR body                                   {
 |   initialization LPAR functionParams RPAR body            {
                                                                 beginScope();
                                                                 char appoggio[100] = {};
+                                                                char *v = NULL;
                                                                 for(struct AstNodeFunctionParams *p = $3; p != NULL; p = p->nextParams) {
                                                                     struct SymTab *s = createSym(p->initParam->assign->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->assign->variableName, NULL, p->initParam->assign->assignValue);
                                                                     printf("Added function parameter in the symbol table\n");
-                                                                    strcat(appoggio,typeToString(p->initParam->dataType));
+                                                                    v = typeToString(p->initParam->dataType);
                                                                 }
+                                                                printf("Appoggio vale: %s \n",appoggio);
+
                                                                 $$ = malloc(sizeof(struct AstNodeFunctionDecl));
                                                                 printf("AstNodeFunctionDecl allocated for 'initialization LPAR functionParams RPAR body'\n");
                                                                 $$->functionName = $1->assign->variableName;
                                                                 $$->returnType = $1->dataType;
                                                                 $$->functionParams = $3;
                                                                 $$->functiontBody = $5;
-                                                                $$->parameters = appoggio;
+                                                                $$->parameters = v;
                                                                 endScope();
                                                             };
 
@@ -284,7 +287,8 @@ ID LPAR RPAR                                                {
                                                                 }
                                                                 char *callparameters;
                                                                 callparameters = confronto;
-                                                                printf("Parametri della functioncall: %s \n",callparameters);
+                                                                printf("Parametri della function Decl: %s \n \n",s->funcParameters);
+                                                                printf("Parametri della function Call: %s \n",callparameters);
                                                                     $$->functionName = $1;
                                                                     $$->returnType = s->returnType;
                                                                     $$->functionParams = $3;
