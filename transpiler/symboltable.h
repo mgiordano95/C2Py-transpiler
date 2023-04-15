@@ -88,6 +88,8 @@ struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType sy
             for(int i=0;i<(sizeof(funcParameters));i++) {
             s->funcParameters[i] = funcParameters[i]; 
             }
+        } else {
+            s->funcParameters = funcParameters;
         }
         s->valueOper = valueOper;
         printf("In createSym i parametri valgono: %s \n",s->funcParameters);
