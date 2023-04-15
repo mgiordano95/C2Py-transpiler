@@ -19,7 +19,7 @@ struct SymTab {
     enum DataType dataType;
     enum DataType returnType;
     char *funcName; //nome della funzione a cui a appartiene il parametro
-    char funcParameters[30]; 
+    char funcParameters[30];
     union ValueOper valueOper;
 
     UT_hash_handle hh;    //comando che rende la struct hashable. Chiamato hh come suggerito dalla documentazione
@@ -88,9 +88,7 @@ struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType sy
             for(int i=0;i<(sizeof(funcParameters));i++) {
             s->funcParameters[i] = funcParameters[i]; 
             }
-        } else {
-            s->funcParameters = funcParameters;
-        }
+        } 
         s->valueOper = valueOper;
         printf("In createSym i parametri valgono: %s \n",s->funcParameters);
         

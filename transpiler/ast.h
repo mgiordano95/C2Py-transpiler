@@ -172,7 +172,6 @@ struct AstNodeFunctionDecl {
     enum DataType returnType; //tipo restituito dalla funzione
     struct AstNodeFunctionParams *functionParams;
     struct AstNodeBody *functiontBody; //da scrivere
-    char *parameters;
 };
 
 /*--------------- Node Function Call ---------------*/
