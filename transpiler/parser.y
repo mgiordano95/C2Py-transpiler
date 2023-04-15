@@ -297,12 +297,18 @@ ID LPAR RPAR                                                {
                                                                     printf("Qui non so se arrivo \n");
                                                                     strcat(confronto,typeToString(q->callParams->valueType));
                                                                     printf("Fin qui se arrivo festeggio \n");
-                                                                }
-                                                                printf("Parametri della function Decl: %s \n \n",s->funcParameters);
-                                                                printf("Parametri della function Call: %s \n",confronto);
+                                                                    }
+                                                                    printf("Parametri della function Decl: %s \n \n",s->funcParameters);
+                                                                    printf("Parametri della function Call: %s \n",confronto);
+                                                                    int a = strcmp(s->funcParameters,confronto);
+                                                                    if (a==0) {
+                                                                    printf("I parametri sono corretti \n");
                                                                     $$->functionName = $1;
                                                                     $$->returnType = s->returnType;
                                                                     $$->functionParams = $3;
+                                                                    } else {
+                                                                        printf("Tipo dei parametri inserito non valido \n \n");
+                                                                    }
                                                                 } else {
                                                                     printf("Error: function %s not declared\n", $1);
                                                                 }
