@@ -208,7 +208,8 @@ assignment SEMICOL                                          {
 functionDecl:
 types MAIN LPAR RPAR body                                   {
                                                                 struct SymTab *s = NULL;
-                                                                s = findSymtab($1->assign->variableName, actualList);
+                                                                char *main = "main";
+                                                                s = findSymtab(main, actualList);
                                                                 if (s == NULL) {
                                                                 beginScope();
                                                                 $$ = malloc(sizeof(struct AstNodeFunctionDecl));
@@ -221,7 +222,7 @@ types MAIN LPAR RPAR body                                   {
                                                                 struct SymTab *s = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, NULL, nullValue);
                                                                 printf("Funzione main inserita nella symtab \n");
                                                                 } else {
-                                                                    printf("Error: function %s already declared \n",$1->assign->variableName);
+                                                                    printf("Error: function MAIN already declared \n");
                                                                 }
                                                             }
 |   initialization LPAR RPAR body                           {
