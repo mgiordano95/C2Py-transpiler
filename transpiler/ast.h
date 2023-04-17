@@ -10,6 +10,7 @@ enum SymbolType {
     SYMBOL_CONTENT,
     SYMBOL_FUNCTION,
     SYMBOL_PARAMETER,
+    SYMBOL_ARRAY,
 };
 
 enum DataType {
@@ -27,6 +28,7 @@ enum ContentType {
     CONTENT_TYPE_CHAR,
     CONTENT_TYPE_EXPRESSION,
     CONTENT_TYPE_FUNCTION,
+    CONTENT_TYPE_ARRAY,
 };
 
 enum NodeType {
@@ -82,6 +84,7 @@ typedef union ValueOper {
     char *val;
     struct AstNodeExpression *expression;
     struct AstNodeFunctionCall *funtionCall;
+    struct AstNodeArrayCall *arrayCall;
 }ValueOper;
 
 static union ValueOper nullValue;
@@ -148,12 +151,14 @@ struct AstNodeOperand {
 
 /*--------------- Node Array ---------------*/
 struct AstNodeArrayDecl {
+    enum DataType arrayType;
     char *arrayName;
     char *arrayLength;
 };
 
 /*--------------- Node Array ---------------*/
 struct AstNodeArrayCall {
+    enum DataType arrayType;
     char *arrayName;
     struct AstNodeOperand *elementIndex;
 };
