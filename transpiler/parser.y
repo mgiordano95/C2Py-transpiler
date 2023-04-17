@@ -201,7 +201,7 @@ assignment SEMICOL                                          {
                                                                 if (s != NULL) {
                                                                     if(s->dataType != $1->arrayType) {
                                                                         printf("Error: Array %s has been declared as a %s but type %s is assigned.\n", $1->arrayCall->arrayName, typeToString(s->dataType), typeToString($1->arrayType));
-                                                                    } else if(atoi(s->arrayLength) < atoi($1->arrayCall->elementIndex->value.val)) {
+                                                                    } else if(atoi(s->arrayLength) <= atoi($1->arrayCall->elementIndex->value.val)) {
                                                                         printf("OUT OF MEMORY: the length of %s is %s", s->symbolName, s->arrayLength);
                                                                     }else {
                                                                         $$ = malloc(sizeof(struct AstNodeInstruction));
