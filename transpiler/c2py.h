@@ -31,7 +31,7 @@ void translateInputElements(struct AstNodeInputElements *inputElements);
 
 // Function to translate the C Data Type into Python Data Type
 char* DataType(enum DATA_TYPE dataType) {
-    switch (type) {
+    switch (dataType) {
         case DATA_TYPE_VOID:
             return "None";
             break;
@@ -52,7 +52,7 @@ char* DataType(enum DATA_TYPE dataType) {
 
 // Function to convert the Node Type
 char* NodeType(enum NODE_TYPE nodeType) {
-    switch(type) {
+    switch(nodeType) {
         case STATEMENT_NODE:
             return "STATEMENT_NODE";
             break;
