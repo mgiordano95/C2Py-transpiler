@@ -418,7 +418,7 @@ types arrayDecl                                             {
                                                                 $$->elements = NULL;
                                                                 }
                                                             }
-|   types arrayDecl LSBRA RSBRA EQ LBRA RBRA                {
+|   types arrayDecl EQ LBRA RBRA                {
                                                                 //int myArray[] = {};
                                                                 //int myArray[3] = {};
                                                                 $$=malloc(sizeof(struct AstNodeArrayInit));
@@ -441,7 +441,7 @@ types arrayDecl                                             {
                                                             };
 
 arrayAssign:
-|   arrayCall EQ LBRA RBRA                                  {
+arrayCall EQ LBRA RBRA                                  {
                                                                 // myArray[] = {}; Syntax Error !!!
                                                                 // myArray[3] = {}
                                                                 printf("Syntax Error\n");
@@ -453,7 +453,7 @@ arrayAssign:
                                                                     printf("Syntax Error\n");
                                                                 } else {
                                                                     $$=malloc(sizeof(struct AstNodeArrayAssign));
-                                                                    $$->arrayType = stringToType($3->elemnt->valueType);
+                                                                    $$->arrayType = $3->element->valueType;
                                                                     $$->arrayCall = $1;
                                                                     $$->elements = $3;
                                                                 }
