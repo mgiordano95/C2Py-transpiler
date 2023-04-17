@@ -413,15 +413,17 @@ types arrayDecl                                             {
                                                                     printf("Error: array size missing in%s\n", $2->arrayName);
                                                                 } else {
                                                                     $$=malloc(sizeof(struct AstNodeArrayInit));
-                                                                $$->arrayType = stringToType($1);
-                                                                $$->arrayDecl = $2;
-                                                                $$->elements = NULL;
+                                                                    printf("AstNodeArrayInit allocated for 'types arrayDecl'\n");
+                                                                    $$->arrayType = stringToType($1);
+                                                                    $$->arrayDecl = $2;
+                                                                    $$->elements = NULL;
                                                                 }
                                                             }
-|   types arrayDecl EQ LBRA RBRA                {
+|   types arrayDecl EQ LBRA RBRA                            {
                                                                 //int myArray[] = {};
                                                                 //int myArray[3] = {};
                                                                 $$=malloc(sizeof(struct AstNodeArrayInit));
+                                                                printf("AstNodeArrayInit allocated for 'types arrayDecl EQ LBRA RBRA'\n");
                                                                 $$->arrayType = stringToType($1);
                                                                 $$->arrayDecl = $2;
                                                                 $$->elements = NULL;
@@ -435,13 +437,14 @@ types arrayDecl                                             {
                                                                 //int myArray[] = {24, 27, 29};
                                                                 //int myArray[3] = {24, 27, 29};
                                                                 $$=malloc(sizeof(struct AstNodeArrayInit));
+                                                                printf("AstNodeArrayInit allocated for 'types arrayDecl EQ LBRA arrayElements RBRA'\n");
                                                                 $$->arrayType = stringToType($1);
                                                                 $$->arrayDecl = $2;
                                                                 $$->elements = $5;
                                                             };
 
 arrayAssign:
-arrayCall EQ LBRA RBRA                                  {
+arrayCall EQ LBRA RBRA                                      {
                                                                 // myArray[] = {}; Syntax Error !!!
                                                                 // myArray[3] = {}
                                                                 printf("Syntax Error\n");
@@ -453,6 +456,7 @@ arrayCall EQ LBRA RBRA                                  {
                                                                     printf("Syntax Error\n");
                                                                 } else {
                                                                     $$=malloc(sizeof(struct AstNodeArrayAssign));
+                                                                    printf("AstNodeArrayAssign allocated for 'arrayCall EQ arrayElements'\n");
                                                                     $$->arrayType = $3->element->valueType;
                                                                     $$->arrayCall = $1;
                                                                     $$->elements = $3;
@@ -468,11 +472,13 @@ arrayCall EQ LBRA RBRA                                  {
 arrayDecl:
 ID LSBRA RSBRA                                              {
                                                                 $$=malloc(sizeof(struct AstNodeArrayDecl));
+                                                                printf("AstNodeArrayDecl allocated for 'ID LSBRA RSBRA'\n");
                                                                 $$->arrayName = $1;
                                                                 $$->arrayLength = NULL;
                                                             }
-|   ID LSBRA INT_VALUE RSBRA                                    {
+|   ID LSBRA INT_VALUE RSBRA                                {
                                                                 $$=malloc(sizeof(struct AstNodeArrayDecl));
+                                                                printf("AstNodeArrayDecl allocated for 'ID LSBRA INT_VALUE RSBRA'\n");
                                                                 $$->arrayName = $1;
                                                                 $$->arrayLength = $3;
                                                             };
@@ -480,11 +486,13 @@ ID LSBRA RSBRA                                              {
 arrayCall:
 ID LSBRA RSBRA                                              {
                                                                 $$=malloc(sizeof(struct AstNodeArrayCall));
+                                                                printf("AstNodeArrayCall allocated for 'ID LSBRA RSBRA'\n");
                                                                 $$->arrayName = $1;
                                                                 $$->elementIndex = NULL;
                                                             }
-|   ID LSBRA content RSBRA                                    {
+|   ID LSBRA content RSBRA                                  {
                                                                 $$=malloc(sizeof(struct AstNodeArrayCall));
+                                                                printf("AstNodeArrayCall allocated for 'ID LSBRA content RSBRA'\n");
                                                                 $$->arrayName = $1;
                                                                 $$->elementIndex = $3;
                                                             };
