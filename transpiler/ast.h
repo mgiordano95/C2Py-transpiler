@@ -54,6 +54,9 @@ union yystype {
     struct AstNodeAssign              *assign;
     struct AstNodeExpression          *expression;
     struct AstNodeOperand             *operand;
+    //struct AstNodeArray               *array;
+    struct AstNodeArrayDecl           *arrayDecl;
+    struct AstNodeArrayCall           *arrayCall;
     struct AstNodeArrayInit           *arrayInit;
     struct AstNodeArrayAssign         *arrayAssign;
     struct AstNodeArrayElements       *arrayElements;
@@ -143,20 +146,46 @@ struct AstNodeOperand {
     enum ContentType contentType;   //è il tipo di operando func expr int che forse serve per la traduzione ma forse no
 }; 
 
+/*--------------- Node Array ---------------*/
+struct AstNodeArrayDecl {
+    char *arrayName;
+    char *arrayLength;
+};
+
+/*--------------- Node Array ---------------*/
+struct AstNodeArrayCall {
+    char *arrayName;
+    struct AstNodeOperand *elementIndex;
+};
+
 /*--------------- Node Array Init ---------------*/
 struct AstNodeArrayInit {
-    enum DataType arrayType; 
-    struct AstNodeArrayAssign *assignArray;
+    enum DataType arrayType;
+    struct AstNodeArrayDecl *arrayDecl;
+    struct AstNodeArrayElements *elements;
 };
 
 /*--------------- Node Array Assign ---------------*/
 struct AstNodeArrayAssign {
     enum DataType arrayType;
+    struct AstNodeArrayCall *arrayCall;
+    struct AstNodeArrayElements *elements;
+};
+
+/*--------------- Node Array Init ---------------*/
+/* struct AstNodeArrayInit {
+    enum DataType arrayType; 
+    struct AstNodeArrayAssign *assignArray;
+}; */
+
+/*--------------- Node Array Assign ---------------*/
+/* struct AstNodeArrayAssign {
+    enum DataType arrayType;
     char *arrayName;
     char *arrayLength; //only for array declaration (you can declare array as array[4] e not as array[b])
     struct AstNodeOperand *elementIndex; //only for array assignment
     struct AstNodeArrayElements *elements;
-};
+}; */
 
 /*--------------- Node Array Assign ---------------*/
 struct AstNodeArrayElements {

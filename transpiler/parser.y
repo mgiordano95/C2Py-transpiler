@@ -82,6 +82,8 @@ void endScope();
 %type <whileLoop>   whileLoop
 %type <arrayInit> arrayInit
 %type <arrayAssign> arrayAssign
+%type <arrayDecl> arrayDecl
+%type <arrayCall> arrayCall
 %type <arrayElements> arrayElements
 %type <outputFunction> outputFunction
 %type <inputFunction> inputFunction
@@ -404,6 +406,90 @@ WHILE LPAR expression RPAR body                             {
                                                             };
 
 arrayInit:
+types arrayDecl                                             {
+                                                                //int myArray[]; Error: array size missing in ‘myArray’ !!!
+                                                                //int myArray[3];
+                                                                if($2->arrayLength == NULL) {
+                                                                    printf("Error: array size missing in%s\n", $2->arrayName);
+                                                                } else {
+                                                                    $$=malloc(sizeof(struct AstNodeArrayInit));
+                                                                $$->arrayType = stringToType($1);
+                                                                $$->arrayDecl = $2;
+                                                                $$->elements = NULL;
+                                                                }
+                                                            }
+|   types arrayDecl LSBRA RSBRA EQ LBRA RBRA                {
+                                                                //int myArray[] = {};
+                                                                //int myArray[3] = {};
+                                                                $$=malloc(sizeof(struct AstNodeArrayInit));
+                                                                $$->arrayType = stringToType($1);
+                                                                $$->arrayDecl = $2;
+                                                                $$->elements = NULL;
+                                                            }
+|    types arrayDecl EQ arrayElements                       {
+                                                                //int myArray[] = 24; Error: invalid initializer !!!
+                                                                //int myArray[3] = 24; Error: invalid initializer !!!
+                                                                printf("Error: invalid initializer of %s\n", $2->arrayName);
+                                                            }
+|   types arrayDecl EQ LBRA arrayElements RBRA              {
+                                                                //int myArray[] = {24, 27, 29};
+                                                                //int myArray[3] = {24, 27, 29};
+                                                                $$=malloc(sizeof(struct AstNodeArrayInit));
+                                                                $$->arrayType = stringToType($1);
+                                                                $$->arrayDecl = $2;
+                                                                $$->elements = $5;
+                                                            };
+
+arrayAssign:
+|   arrayCall EQ LBRA RBRA                                  {
+                                                                // myArray[] = {}; Syntax Error !!!
+                                                                // myArray[3] = {}
+                                                                printf("Syntax Error\n");
+                                                            }
+|   arrayCall EQ arrayElements                              {
+                                                                // myArray[] = 24; Synrtax Error
+                                                                // myArray[2] = 24; Corret
+                                                                if($1->elementIndex == NULL) {
+                                                                    printf("Syntax Error\n");
+                                                                } else {
+                                                                    $$=malloc(sizeof(struct AstNodeArrayAssign));
+                                                                    $$->arrayType = stringToType($3->elemnt->valueType);
+                                                                    $$->arrayCall = $1;
+                                                                    $$->elements = $3;
+                                                                }
+                                                                
+                                                            }
+|   arrayCall EQ LBRA arrayElements RBRA                    {
+                                                                //myArray[] = {24, 27, 29}; Syntax Error
+                                                                //myArray[3] = {24, 27, 29}; Syntax Error
+                                                                printf("Syntax Error\n");
+                                                            };
+
+arrayDecl:
+ID LSBRA RSBRA                                              {
+                                                                $$=malloc(sizeof(struct AstNodeArrayDecl));
+                                                                $$->arrayName = $1;
+                                                                $$->arrayLength = NULL;
+                                                            }
+|   ID LSBRA INT_VALUE RSBRA                                    {
+                                                                $$=malloc(sizeof(struct AstNodeArrayDecl));
+                                                                $$->arrayName = $1;
+                                                                $$->arrayLength = $3;
+                                                            };
+
+arrayCall:
+ID LSBRA RSBRA                                              {
+                                                                $$=malloc(sizeof(struct AstNodeArrayCall));
+                                                                $$->arrayName = $1;
+                                                                $$->elementIndex = NULL;
+                                                            }
+|   ID LSBRA content RSBRA                                    {
+                                                                $$=malloc(sizeof(struct AstNodeArrayCall));
+                                                                $$->arrayName = $1;
+                                                                $$->elementIndex = $3;
+                                                            };
+
+/* arrayInit:
 types ID LSBRA RSBRA                                        {
                                                                 printf("Error: array size missing in %s\n", $2); //int myArray[]; Error: array size missing in ‘myArray’ !!!
                                                             }
@@ -418,9 +504,9 @@ types ID LSBRA RSBRA                                        {
                                                                 $$->assignArray->arrayLength = $4;
                                                                 $$->assignArray->elementIndex = NULL;
                                                                 $$->assignArray->elements = NULL;
-                                                            };
+                                                            }; */
 
-arrayAssign:                                        
+/* arrayAssign:                                        
 types ID LSBRA RSBRA EQ LBRA RBRA                           {
                                                                 $$ = malloc(sizeof(struct AstNodeArrayAssign));
                                                                 printf("AstNodeArrayAssign allocated for 'types ID LSBRA RSBRA EQ LBRA RBRA'\n"); //int myArray[] = {};
@@ -435,7 +521,7 @@ types ID LSBRA RSBRA EQ LBRA RBRA                           {
                                                             }
 |   types ID LSBRA RSBRA EQ LBRA arrayElements RBRA         {
                                                                 $$ = malloc(sizeof(struct AstNodeArrayAssign));
-                                                                printf("AstNodeArrayAssign allocated for 'types ID LSBRA RSBRA EQ LBRA arrayElements RBRA'\n"); //int myArray[] = {24, 27, 29};
+                                                                printf("AstNodeArrayAssign allocated for 'types ID LSBRA RSBRA EQ LBRA arrayElements RBRA'\n"); 
                                                                 $$->arrayType = stringToType($1);
                                                                 $$->arrayName = $2;
                                                                 $$->arrayLength = NULL; //TODO: compute arrayLength as # of elements (ciclare su arrayElements per calcolare il numero di elementi)
@@ -480,7 +566,7 @@ types ID LSBRA RSBRA EQ LBRA RBRA                           {
                                                                 $$->arrayLength = $3;
                                                                 $$->elementIndex = NULL;
                                                                 $$->elements = $7;
-                                                            };
+                                                            }; */
 
 arrayElements:
 content                                                     {
