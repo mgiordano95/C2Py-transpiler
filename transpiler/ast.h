@@ -10,6 +10,7 @@ enum SymbolType {
     SYMBOL_CONTENT,
     SYMBOL_FUNCTION,
     SYMBOL_PARAMETER,
+    SYMBOL_ARRAY,
 };
 
 enum DataType {
@@ -27,6 +28,7 @@ enum ContentType {
     CONTENT_TYPE_CHAR,
     CONTENT_TYPE_EXPRESSION,
     CONTENT_TYPE_FUNCTION,
+    CONTENT_TYPE_ARRAY,
 };
 
 enum NodeType {
@@ -54,6 +56,8 @@ union yystype {
     struct AstNodeAssign              *assign;
     struct AstNodeExpression          *expression;
     struct AstNodeOperand             *operand;
+    struct AstNodeArrayDecl           *arrayDecl;
+    struct AstNodeArrayCall           *arrayCall;
     struct AstNodeArrayInit           *arrayInit;
     struct AstNodeArrayAssign         *arrayAssign;
     struct AstNodeArrayElements       *arrayElements;
@@ -79,6 +83,7 @@ typedef union ValueOper {
     char *val;
     struct AstNodeExpression *expression;
     struct AstNodeFunctionCall *funtionCall;
+    struct AstNodeArrayCall *arrayCall;
 }ValueOper;
 
 static union ValueOper nullValue;
@@ -143,18 +148,31 @@ struct AstNodeOperand {
     enum ContentType contentType;   //è il tipo di operando func expr int che forse serve per la traduzione ma forse no
 }; 
 
+/*--------------- Node Array Decl ---------------*/
+struct AstNodeArrayDecl {
+    enum DataType arrayType;
+    char *arrayName;
+    char *arrayLength;
+};
+
+/*--------------- Node Array Call ---------------*/
+struct AstNodeArrayCall {
+    enum DataType arrayType;
+    char *arrayName;
+    struct AstNodeOperand *elementIndex;
+};
+
 /*--------------- Node Array Init ---------------*/
 struct AstNodeArrayInit {
-    enum DataType arrayType; 
-    struct AstNodeArrayAssign *assignArray;
+    enum DataType arrayType;
+    struct AstNodeArrayDecl *arrayDecl;
+    struct AstNodeArrayElements *elements;
 };
 
 /*--------------- Node Array Assign ---------------*/
 struct AstNodeArrayAssign {
     enum DataType arrayType;
-    char *arrayName;
-    char *arrayLength; //only for array declaration (you can declare array as array[4] e not as array[b])
-    struct AstNodeOperand *elementIndex; //only for array assignment
+    struct AstNodeArrayCall *arrayCall;
     struct AstNodeArrayElements *elements;
 };
 
@@ -245,9 +263,5 @@ struct AstNodeInputElements {
     struct AstNodeOperand *element;
     struct AstNodeInputElements *nextElement;
 };
-
-
-
-
 
 #endif
