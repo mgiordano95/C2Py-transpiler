@@ -4,10 +4,11 @@
 #include <stddef.h>
 
 int counter = 0;
-FILE *ftpr;
+FILE *fptr;
 
-char* DataType(enum DATA_TYPE dataType);
-char* NodeType(enum NODE_TYPE nodeType);
+void printCounter(int counter);
+char* DataType(enum DataType dataType);
+char* NodeType(enum NodeType nodeType);
 void translate(struct AstNodeStatements *root);
 void translateInitialization(struct AstNodeInit *init);
 void translateAssignment(struct AstNodeAssign *assign);
@@ -29,8 +30,15 @@ void translateFunctionInput(struct AstNodeFunctionInput *inputFunction);
 void translateOutputElements(struct AstNodeOutputElements *outputElements);
 void translateInputElements(struct AstNodeInputElements *inputElements);
 
+// Function to print indentation in .py file
+void printCounter(int counter) {
+    for (int i = 0; i<counter; i++) {
+        fprintf(fptr, "\t", counter);
+    }
+}
+
 // Function to translate the C Data Type into Python Data Type
-char* DataType(enum DATA_TYPE dataType) {
+char* DataType(enum DataType dataType) {
     switch (dataType) {
         case DATA_TYPE_VOID:
             return "None";
@@ -51,7 +59,7 @@ char* DataType(enum DATA_TYPE dataType) {
 }
 
 // Function to convert the Node Type
-char* NodeType(enum NODE_TYPE nodeType) {
+char* NodeType(enum NodeType nodeType) {
     switch(nodeType) {
         case STATEMENT_NODE:
             return "STATEMENT_NODE";
@@ -127,7 +135,7 @@ void translate(struct AstNodeStatements *root) {
                 translateElseIf(currentInstruction->value.elseifStatement);
                 break;
             case ELSE_NODE:
-                translateElse(currentInstruction->value.elseifStatement);
+                translateElse(currentInstruction->value.elseStatement);
                 break;
             case WHILE_NODE:
                 translateWhile(currentInstruction->value.whileLoop);
@@ -171,7 +179,7 @@ void translate(struct AstNodeStatements *root) {
                 translateElseIf(currentInstruction->value.elseifStatement);
                 break;
             case ELSE_NODE:
-                translateElse(currentInstruction->value.elseifStatement);
+                translateElse(currentInstruction->value.elseStatement);
                 break;
             case WHILE_NODE:
                 translateWhile(currentInstruction->value.whileLoop);
@@ -197,6 +205,80 @@ void translate(struct AstNodeStatements *root) {
 }
 
 void translateInitialization(struct AstNodeInit *init) {
+    printCounter(counter);
     fprintf(fptr, "%s = %s", init->assign->variableName, init->assign->assignValue.val);
     fprintf(fptr, "\n");
+}
+
+void translateAssignment(struct AstNodeAssign *assign) {
+    printCounter(counter);
+    fprintf(fptr, "%s = %s", assign->variableName, assign->assignValue.val);
+}
+
+void translateOperand(struct AstNodeOperand *operand) {
+    printf("Hello!!!");
+}
+
+void translateExpression(struct AstNodeExpression *expression) {
+    printf("Hello!!!");
+}
+
+void translateArrayInitialization(struct AstNodeArrayInit *arrayInit) {
+    printf("Hello!!!");
+}
+
+void translateArrayAssignment(struct AstNodeArrayAssign *arrayAssign) {
+    printf("Hello!!!");
+}
+
+void translateArrayElements(struct AstNodeArrayElements *arrayElements) {
+    printf("Hello!!!");
+}
+
+void translateFunctionDeclaration(struct AstNodeFunctionDecl *functionDecl) {
+    printf("Hello!!!");
+}
+
+void translateFunctionCall(struct AstNodeFunctionCall *functionCall) {
+    printf("Hello!!!");
+}
+
+void translateFunctionParams(struct AstNodeFunctionParams *functionParams) {
+    printf("Hello!!!");
+}
+
+void translateIf(struct AstNodeIf *ifStatement) {
+    printf("Hello!!!");
+}
+
+void translateElseIf(struct AstNodeElseIf *elseifStatement) {
+    printf("Hello!!!");
+}
+
+void translateElse(struct AstNodeElse *elseStatement) {
+    printf("Hello!!!");
+}
+
+void translateWhile(struct AstNodeWhile *whileLoop) {
+    printf("Hello!!!");
+}
+
+void translateBody(struct AstNodeBody *body) {
+    printf("Hello!!!");
+}
+
+void translateFunctionOutput(struct AstNodeFunctionOutput *outputFunction) {
+    printf("Hello!!!");
+}
+
+void translateFunctionInput(struct AstNodeFunctionInput *inputFunction) {
+    printf("Hello!!!");
+}
+
+void translateOutputElements(struct AstNodeOutputElements *outputElements) {
+    printf("Hello!!!");
+}
+
+void translateInputElements(struct AstNodeInputElements *inputElements) {
+    printf("Hello!!!");
 }

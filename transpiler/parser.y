@@ -956,7 +956,7 @@ int main() {
     yyparse();
     nullValue.val = NULL;
     counter = 0;
-    fptr = fopen("python.py", "w");
+    fptr = fopen("test.py", "w");
     translate(root);
     fclose(fptr);
     printf("Translation completed!\n");
