@@ -12,6 +12,8 @@
 int yylex(void);
 int yyerror(char *s);
 
+FILE *fptr;
+
 struct AstNodeStatements *root;
 struct List *actualList = NULL;
 
@@ -954,6 +956,10 @@ int main() {
     yyparse();
     nullValue.val = NULL;
     counter = 0;
+    fptr = fopen("python.py", "w");
+    translate(root);
+    fclose(fptr);
+    printf("Translation completed!\n");
     
     return 0;
 }
