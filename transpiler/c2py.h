@@ -14,6 +14,8 @@ void translateInitialization(struct AstNodeInit *init);
 void translateAssignment(struct AstNodeAssign *assign);
 void translateOperand(struct AstNodeOperand *operand);
 void translateExpression(struct AstNodeExpression *expression);
+void translateArrayDecleration(struct AstNodeArrayDecl *arrayDecl);
+void translateArrayCall(struct AstNodeArrayCall *arrayCall);
 void translateArrayInitialization(struct AstNodeArrayInit *arrayInit);
 void translateArrayAssignment(struct AstNodeArrayAssign *arrayAssign);
 void translateArrayElements(struct AstNodeArrayElements *arrayElements);
@@ -212,73 +214,94 @@ void translateInitialization(struct AstNodeInit *init) {
 
 void translateAssignment(struct AstNodeAssign *assign) {
     printCounter(counter);
-    fprintf(fptr, "%s = %s", assign->variableName, assign->assignValue.val);
+    if (assign->assignType == CONTENT_TYPE_EXPRESSION) {
+        fprintf(fptr, "%s = ", assign->variableName);
+        translateExpression(assign->assignValue.expression);
+    } else if (assign->assignType == CONTENT_TYPE_FUNCTION) {
+        fprintf(fptr, "%s = ", assign->variableName);
+        translateFunctionCall(assign->assignValue.funtionCall);
+    } else if (assign->assignType == CONTENT_TYPE_ARRAY) {
+        fprintf(fptr, "%s = ", assign->variableName);
+        translateArrayCall(assign->assignValue.arrayCall);
+    } else {
+        fprintf(fptr, "%s = %s", assign->variableName, assign->assignValue.val);
+    }
+    fprintf(fptr, "\n");
 }
 
 void translateOperand(struct AstNodeOperand *operand) {
-    printf("Hello!!!");
+    printf("Translate Operand!!!");
 }
 
 void translateExpression(struct AstNodeExpression *expression) {
-    printf("Hello!!!");
+    fprintf(fptr, "%s %s %s", expression->leftOper->value.val, expression->op, expression->rightOper->value.val);
+    fprintf(fptr, "\n");
+}
+
+void translateArrayDecleration(struct AstNodeArrayDecl *arrayDecl) {
+    printf("Translate Array Decleration!!!");
+}
+
+void translateArrayCall(struct AstNodeArrayCall *arrayCall) {
+    printf("Translate Array Call!!!");
 }
 
 void translateArrayInitialization(struct AstNodeArrayInit *arrayInit) {
-    printf("Hello!!!");
+    printf("Translate Array Initialization!!!");
 }
 
 void translateArrayAssignment(struct AstNodeArrayAssign *arrayAssign) {
-    printf("Hello!!!");
+    printf("Translate Array Assignment!!!");
 }
 
 void translateArrayElements(struct AstNodeArrayElements *arrayElements) {
-    printf("Hello!!!");
+    printf("Translate Array Elements!!!");
 }
 
 void translateFunctionDeclaration(struct AstNodeFunctionDecl *functionDecl) {
-    printf("Hello!!!");
+    printf("Translate Function Declaration!!!");
 }
 
 void translateFunctionCall(struct AstNodeFunctionCall *functionCall) {
-    printf("Hello!!!");
+    printf("Translate Function Call!!!");
 }
 
 void translateFunctionParams(struct AstNodeFunctionParams *functionParams) {
-    printf("Hello!!!");
+    printf("Translate Function Params!!!");
 }
 
 void translateIf(struct AstNodeIf *ifStatement) {
-    printf("Hello!!!");
+    printf("Translate If!!!");
 }
 
 void translateElseIf(struct AstNodeElseIf *elseifStatement) {
-    printf("Hello!!!");
+    printf("Translate Else If!!!");
 }
 
 void translateElse(struct AstNodeElse *elseStatement) {
-    printf("Hello!!!");
+    printf("Translate Else!!!");
 }
 
 void translateWhile(struct AstNodeWhile *whileLoop) {
-    printf("Hello!!!");
+    printf("Translate While!!!");
 }
 
 void translateBody(struct AstNodeBody *body) {
-    printf("Hello!!!");
+    printf("Translate Body!!!");
 }
 
 void translateFunctionOutput(struct AstNodeFunctionOutput *outputFunction) {
-    printf("Hello!!!");
+    printf("Translate Output Function!!!");
 }
 
 void translateFunctionInput(struct AstNodeFunctionInput *inputFunction) {
-    printf("Hello!!!");
+    printf("Translate Input Function!!!");
 }
 
 void translateOutputElements(struct AstNodeOutputElements *outputElements) {
-    printf("Hello!!!");
+    printf("Translate Output Elements!!!");
 }
 
 void translateInputElements(struct AstNodeInputElements *inputElements) {
-    printf("Hello!!!");
+    printf("Translate Input Elements!!!");
 }
