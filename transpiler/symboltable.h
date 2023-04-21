@@ -62,11 +62,9 @@ struct List *deleteList(struct List *symList) {   //più che cancellare la lista
 struct SymTab *findSymtab(char *symbolName, struct List *symList) {
     struct SymTab *s;
     struct List *l = symList;
-    printf("Entro in findSymtab\n");
     while (l != NULL) {
         s = findSym(symbolName, l);
         if (s != NULL) {
-            printf("In findSymtab i parametri valgon %s \n \n",s->funcParameters);
             return s;
         }
         l = l->next;
@@ -76,7 +74,6 @@ struct SymTab *findSymtab(char *symbolName, struct List *symList) {
 //aggiunge una symbol table con simbolo alla lista 
 struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType symbolType, enum DataType dataType, enum DataType returnType, char *funcName, char funcParameters[], char *arrayLength, union ValueOper valueOper) {
     struct SymTab *s;
-    printf("Entro in createSym\n");
     s = findSym(symbolName, list);
     if(s == NULL) {
         s = (struct SymTab *)malloc(sizeof(struct SymTab));
@@ -92,7 +89,6 @@ struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType sy
         }
         s->arrayLength = arrayLength;
         s->valueOper = valueOper;
-        //printf("In createSym i parametri valgono: %s \n",s->funcParameters);
         
         HASH_ADD_STR(list->symTab, symbolName, s);  // hash table lista, chiave che identifica il simbolo, tabella puntatore struct da aggiungere
     } else {
@@ -101,7 +97,6 @@ struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType sy
 }
 
 struct SymTab *findSym(char *symbolName, struct List *symList) {
-    printf("Entro in findSym\n");
     struct SymTab *s;
     HASH_FIND_STR(symList->symTab, symbolName, s);  //hash table lista, puntatore alla chiave che cerco, puntatore alla struct con la chiave cercata
     return s; //puntatore alla symbol table cercata

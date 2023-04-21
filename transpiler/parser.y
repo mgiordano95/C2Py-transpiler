@@ -157,43 +157,38 @@ assignment SEMICOL                                      {
                                                                 printf("AstNodeInstruction allocated for 'functionDecl SEMICOL'\n");
                                                                 $$->nodeType = FUNCTION_DECL_NODE;
                                                                 $$->value.functionDecl = $1;
-                                                                char appoggio[100] = {};
+                                                                char declaredParameters[100] = {};
                                                                 for(struct AstNodeFunctionParams *p = $1->functionParams; p != NULL; p = p->nextParams) {
-                                                                    printf("Sono entrato nel ciclo for \n \n");
                                                                     struct SymTab *s = createSym(p->initParam->assign->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->functionName, NULL, NULL, p->initParam->assign->assignValue);
-                                                                    printf("Aggiunto parametro alla symbol table\n");
-                                                                    strcat(appoggio,typeToString(p->initParam->dataType));
+                                                                    strcat(declaredParameters,typeToString(p->initParam->dataType));
                                                                 }
-                                                                struct SymTab *s = createSym($1->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $1->returnType, $1->functionName, appoggio, NULL, nullValue);
-                                                                printf("Funzione inserita nella symtab \n");
+                                                                struct SymTab *s = createSym($1->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $1->returnType, $1->functionName, declaredParameters, NULL, nullValue);
                                                             } else {
-                                                                printf("Function already declared\n");
+                                                                printf("Error: function %s already declared \n",$1->functionName);
                                                             }
-                                                            
                                                         }
 |   functionCall SEMICOL                                {
                                                             $$ = malloc(sizeof(struct AstNodeInstruction));
-                                                            char confronto[100] = {};
+                                                            char calledParameters[100] = {};
                                                             struct SymTab *s = findSymtab($1->functionName, actualList);
                                                             if( s != NULL) {
+                                                                printf("AstNodeInstruction allocated for 'functionCall SEMICOL'\n");
+                                                                $$->nodeType = FUNCTION_CALL_NODE;
+                                                                $$->value.functionCall = $1;
                                                                 for (struct AstNodeFunctionParams *q = $1->functionParams; q != NULL; q = q->nextParams) {
-                                                                    strcat(confronto, typeToString(q->callParams->valueType));
+                                                                    strcat(calledParameters, typeToString(q->callParams->valueType));
                                                                 }
-                                                                printf("Parametri della function Decl: %s \n", s->funcParameters);
-                                                                printf("Parametri della function Call: %s \n", confronto);
-                                                                int a = strcmp(s->funcParameters, confronto);
+                                                                printf("Parameters of the declared function: %s \n", s->funcParameters);
+                                                                printf("Parameters of the called function: %s \n", calledParameters);
+                                                                int a = strcmp(s->funcParameters, calledParameters);
                                                                 if (a == 0) {
-                                                                    printf("I parametri sono corretti\n");
-                                                                    printf("AstNodeInstruction allocated for 'functionCall SEMICOL'\n");
-                                                                    $$->nodeType = FUNCTION_CALL_NODE;
-                                                                    $$->value.functionCall = $1;
+                                                                    printf("The parameters are correct\n");
                                                                 } else {
-                                                                    printf("I parametri inseriti nella functionCall non sono corretti\n");
-                                                                }   
+                                                                    printf("The parameters in the function call are incorrect\n");
+                                                                }
                                                             } else {
                                                                 printf("Error: function %s not declared\n", $1->functionName);
                                                             }
-                                                            
                                                         }
 |   ifStatement                                         {
                                                             $$ = malloc(sizeof(struct AstNodeInstruction));
@@ -333,10 +328,10 @@ functionCall:
 ID LPAR RPAR                                            {
                                                             $$ = malloc(sizeof(struct AstNodeFunctionCall));
                                                             printf("AstNodeFunctionCall allocated for 'ID LPAR RPAR'\n");
-                                                            /* struct SymTab *s = findSymtab($1, actualList);
-                                                            if (s != NULL) { */
+                                                            struct SymTab *s = findSymtab($1, actualList);
+                                                            /* if (s != NULL) { */
                                                                 $$->functionName = $1;
-                                                                $$->returnType = DATA_TYPE_INT;
+                                                                $$->returnType = s->returnType;
                                                                 $$->functionParams = NULL;
                                                             /* } else {
                                                                 printf("Error: function %s not declared\n", $1);
@@ -346,8 +341,8 @@ ID LPAR RPAR                                            {
                                                             $$ = malloc(sizeof(struct AstNodeFunctionCall));
                                                             /* char confronto[100] = {}; */
                                                             printf("AstNodeFunctionCall allocated for 'ID LPAR functionParams RPAR'\n");
-                                                            /* struct SymTab *s = findSymtab($1, actualList);
-                                                            printf("Vedo se la funzione e' stata dichiarata \n");
+                                                            struct SymTab *s = findSymtab($1, actualList);
+                                                            /* printf("Vedo se la funzione e' stata dichiarata \n");
                                                             if (s != NULL) {
                                                                 printf("Inizio a scorrere i parametri \n");
                                                                 for(struct AstNodeFunctionParams *q = $3; q != NULL; q = q->nextParams) {
@@ -361,7 +356,7 @@ ID LPAR RPAR                                            {
                                                                 if (a==0) {
                                                                     printf("I parametri sono corretti \n"); */
                                                                     $$->functionName = $1;
-                                                                    $$->returnType = DATA_TYPE_INT;
+                                                                    $$->returnType = s->returnType;
                                                                     $$->functionParams = $3;
                                                                 /* } else {
                                                                     printf("Tipo dei parametri inserito non valido \n \n");
@@ -657,10 +652,8 @@ ID EQ ID                                                {
                                                             struct SymTab *s = findSym($3, actualList);
                                                             if (s == NULL) {
                                                                 $$->variableType = DATA_TYPE_NONE;
-                                                                printf("ID EQ ID non esiste dollaro3 nella symtab\n");
                                                             } else {
                                                                 $$->variableType = s->dataType;
-                                                                printf("ID EQ ID esiste dollaro3 nella symtab\n");
                                                             }
                                                         }
 |   types ID EQ content                                 {
@@ -703,13 +696,13 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = $1->valueType;
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("\n Errore! Impossibile sommare variabili di tipo char\n");
+                                                                printf("Error: cannot add variables of type char\n");
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("\n Errore! Impossibile sommare variabili di tipo void\n");
+                                                                printf("Error: cannot add variables of type void\n");
                                                             } else if ($1->valueType != $3->valueType) {
-                                                                printf("\n Errore! Impossibile sommare variabili di tipi diversi\n");
+                                                                printf("Error: cannot add variables of different types\n");
                                                             } else {
-                                                                printf("Expression di tipo somma \n");
+                                                                printf("Expression of type Sum\n");
                                                             }
                                                         }
 |   content SUB content                                 {
@@ -722,13 +715,13 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = $1->valueType;
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("\n Errore! Impossibile sottrarre variabili di tipo char");
+                                                                printf("Error: cannot subtract variables of type char\n");
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("\n Errore! Impossibile sottrare variabili di tipo void");
+                                                                printf("Error: cannot subtract variables of type void\n");
                                                             } else if ($1->valueType != $3->valueType) {
-                                                                printf("\n Errore! Impossibile sottrarre variabili di tipi diversi");
+                                                                printf("Error: cannot subtract variables of different types\n");
                                                             } else {
-                                                                printf("Expression di tipo sottrazione \n");
+                                                                printf("Expression of type Subtraction\n");
                                                             }
                                                         }
 |   content MUL content                                 {
@@ -741,13 +734,13 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = $1->valueType;
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("\n Errore! Impossibile moltiplicare variabili di tipo char");
+                                                                printf("Error: cannot multiply variables of type char\n");
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("\n Errore! Impossibile moltiplicare variabili di tipo void");
+                                                                printf("Error: cannot multiply variables of type void\n");
                                                             } else if ($1->valueType != $3->valueType) {
-                                                                printf("\n Errore! Impossibile moltiplicare variabili di tipi diversi");
+                                                                printf("Error: cannot multiply variables of different types\n");
                                                             } else {
-                                                                printf("Expression di tipo moltiplicazione \n");
+                                                                printf("Expression of type Multiplication\n");
                                                             }
                                                         }
 |   content DIV content                                 {
@@ -760,13 +753,13 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = DATA_TYPE_FLOAT; //forziamo il tipo a Float essendo una divisione
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("\n Errore! Impossibile dividere variabili di tipo char");
+                                                                printf("Error: cannot divide variables of type char\n");
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("\n Errore! Impossibile dividere variabili di tipo void");
+                                                                printf("Error: cannot divide variables of type void\n");
                                                             } else if ($1->valueType != $3->valueType) {
-                                                                printf("\n Errore! Impossibile dividere variabili di tipi diversi");
+                                                                printf("Error: cannot divide variables of different types\n");
                                                             } else {
-                                                                printf("Expression di tipo divisione \n");
+                                                                printf("Expression of type Division\n");
                                                             }
                                                         } 
 |   content EE content                                  {
@@ -778,7 +771,7 @@ content ADD content                                     {
                                                             $$->op = $2;
                                                             $$->rightOper = $3;
                                                             $$->exprType = DATA_TYPE_INT;
-                                                            printf("Expression di tipo Equal to \n");
+                                                            printf("Expression of type Equal to\n");
                                                         }
 |   content NE content                                  {
                                                             $$ = malloc(sizeof(struct AstNodeExpression));
@@ -789,7 +782,7 @@ content ADD content                                     {
                                                             $$->op = $2;
                                                             $$->rightOper = $3;
                                                             $$->exprType = DATA_TYPE_INT;
-                                                            printf("Expression di tipo Not Equal \n");
+                                                            printf("Expression of type Not Equal\n");
                                                         }
 |   content GT content                                  {
                                                             $$ = malloc(sizeof(struct AstNodeExpression));
@@ -801,11 +794,11 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = DATA_TYPE_INT;
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("\n Errore! Impossibile confrontare variabili di tipo char");
+                                                                printf("Error: cannot compare variables of type char\n");
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("\n Errore! Impossibile confrontare variabili di tipo void");
+                                                                printf("Error: cannot compare variables of type void\n");
                                                             } else {
-                                                                printf("Expression di tipo Greater than \n");
+                                                                printf("Expression of type Greater than\n");
                                                             }
                                                         }
 |   content LT content                                  {
@@ -818,11 +811,11 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = DATA_TYPE_INT;
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("\n Errore! Impossibile confrontare variabili di tipo char");
+                                                                printf("Error: cannot compare variables of type char\n");
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("\n Errore! Impossibile confrontare variabili di tipo void");
+                                                                printf("Error: cannot compare variables of type void\n");
                                                             } else {
-                                                                printf("Expression di tipo Less than \n");
+                                                                printf("Expression of type Less than\n");
                                                             }
                                                         }
 |   content GE content                                  {
@@ -835,11 +828,11 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = DATA_TYPE_INT;
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("\n Errore! Impossibile confrontare variabili di tipo char");
+                                                                printf("Error: cannot compare variables of type char\n");
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("\n Errore! Impossibile confrontare variabili di tipo void");
+                                                                printf("Error: cannot compare variables of type void\n");
                                                             } else {
-                                                                printf("Expression di tipo Greater than or equal to \n");
+                                                                printf("Expression of type Greater than or equal to\n");
                                                             }
                                                         }
 |   content LE content                                  {
@@ -852,11 +845,11 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = DATA_TYPE_INT;
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("\n Errore! Impossibile confrontare variabili di tipo char");
+                                                                printf("Error: cannot compare variables of type char\n");
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("\n Errore! Impossibile confrontare variabili di tipo void");
+                                                                printf("Error: cannot compare variables of type void\n");
                                                             } else {
-                                                                printf("Expression di tipo Less than or equal to \n");
+                                                                printf("Expression of type Less than or equal to\n");
                                                             }
                                                         }
 |   content AND content                                 {
@@ -869,11 +862,11 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = DATA_TYPE_INT;
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("\n Errore! Impossibile confrontare variabili di tipo char");
+                                                                printf("Error: cannot compare variables of type char\n");
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("\n Errore! Impossibile confrontare variabili di tipo void");
+                                                                printf("Error: cannot compare variables of type void\n");
                                                             } else {
-                                                                printf("Expression di tipo AND \n");
+                                                                printf("Expression of type AND\n");
                                                             }
                                                         }
 |   content OR content                                  {
@@ -886,11 +879,11 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = DATA_TYPE_INT;
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("\n Errore! Impossibile confrontare variabili di tipo char");
+                                                                printf("Error: cannot compare variables of type char\n");
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("\n Errore! Impossibile confrontare variabili di tipo void");
+                                                                printf("Error: cannot compare variables of type void\n");
                                                             } else {
-                                                                printf("Expression di tipo OR \n");
+                                                                printf("Expression of type OR\n");
                                                             }
                                                         }
 |   NOT content                                         {
@@ -903,11 +896,11 @@ content ADD content                                     {
                                                             $$->rightOper = NULL;
                                                             $$->exprType = DATA_TYPE_INT;
                                                             if  ($2->valueType == DATA_TYPE_CHAR) {
-                                                                printf("\n Errore! Impossibile confrontare variabili di tipo char");
+                                                                printf("Error: cannot compare variables of type char\n");
                                                             } else if  ($2->valueType == DATA_TYPE_VOID) {
-                                                                printf("\n Errore! Impossibile confrontare variabili di tipo void");
+                                                                printf("Error: cannot compare variables of type void\n");
                                                             } else {
-                                                                printf("Expression di tipo NOT \n");
+                                                                printf("Expression of type NOT \n");
                                                             }
                                                         };
 
