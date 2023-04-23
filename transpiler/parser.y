@@ -460,7 +460,7 @@ types arrayDecl                                         {
                                                             //int myArray[]; Error: array size missing in ‘myArray’ !!!
                                                             //int myArray[3]; Corretct
                                                             if($2->arrayLength == NULL) {
-                                                                printf("Error: array size missing in%s\n", $2->arrayName);
+                                                                printf("Error: array size missing in %s \n", $2->arrayName);
                                                             } else {
                                                                 $$=malloc(sizeof(struct AstNodeArrayInit));
                                                                 printf("AstNodeArrayInit allocated for 'types arrayDecl'\n");
@@ -494,6 +494,15 @@ types arrayDecl                                         {
                                                             $$->arrayDecl = $2;
                                                             $$->elements = $5;
                                                             $$->arrayDecl->arrayType = stringToType($1);
+                                                            int ele = 0;
+                                                            for(struct AstNodeArrayElements *q = $5; q != NULL; q = q->nextElement) {
+                                                                    ele++;
+                                                                    printf("Conto elemento %d del vettore \n",ele);
+                                                                }
+                                                            char ch[3];
+                                                            sprintf(ch,"%d",ele);
+                                                            printf("Numero elementi del vettore %s \n",ch);
+                                                            $$->arrayDecl->arrayLength = ch;
                                                         };
 
 arrayAssign:
@@ -548,6 +557,9 @@ ID LSBRA RSBRA                                          {
                                                             printf("AstNodeArrayCall allocated for 'ID LSBRA content RSBRA'\n");
                                                             $$->arrayName = $1;
                                                             $$->elementIndex = $3;
+                                                            if($$->elementIndex->contentType != CONTENT_TYPE_ID || $$->elementIndex->contentType != CONTENT_TYPE_INT_NUMBER) {
+                                                                printf("Error: invalid array index type \n");
+                                                            }
                                                         };
 
 arrayElements:
