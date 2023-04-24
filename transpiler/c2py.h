@@ -280,7 +280,6 @@ void translateOperand(union ValueOper value, int contentType) {
 
 void translateExpression(struct AstNodeExpression *expression) {
     fprintf(fptr, "%s %s %s", expression->leftOper->value.val, expression->op, expression->rightOper->value.val);
-    fprintf(fptr, "\n");
 }
 
 void translateArrayDecleration(struct AstNodeArrayDecl *arrayDecl) {
@@ -313,6 +312,7 @@ void translateFunctionDeclaration(struct AstNodeFunctionDecl *functionDecl) {
     counter++;
     translateBody(functionDecl->functiontBody);
     counter--;
+    fprintf(fptr, "\n");
     //TODO: test indent and test return inside body
 }
 
@@ -356,7 +356,7 @@ void translateIf(struct AstNodeIf *ifStatement) {
 
 void translateElseIf(struct AstNodeElseIf *elseifStatement) {
     fprintf(fptr, "elif ");
-    translateExpression(elseifStatement->elseifBody);
+    translateExpression(elseifStatement->elseifCondition);
     fprintf(fptr, ":");
     fprintf(fptr, "\n");
     counter++;
@@ -371,6 +371,7 @@ void translateElse(struct AstNodeElse *elseStatement) {
     counter++;
     translateBody(elseStatement->elseBody);
     counter--;
+    fprintf(fptr, "\n");
 }
 
 void translateWhile(struct AstNodeWhile *whileLoop) {
@@ -381,6 +382,7 @@ void translateWhile(struct AstNodeWhile *whileLoop) {
     counter++;
     translateBody(whileLoop->whileBody);
     counter--;
+    fprintf(fptr, "\n");
 }
 
 void translateBody(struct AstNodeBody *body) {
