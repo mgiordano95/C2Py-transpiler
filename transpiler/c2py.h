@@ -12,7 +12,7 @@ char* NodeType(enum NodeType nodeType);
 void translate(struct AstNodeStatements *root);
 void translateInitialization(struct AstNodeInit *init);
 void translateAssignment(struct AstNodeAssign *assign);
-void translateOperand(struct AstNodeOperand *operand);
+void translateOperand(union ValueOper value, int contentType);
 void translateExpression(struct AstNodeExpression *expression);
 void translateArrayDecleration(struct AstNodeArrayDecl *arrayDecl);
 void translateArrayCall(struct AstNodeArrayCall *arrayCall);
@@ -229,8 +229,32 @@ void translateAssignment(struct AstNodeAssign *assign) {
     fprintf(fptr, "\n");
 }
 
-void translateOperand(struct AstNodeOperand *operand) {
-    printf("Translate Operand!!!");
+void translateOperand(union ValueOper value, int contentType) {
+    switch(contentType) {
+        case CONTENT_TYPE_ID:
+            fprintf(fptr, "%s", value.val);
+            break;
+        case CONTENT_TYPE_INT_NUMBER:
+            fprintf(fptr, "%s", value.val);
+            break;
+        case CONTENT_TYPE_FLOAT_NUMBER:
+            frprintf(fptr, "%s", value.val);
+            break;
+        case CONTENT_TYPE_CHAR:
+            frprintf(fptr, "%s", value.val);
+            break;
+        case CONTENT_TYPE_EXPRESSION:
+            frprintf(fptr, "%s", value.expression);
+            break;
+        case CONTENT_TYPE_FUNCTION:
+            frprintf(fptr, "%s", value.funtionCall);
+            break;
+        case CONTENT_TYPE_ARRAY:
+            frprintf(fptr, "%s", value.arrayCall);
+            break;
+        default:
+        printf("Unrecognized type");
+    }
 }
 
 void translateExpression(struct AstNodeExpression *expression) {
@@ -259,15 +283,43 @@ void translateArrayElements(struct AstNodeArrayElements *arrayElements) {
 }
 
 void translateFunctionDeclaration(struct AstNodeFunctionDecl *functionDecl) {
-    printf("Translate Function Declaration!!!");
+    printCounter(counter);
+    fprintf(fptr, "def %s(", functionDecl->functionName);
+    if (functionDecl->functionParams != NULL) {
+        translateFunctionParams(functionDecl->functionParams);
+    }
+    fprintf(fptr, "):");
+    fprintf(fptr, "/n");
+    translateBody(functionDecl->functiontBody);
+    //TODO: test indent and test return inside body
 }
 
 void translateFunctionCall(struct AstNodeFunctionCall *functionCall) {
-    printf("Translate Function Call!!!");
+    fprintf(fptr, "%s(", functionCall->functionName);
+    if (functionCall->functionParams != NULL) {
+        translateFunctionParams(functionCall->functionParams);
+    }
+    fprintf(fptr, ")");
+    fprintf(fptr, "\n");
 }
 
 void translateFunctionParams(struct AstNodeFunctionParams *functionParams) {
     printf("Translate Function Params!!!");
+    if (functionParams->initParam != NULL) {
+        //Translate parameters inside a function declaration
+        fprintf(fptr, "%s", functionParams->initParam->assign->variableName);
+        if (functionParams->nextParams != NULL) {
+            fprintf(fptr, ", ");
+            translateFunctionParams(functionParams->nextParams);
+        }
+    } else {
+        //Translate parameteres inside a function call
+        fprintf(fptr, "%s", functionParams->callParams->value.val);
+        if (functionParams->nextParams != NULL) {
+            fprintf(fptr, ", ");
+            translateFunctionParams(functionParams->nextParams);
+        }
+    }
 }
 
 void translateIf(struct AstNodeIf *ifStatement) {
@@ -288,6 +340,11 @@ void translateWhile(struct AstNodeWhile *whileLoop) {
 
 void translateBody(struct AstNodeBody *body) {
     printf("Translate Body!!!");
+    translate(body->bodyStatements);
+    if (body->returnValue != NULL) {
+        fprintf(fptr, "return ");
+        translateOperand(body->returnValue->value, body->returnValue->contentType);
+    }
 }
 
 void translateFunctionOutput(struct AstNodeFunctionOutput *outputFunction) {

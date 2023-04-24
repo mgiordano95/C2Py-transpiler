@@ -266,7 +266,7 @@ types MAIN LPAR RPAR body                               {
                                                                 beginScope();
                                                                 $$ = malloc(sizeof(struct AstNodeFunctionDecl));
                                                                 printf("AstNodeFunctionDecl allocated for 'types MAIN LPAR RPAR body'\n");
-                                                                $$->functionName = $1;
+                                                                $$->functionName = $2;
                                                                 $$->returnType = stringToType($1);
                                                                 $$->functionParams = NULL;
                                                                 $$->functiontBody = $5;
