@@ -283,23 +283,38 @@ void translateExpression(struct AstNodeExpression *expression) {
 }
 
 void translateArrayDecleration(struct AstNodeArrayDecl *arrayDecl) {
-    printf("Translate Array Decleration!!!");
+    fprintf(fptr, "%s", arrayDecl->arrayName);
 }
 
 void translateArrayCall(struct AstNodeArrayCall *arrayCall) {
-    printf("Translate Array Call!!!");
+    fprintf(fptr, "%s", arrayCall->arrayName);
+    fprintf(fptr, "[");
+    translateOperand(arrayCall->elementIndex->value, arrayCall->elementIndex->contentType);
+    fprintf(fptr, "]");
 }
 
 void translateArrayInitialization(struct AstNodeArrayInit *arrayInit) {
-    printf("Translate Array Initialization!!!");
+    translateArrayDecleration(arrayInit->arrayDecl);
+    fprintf(fptr, " = ");
+    translateArrayElements(arrayInit->elements);
 }
 
 void translateArrayAssignment(struct AstNodeArrayAssign *arrayAssign) {
-    printf("Translate Array Assignment!!!");
+    translateArrayDecleration(arrayAssign->arrayCall);
+    fprintf(fptr, " = ");
+    translateArrayElements(arrayAssign->elements);
 }
 
 void translateArrayElements(struct AstNodeArrayElements *arrayElements) {
-    printf("Translate Array Elements!!!");
+    fprintf(fptr, "[ ");
+    if (arrayElements->nextElement != NULL) {
+        translateOperand(arrayElements->element->value, arrayCall->element->contentType);
+        fprintf(fptr, ", ");
+        translateArrayElements(arrayElements->nextElement)
+    else {
+        translateOperand(arrayElements->element->value, arrayCall->element->contentType);
+        fprintf(fptr, " ]");
+    }
 }
 
 void translateFunctionDeclaration(struct AstNodeFunctionDecl *functionDecl) {
