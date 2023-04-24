@@ -265,13 +265,16 @@ void translateOperand(union ValueOper value, int contentType) {
             fprintf(fptr, "%s", value.val);
             break;
         case CONTENT_TYPE_EXPRESSION:
-            fprintf(fptr, "%s", value.expression);
+            //fprintf(fptr, "%s", value.expression);
+            translateExpression(value.expression);
             break;
         case CONTENT_TYPE_FUNCTION:
-            fprintf(fptr, "%s", value.funtionCall);
+            //fprintf(fptr, "%s", value.funtionCall);
+            translateFunctionCall(value.funtionCall);
             break;
         case CONTENT_TYPE_ARRAY:
-            fprintf(fptr, "%s", value.arrayCall);
+            //fprintf(fptr, "%s", value.arrayCall);
+            translateArrayCall(value.arrayCall);
             break;
         default:
         printf("Unrecognized type");
@@ -294,26 +297,33 @@ void translateArrayCall(struct AstNodeArrayCall *arrayCall) {
 }
 
 void translateArrayInitialization(struct AstNodeArrayInit *arrayInit) {
-    translateArrayDecleration(arrayInit->arrayDecl);
-    fprintf(fptr, " = ");
-    translateArrayElements(arrayInit->elements);
+    if(arrayInit->elements == NULL) {
+        translateArrayDecleration(arrayInit->arrayDecl);
+        fprintf(fptr, " = None");
+    } else {
+        translateArrayDecleration(arrayInit->arrayDecl);
+        fprintf(fptr, " = ");
+        fprintf(fptr, "[ ");
+        translateArrayElements(arrayInit->elements);
+        fprintf(fptr, " ]");
+    }
+    fprintf(fptr, "\n");
 }
 
 void translateArrayAssignment(struct AstNodeArrayAssign *arrayAssign) {
-    translateArrayDecleration(arrayAssign->arrayCall);
+    translateArrayCall(arrayAssign->arrayCall);
     fprintf(fptr, " = ");
     translateArrayElements(arrayAssign->elements);
+    fprintf(fptr, "\n");
 }
 
 void translateArrayElements(struct AstNodeArrayElements *arrayElements) {
-    fprintf(fptr, "[ ");
     if (arrayElements->nextElement != NULL) {
-        translateOperand(arrayElements->element->value, arrayCall->element->contentType);
+        translateOperand(arrayElements->element->value, arrayElements->element->contentType);
         fprintf(fptr, ", ");
-        translateArrayElements(arrayElements->nextElement)
-    else {
-        translateOperand(arrayElements->element->value, arrayCall->element->contentType);
-        fprintf(fptr, " ]");
+        translateArrayElements(arrayElements->nextElement);
+    } else {
+        translateOperand(arrayElements->element->value, arrayElements->element->contentType);
     }
 }
 

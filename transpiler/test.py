@@ -1,21 +1,14 @@
-i = 3
-def myFunction(a, b):
-	j = 5
-	return j
-
+myArray = None
+myArray2 = None
+myArray3 = None
+myArray4 = [ 24, 27, 29 ]
+myArray5 = [ 24, 27, 29 ]
+myArray[2] = 24
+a = myArray5[1]
+i = 0
+b = [ i, i, 9 ]
+c = [ 5.4, 7.6 + 1.2, 4.5 ]
 def main():
-	myFunction(3, 4)
-	a = 5
-	b = 6
-	if a > b:
-		c = 7
-	elif a < b:
-		d = 4
-	else:
-		e = 5.5
-
-	while a < b:
-		a = a + b
-
-	return 0
+	j = 1
+	return j + j
 
