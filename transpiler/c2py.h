@@ -119,39 +119,50 @@ void translate(struct AstNodeStatements *root) {
         struct AstNodeStatements *nextStatement = NULL;
         switch(currentInstruction->nodeType) {
             case INIT_NODE:
+                printCounter(counter);
                 translateInitialization(currentInstruction->value.init);
                 break;
             case ASSIGN_NODE:
+                printCounter(counter);
                 translateAssignment(currentInstruction->value.assign);
                 break;
             case FUNCTION_DECL_NODE:
+                printCounter(counter);
                 translateFunctionDeclaration(currentInstruction->value.functionDecl);
                 break;
             case FUNCTION_CALL_NODE:
+                printCounter(counter);
                 translateFunctionCall(currentInstruction->value.functionCall);
                 break;
             case IF_NODE:
+                printCounter(counter);
                 translateIf(currentInstruction->value.ifStatement);
                 break;
             case ELSE_IF_NODE:
                 translateElseIf(currentInstruction->value.elseifStatement);
                 break;
             case ELSE_NODE:
+                printCounter(counter);
                 translateElse(currentInstruction->value.elseStatement);
                 break;
             case WHILE_NODE:
+                printCounter(counter);
                 translateWhile(currentInstruction->value.whileLoop);
                 break;
             case ARRAY_INIT_NODE:
+                printCounter(counter);
                 translateArrayInitialization(currentInstruction->value.arrayInit);
                 break;
             case ARRAY_ASSIGN_NODE:
+                printCounter(counter);
                 translateArrayAssignment(currentInstruction->value.arrayAssign);
                 break;
             case OUTPUT_NODE:
+                printCounter(counter);
                 translateFunctionOutput(currentInstruction->value.outputFunction);
                 break;
             case INPUT_NODE:
+                printCounter(counter);
                 translateFunctionInput(currentInstruction->value.inputFunction);
                 break;
             default:
@@ -163,39 +174,51 @@ void translate(struct AstNodeStatements *root) {
         struct AstNodeStatements *nextStatement = root->nextStatement;
         switch(currentInstruction->nodeType) {
             case INIT_NODE:
+                printCounter(counter);
                 translateInitialization(currentInstruction->value.init);
                 break;
             case ASSIGN_NODE:
+                printCounter(counter);
                 translateAssignment(currentInstruction->value.assign);
                 break;
             case FUNCTION_DECL_NODE:
+                printCounter(counter);
                 translateFunctionDeclaration(currentInstruction->value.functionDecl);
                 break;
             case FUNCTION_CALL_NODE:
+                printCounter(counter);
                 translateFunctionCall(currentInstruction->value.functionCall);
                 break;
             case IF_NODE:
+                printCounter(counter);
                 translateIf(currentInstruction->value.ifStatement);
                 break;
             case ELSE_IF_NODE:
+                printCounter(counter);
                 translateElseIf(currentInstruction->value.elseifStatement);
                 break;
             case ELSE_NODE:
+                printCounter(counter);
                 translateElse(currentInstruction->value.elseStatement);
                 break;
             case WHILE_NODE:
+                printCounter(counter);
                 translateWhile(currentInstruction->value.whileLoop);
                 break;
             case ARRAY_INIT_NODE:
+                printCounter(counter);
                 translateArrayInitialization(currentInstruction->value.arrayInit);
                 break;
             case ARRAY_ASSIGN_NODE:
+                printCounter(counter);
                 translateArrayAssignment(currentInstruction->value.arrayAssign);
                 break;
             case OUTPUT_NODE:
+                printCounter(counter);
                 translateFunctionOutput(currentInstruction->value.outputFunction);
                 break;
             case INPUT_NODE:
+                printCounter(counter);
                 translateFunctionInput(currentInstruction->value.inputFunction);
                 break;
             default:
@@ -207,13 +230,11 @@ void translate(struct AstNodeStatements *root) {
 }
 
 void translateInitialization(struct AstNodeInit *init) {
-    printCounter(counter);
     fprintf(fptr, "%s = %s", init->assign->variableName, init->assign->assignValue.val);
     fprintf(fptr, "\n");
 }
 
 void translateAssignment(struct AstNodeAssign *assign) {
-    printCounter(counter);
     if (assign->assignType == CONTENT_TYPE_EXPRESSION) {
         fprintf(fptr, "%s = ", assign->variableName);
         translateExpression(assign->assignValue.expression);
@@ -238,19 +259,19 @@ void translateOperand(union ValueOper value, int contentType) {
             fprintf(fptr, "%s", value.val);
             break;
         case CONTENT_TYPE_FLOAT_NUMBER:
-            frprintf(fptr, "%s", value.val);
+            fprintf(fptr, "%s", value.val);
             break;
         case CONTENT_TYPE_CHAR:
-            frprintf(fptr, "%s", value.val);
+            fprintf(fptr, "%s", value.val);
             break;
         case CONTENT_TYPE_EXPRESSION:
-            frprintf(fptr, "%s", value.expression);
+            fprintf(fptr, "%s", value.expression);
             break;
         case CONTENT_TYPE_FUNCTION:
-            frprintf(fptr, "%s", value.funtionCall);
+            fprintf(fptr, "%s", value.funtionCall);
             break;
         case CONTENT_TYPE_ARRAY:
-            frprintf(fptr, "%s", value.arrayCall);
+            fprintf(fptr, "%s", value.arrayCall);
             break;
         default:
         printf("Unrecognized type");
@@ -283,18 +304,20 @@ void translateArrayElements(struct AstNodeArrayElements *arrayElements) {
 }
 
 void translateFunctionDeclaration(struct AstNodeFunctionDecl *functionDecl) {
-    printCounter(counter);
     fprintf(fptr, "def %s(", functionDecl->functionName);
     if (functionDecl->functionParams != NULL) {
         translateFunctionParams(functionDecl->functionParams);
     }
     fprintf(fptr, "):");
-    fprintf(fptr, "/n");
+    fprintf(fptr, "\n");
+    counter++;
     translateBody(functionDecl->functiontBody);
+    counter--;
     //TODO: test indent and test return inside body
 }
 
 void translateFunctionCall(struct AstNodeFunctionCall *functionCall) {
+    //printCounter(counter);
     fprintf(fptr, "%s(", functionCall->functionName);
     if (functionCall->functionParams != NULL) {
         translateFunctionParams(functionCall->functionParams);
@@ -304,7 +327,6 @@ void translateFunctionCall(struct AstNodeFunctionCall *functionCall) {
 }
 
 void translateFunctionParams(struct AstNodeFunctionParams *functionParams) {
-    printf("Translate Function Params!!!");
     if (functionParams->initParam != NULL) {
         //Translate parameters inside a function declaration
         fprintf(fptr, "%s", functionParams->initParam->assign->variableName);
@@ -339,11 +361,12 @@ void translateWhile(struct AstNodeWhile *whileLoop) {
 }
 
 void translateBody(struct AstNodeBody *body) {
-    printf("Translate Body!!!");
     translate(body->bodyStatements);
     if (body->returnValue != NULL) {
+        printCounter(counter);
         fprintf(fptr, "return ");
         translateOperand(body->returnValue->value, body->returnValue->contentType);
+        fprintf(fptr, "\n");
     }
 }
 
