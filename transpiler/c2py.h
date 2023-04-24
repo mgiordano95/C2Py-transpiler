@@ -345,19 +345,42 @@ void translateFunctionParams(struct AstNodeFunctionParams *functionParams) {
 }
 
 void translateIf(struct AstNodeIf *ifStatement) {
-    printf("Translate If!!!");
+    fprintf(fptr, "if ");
+    translateExpression(ifStatement->ifCondition);
+    fprintf(fptr, ":");
+    fprintf(fptr, "\n");
+    counter++;
+    translateBody(ifStatement->ifBody);
+    counter--;
 }
 
 void translateElseIf(struct AstNodeElseIf *elseifStatement) {
-    printf("Translate Else If!!!");
+    fprintf(fptr, "elif ");
+    translateExpression(elseifStatement->elseifBody);
+    fprintf(fptr, ":");
+    fprintf(fptr, "\n");
+    counter++;
+    translateBody(elseifStatement->elseifBody);
+    counter--;
 }
 
 void translateElse(struct AstNodeElse *elseStatement) {
-    printf("Translate Else!!!");
+    fprintf(fptr, "else");
+    fprintf(fptr, ":");
+    fprintf(fptr, "\n");
+    counter++;
+    translateBody(elseStatement->elseBody);
+    counter--;
 }
 
 void translateWhile(struct AstNodeWhile *whileLoop) {
-    printf("Translate While!!!");
+    fprintf(fptr, "while ");
+    translateExpression(whileLoop->whileCondition);
+    fprintf(fptr, ":");
+    fprintf(fptr, "\n");
+    counter++;
+    translateBody(whileLoop->whileBody);
+    counter--;
 }
 
 void translateBody(struct AstNodeBody *body) {

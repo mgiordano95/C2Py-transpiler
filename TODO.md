@@ -4,7 +4,7 @@
 
 ### Todo
 
-- [ ]
+- [ ] Move beginScope and endScope inside the body node because beginScope and endScope currently only work for functions and not for if, else and elseif statements
 
 ### In Progress
 - [x] Implement Lexer (lexer.l)
@@ -50,8 +50,11 @@
     - [x] Implement functionParams (` to test `)
     - [x] Implement body (` to test `)
     - [x] Implement if (` to test `)
+        - [ ] Insert ifStatements production without body
     - [x] Implement elseif (` to test `)
+        - [ ] Insert ifStatements production without body
     - [x] Implement else (` to test `)
+        - [ ] Insert ifStatements production without body
     - [x] Implement while (` to test `)
     - [x] Implement outputFunction (` to test `)
     - [x] Implement inputFunction (` to test `)
