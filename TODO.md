@@ -62,20 +62,22 @@
     - [x] Implement inputElements (` to test `)
 - [ ] Create Transpiler (c2py.h)
     - [x] translateInitialization(struct AstNodeInit *init); (` to test `)
-    - [ ] translateAssignment(struct AstNodeAssign *assign);
-    - [ ] translateOperand(struct AstNodeOperand *operand);
-    - [ ] translateExpression(struct AstNodeExpression *expression);
+    - [x] translateAssignment(struct AstNodeAssign *assign); (` to test `)
+    - [x] translateOperand(union ValueOper value, int contentType); (` to test `)
+    - [x] translateExpression(struct AstNodeExpression *expression); (` to test `)
+    - [ ] translateArrayDecleration(struct AstNodeArrayDecl *arrayDecl);
+    - [ ] translateArrayCall(struct AstNodeArrayCall *arrayCall);
     - [ ] translateArrayInitialization(struct AstNodeArrayInit *arrayInit);
     - [ ] translateArrayAssignment(struct AstNodeArrayAssign *arrayAssign);
     - [ ] translateArrayElements(struct AstNodeArrayElements *arrayElements);
-    - [ ] translateFunctionDeclaration(struct AstNodeFunctionDecl *functionDecl);
-    - [ ] translateFunctionCall(struct AstNodeFunctionCall *functionCall);
-    - [ ] translateFunctionParams(struct AstNodeFunctionParams *functionParams);
-    - [ ] translateIf(struct AstNodeIf *ifStatement);
-    - [ ] translateElseIf(struct AstNodeElseIf *elseifStatement);
-    - [ ] translateElse(struct AstNodeElse *elseStatement);
-    - [ ] translateWhile(struct AstNodeWhile *whileLoop);
-    - [ ] translateBody(struct AstNodeBody *body);
+    - [x] translateFunctionDeclaration(struct AstNodeFunctionDecl *functionDecl); (` to test `)
+    - [x] translateFunctionCall(struct AstNodeFunctionCall *functionCall); (` to test `)
+    - [x] translateFunctionParams(struct AstNodeFunctionParams *functionParams); (` to test `)
+    - [x] translateIf(struct AstNodeIf *ifStatement); (` to test `)
+    - [x] translateElseIf(struct AstNodeElseIf *elseifStatement); (` to test `)
+    - [x] translateElse(struct AstNodeElse *elseStatement); (` to test `)
+    - [x] translateWhile(struct AstNodeWhile *whileLoop); (` to test `)
+    - [x] translateBody(struct AstNodeBody *body); (` to test `)
     - [ ] translateFunctionOutput(struct AstNodeFunctionOutput *outputFunction);
     - [ ] translateFunctionInput(struct AstNodeFunctionInput *inputFunction);
     - [ ] translateOutputElements(struct AstNodeOutputElements *outputElements);
