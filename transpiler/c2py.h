@@ -464,10 +464,12 @@ void translateInputElements(struct AstNodeInputElements *inputElements) {
         translateOperand(inputElements->element->value, inputElements->element->contentType);
         fprintf(fptr, " =");
         fprintf(fptr, " input()");
+        fprintf(fptr, "\n");
         translateInputElements(inputElements->nextElement);
     } else {
         translateOperand(inputElements->element->value, inputElements->element->contentType);
         fprintf(fptr, " =");
         fprintf(fptr, " input()");
+        fprintf(fptr, "\n");
     }
 }

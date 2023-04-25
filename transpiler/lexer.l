@@ -46,6 +46,8 @@ string_value    \"[^\"]*\"
 "return"    {yylval.string=strdup(yytext); printf("keyword 'RETURN' detected\n"); return(RETURN);}
 "main"      {yylval.string=strdup(yytext); printf("keyword 'MAIN' detected\n"); return(MAIN);}
 
+"&"         {yylval.string=strdup(yytext); printf("Keywork '&' detected\n"); return(REFOP);}
+
 "+"         {yylval.string=strdup(yytext); printf("keyword '+' detected\n"); return(ADD);}
 "-"         {yylval.string=strdup(yytext); printf("keyword '-' detected\n"); return(SUB);}
 "*"         {yylval.string=strdup(yytext); printf("keyword '*' detected\n"); return(MUL);}

@@ -351,8 +351,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 50
-#define YY_END_OF_BUFFER 51
+#define YY_NUM_RULES 51
+#define YY_END_OF_BUFFER 52
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -362,19 +362,19 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[117] =
     {   0,
-        0,    0,    2,    2,    7,    7,   51,   49,   42,   50,
-       33,   49,   49,   49,   34,   35,   22,   20,   41,   21,
-       49,   23,   44,   44,   40,   28,   24,   27,   46,   36,
-       37,   46,   46,   46,   46,   46,   46,   46,   46,   46,
-       46,   38,   49,   39,    2,    4,    3,    7,    8,   43,
-       26,    0,   48,   31,    0,    0,   44,   44,   45,   45,
-        1,    6,   45,    0,   44,   30,   25,   29,   46,   46,
-       46,   46,   13,   46,   46,   46,   46,   46,   46,   46,
-       32,    2,    3,    3,    5,    7,   47,    0,   45,   46,
-       46,   46,   10,   46,   46,   46,   46,   46,   46,   12,
+        0,    0,    2,    2,    7,    7,   52,   50,   43,   51,
+       34,   50,   20,   50,   35,   36,   23,   21,   42,   22,
+       50,   24,   45,   45,   41,   29,   25,   28,   47,   37,
+       38,   47,   47,   47,   47,   47,   47,   47,   47,   47,
+       47,   39,   50,   40,    2,    4,    3,    7,    8,   44,
+       27,    0,   49,   32,    0,    0,   45,   45,   46,   46,
+        1,    6,   46,    0,   45,   31,   26,   30,   47,   47,
+       47,   47,   13,   47,   47,   47,   47,   47,   47,   47,
+       33,    2,    3,    3,    5,    7,   48,    0,   46,   47,
+       47,   47,   10,   47,   47,   47,   47,   47,   47,   12,
 
-       14,   46,   19,   46,   46,   46,    9,   46,   11,   46,
-       46,   17,   15,   16,   18,    0
+       14,   47,   19,   47,   47,   47,    9,   47,   11,   47,
+       47,   17,   15,   16,   18,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -917,160 +917,165 @@ YY_RULE_SETUP
 case 20:
 YY_RULE_SETUP
 #line 49 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '+' detected\n"); return(ADD);}
+{yylval.string=strdup(yytext); printf("Keywork '&' detected\n"); return(REFOP);}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 50 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '-' detected\n"); return(SUB);}
+#line 51 "lexer.l"
+{yylval.string=strdup(yytext); printf("keyword '+' detected\n"); return(ADD);}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 51 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '*' detected\n"); return(MUL);}
+#line 52 "lexer.l"
+{yylval.string=strdup(yytext); printf("keyword '-' detected\n"); return(SUB);}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 52 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '/' detected\n"); return(DIV);}
+#line 53 "lexer.l"
+{yylval.string=strdup(yytext); printf("keyword '*' detected\n"); return(MUL);}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 54 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '=' detected\n"); return(EQ);}
+{yylval.string=strdup(yytext); printf("keyword '/' detected\n"); return(DIV);}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 56 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '==' detected\n"); return(EE);}
+{yylval.string=strdup(yytext); printf("keyword '=' detected\n"); return(EQ);}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 57 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '!=' detected\n"); return(NE);}
+#line 58 "lexer.l"
+{yylval.string=strdup(yytext); printf("keyword '==' detected\n"); return(EE);}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 58 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '>' detected\n"); return(GT);}
+#line 59 "lexer.l"
+{yylval.string=strdup(yytext); printf("keyword '!=' detected\n"); return(NE);}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 59 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '<' detected\n"); return(LT);}
+#line 60 "lexer.l"
+{yylval.string=strdup(yytext); printf("keyword '>' detected\n"); return(GT);}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 60 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '>=' detected\n"); return(GE);}
+#line 61 "lexer.l"
+{yylval.string=strdup(yytext); printf("keyword '<' detected\n"); return(LT);}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 61 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '<=' detected\n"); return(LE);}
+#line 62 "lexer.l"
+{yylval.string=strdup(yytext); printf("keyword '>=' detected\n"); return(GE);}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 63 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '&&' detected\n"); return(AND);}
+{yylval.string=strdup(yytext); printf("keyword '<=' detected\n"); return(LE);}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 64 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '||' detected\n"); return(OR);}
+#line 65 "lexer.l"
+{yylval.string=strdup(yytext); printf("keyword '&&' detected\n"); return(AND);}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 65 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '!' detected\n"); return(NOT);}
+#line 66 "lexer.l"
+{yylval.string=strdup(yytext); printf("keyword '||' detected\n"); return(OR);}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 67 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '(' detected\n"); return(LPAR);}
+{yylval.string=strdup(yytext); printf("keyword '!' detected\n"); return(NOT);}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 68 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword ')' detected\n"); return(RPAR);}
+#line 69 "lexer.l"
+{yylval.string=strdup(yytext); printf("keyword '(' detected\n"); return(LPAR);}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 69 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '[' detected\n"); return(LSBRA);}
+#line 70 "lexer.l"
+{yylval.string=strdup(yytext); printf("keyword ')' detected\n"); return(RPAR);}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 70 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword ']' detected\n"); return(RSBRA);}
+#line 71 "lexer.l"
+{yylval.string=strdup(yytext); printf("keyword '[' detected\n"); return(LSBRA);}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 71 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '{' detected\n"); return(LBRA);}
+#line 72 "lexer.l"
+{yylval.string=strdup(yytext); printf("keyword ']' detected\n"); return(RSBRA);}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 72 "lexer.l"
-{yylval.string=strdup(yytext); printf("keyword '}' detected\n"); return(RBRA);}
+#line 73 "lexer.l"
+{yylval.string=strdup(yytext); printf("keyword '{' detected\n"); return(LBRA);}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 74 "lexer.l"
-{yylval.string=strdup(yytext); printf("Found SEMICOLON\n"); return(SEMICOL);}
+{yylval.string=strdup(yytext); printf("keyword '}' detected\n"); return(RBRA);}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 75 "lexer.l"
-{yylval.string=strdup(yytext); printf("Found COMMA\n"); return(COMMA);}
+#line 76 "lexer.l"
+{yylval.string=strdup(yytext); printf("Found SEMICOLON\n"); return(SEMICOL);}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
 #line 77 "lexer.l"
-{printf("Found DELIM\n");}
+{yylval.string=strdup(yytext); printf("Found COMMA\n"); return(COMMA);}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 78 "lexer.l"
-{printf("Found WHITE SPACE\n");}
+#line 79 "lexer.l"
+{printf("Found DELIM\n");}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 79 "lexer.l"
-{yylval.string=strdup(yytext); printf("Found INTEGER NUMBER\n"); return(INT_VALUE);}
+#line 80 "lexer.l"
+{printf("Found WHITE SPACE\n");}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 80 "lexer.l"
-{yylval.string=strdup(yytext); printf("Found FLOAT NUMBER\n"); return(FLOAT_VALUE);}
+#line 81 "lexer.l"
+{yylval.string=strdup(yytext); printf("Found INTEGER NUMBER\n"); return(INT_VALUE);}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 81 "lexer.l"
-{yylval.string=strdup(yytext); printf("Found ID\n"); return(ID);}
+#line 82 "lexer.l"
+{yylval.string=strdup(yytext); printf("Found FLOAT NUMBER\n"); return(FLOAT_VALUE);}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 82 "lexer.l"
-{yylval.string=strdup(yytext); printf("Found CHAR\n"); return(CHAR_VALUE);}
+#line 83 "lexer.l"
+{yylval.string=strdup(yytext); printf("Found ID\n"); return(ID);}
 	YY_BREAK
 case 48:
-/* rule 48 can match eol */
-YY_RULE_SETUP
-#line 83 "lexer.l"
-{yylval.string=strdup(yytext); printf("Found STRING\n"); return(STRING_VALUE);}
-	YY_BREAK
-case 49:
 YY_RULE_SETUP
 #line 84 "lexer.l"
-{printf("Unknown character\n"); return(UNKNOWN);}
+{yylval.string=strdup(yytext); printf("Found CHAR\n"); return(CHAR_VALUE);}
+	YY_BREAK
+case 49:
+/* rule 49 can match eol */
+YY_RULE_SETUP
+#line 85 "lexer.l"
+{yylval.string=strdup(yytext); printf("Found STRING\n"); return(STRING_VALUE);}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
 #line 86 "lexer.l"
+{printf("Unknown character\n"); return(UNKNOWN);}
+	YY_BREAK
+case 51:
+YY_RULE_SETUP
+#line 88 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 1074 "lex.yy.c"
+#line 1079 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(MLCOMMENT):
 case YY_STATE_EOF(SLCOMMENT):
@@ -2077,5 +2082,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 86 "lexer.l"
+#line 88 "lexer.l"
 

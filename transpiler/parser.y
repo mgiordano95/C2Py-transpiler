@@ -37,6 +37,7 @@ void endScope();
 %token SCANF
 %token RETURN
 %token MAIN
+%token REFOP
 %left ADD
 %right SUB
 %left MUL
@@ -68,7 +69,7 @@ void endScope();
 
 %define api.value.type {union yystype}
 
-%type <string> types VOID INT FLOAT CHAR IF ELSE WHILE PRINTF SCANF RETURN MAIN ADD SUB MUL DIV EQ EE NE GT LT GE LE AND OR NOT LPAR RPAR LSBRA RSBRA LBRA RBRA SEMICOL COMMA INT_VALUE FLOAT_VALUE ID CHAR_VALUE STRING_VALUE
+%type <string> types VOID INT FLOAT CHAR IF ELSE WHILE PRINTF SCANF RETURN MAIN REFOP ADD SUB MUL DIV EQ EE NE GT LT GE LE AND OR NOT LPAR RPAR LSBRA RSBRA LBRA RBRA SEMICOL COMMA INT_VALUE FLOAT_VALUE ID CHAR_VALUE STRING_VALUE
 %type <statements> program statements
 %type <instruction> instruction
 %type <init> initialization
@@ -627,17 +628,17 @@ content                                                 {
                                                         };
 
 inputElements:
-content                                                 {
+REFOP content                                                 {
                                                             $$ = malloc(sizeof(struct AstNodeInputElements));
                                                             printf("AstNodeInputElements allocated for 'content'\n");
-                                                            $$->element = $1;
+                                                            $$->element = $2;
                                                             $$->nextElement = NULL;
                                                         }
-|   content COMMA inputElements                         {
+|   REFOP content COMMA inputElements                         {
                                                             $$ = malloc(sizeof(struct AstNodeInputElements));
                                                             printf("AstNodeInputElements allocated for 'content COMMA inputElements'\n");
-                                                            $$->element = $1;
-                                                            $$->nextElement = $3;
+                                                            $$->element = $2;
+                                                            $$->nextElement = $4;
                                                         };
 
 initialization:
