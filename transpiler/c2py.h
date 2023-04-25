@@ -450,10 +450,11 @@ void translateFunctionInput(struct AstNodeFunctionInput *inputFunction) {
 
 void translateOutputElements(struct AstNodeOutputElements *outputElements) {
     if (outputElements->nextElement != NULL) {
+        fprintf(fptr, " + ");
         translateOperand(outputElements->element->value, outputElements->element->contentType);
-        fprintf(fptr, "+ ");
-        translateOutputElements(arrayElements->nextElement);
+        translateOutputElements(outputElements->nextElement);
     } else {
+        fprintf(fptr, " + ");
         translateOperand(outputElements->element->value, outputElements->element->contentType);
     }
 }
