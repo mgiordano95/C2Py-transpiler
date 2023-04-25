@@ -421,17 +421,52 @@ void translateBody(struct AstNodeBody *body) {
 }
 
 void translateFunctionOutput(struct AstNodeFunctionOutput *outputFunction) {
-    printf("Translate Output Function!!!");
+    if(outputFunction->outputElements == NULL) {
+        fprintf(fptr, "print(");
+        fprintf(fptr, "%s",outputFunction->string);
+        fprintf(fptr, ")");
+        fprintf(fptr, "\n");
+    } else {
+        fprintf(fptr, "print(");
+        fprintf(fptr, "%s",outputFunction->string);
+        translateOutputElements(outputFunction->outputElements);
+        fprintf(fptr, ")");
+        fprintf(fptr, "\n");
+    }
 }
 
 void translateFunctionInput(struct AstNodeFunctionInput *inputFunction) {
-    printf("Translate Input Function!!!");
+    if(inputFunction->inputElements != NULL) {
+        fprintf(fptr, "print(");
+        fprintf(fptr, "%s",inputFunction->string);
+        fprintf(fptr, ")");
+        fprintf(fptr, "\n");
+        translateInputElements(inputFunction->inputElements);
+    } else {
+        printf("Syntax Error\n");
+    }
+    
 }
 
 void translateOutputElements(struct AstNodeOutputElements *outputElements) {
-    printf("Translate Output Elements!!!");
+    if (outputElements->nextElement != NULL) {
+        translateOperand(outputElements->element->value, outputElements->element->contentType);
+        fprintf(fptr, "+ ");
+        translateOutputElements(arrayElements->nextElement);
+    } else {
+        translateOperand(outputElements->element->value, outputElements->element->contentType);
+    }
 }
 
 void translateInputElements(struct AstNodeInputElements *inputElements) {
-    printf("Translate Input Elements!!!");
+    if (inputElements->nextElement != NULL) {
+        translateOperand(inputElements->element->value, inputElements->element->contentType);
+        fprintf(fptr, " =");
+        fprintf(fptr, " input()");
+        translateInputElements(inputElements->nextElement);
+    } else {
+        translateOperand(inputElements->element->value, inputElements->element->contentType);
+        fprintf(fptr, " =");
+        fprintf(fptr, " input()");
+    }
 }
