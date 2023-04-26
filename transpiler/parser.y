@@ -128,7 +128,7 @@ assignment SEMICOL                                      {
                                                             printf("AstNodeInstruction allocated for 'assignment SEMICOL'\n");
                                                             $$->nodeType = ASSIGN_NODE;
                                                             struct SymTab *s = findSym($1->variableName, actualList);
-                                                            if((s->dataType != $1->variableType) || strcmp(typeToString(s->dataType), "none") == 0) {
+                                                            if((s->dataType != $1->variableType) || strcmp(typeToString(s->dataType), "Type none") == 0) {
                                                                 printf("Error: Variable %s has been declared as a %s but type %s is assigned.\n", $1->variableName, typeToString(s->dataType), typeToString($1->variableType));
                                                             } else {
                                                                 $$->value.assign = $1;
