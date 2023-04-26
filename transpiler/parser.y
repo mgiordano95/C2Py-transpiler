@@ -363,7 +363,7 @@ ID LPAR RPAR                                            {
                                                                     $$->returnType = s->returnType;
                                                                     $$->functionParams = $3;
                                                                 } else {
-                                                                    rintf("The parameters in the function call are incorrect\n");
+                                                                    printf("The parameters in the function call are incorrect\n");
                                                                 }
                                                             }
                                                         };
