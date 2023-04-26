@@ -188,8 +188,8 @@ assignment SEMICOL                                      {
                                                                 }
                                                                 printf("Parameters of the declared function: %s \n", s->funcParameters);
                                                                 printf("Parameters of the called function: %s \n", calledParameters);
-                                                                int a = strcmp(s->funcParameters, calledParameters);
-                                                                if (a == 0) {
+                                                                int boolean = strcmp(s->funcParameters, calledParameters);
+                                                                if (boolean == 0) {
                                                                     printf("The parameters are correct\n");
                                                                 } else {
                                                                     printf("The parameters in the function call are incorrect\n");
@@ -347,31 +347,25 @@ ID LPAR RPAR                                            {
                                                         }
 |   ID LPAR functionParams RPAR                         {
                                                             $$ = malloc(sizeof(struct AstNodeFunctionCall));
-                                                            /* char confronto[100] = {}; */
                                                             printf("AstNodeFunctionCall allocated for 'ID LPAR functionParams RPAR'\n");
+                                                            char calledParameters[100] = {};
                                                             struct SymTab *s = findSymtab($1, actualList);
-                                                            /* printf("Vedo se la funzione e' stata dichiarata \n");
                                                             if (s != NULL) {
-                                                                printf("Inizio a scorrere i parametri \n");
                                                                 for(struct AstNodeFunctionParams *q = $3; q != NULL; q = q->nextParams) {
-                                                                    printf("Qui non so se arrivo \n");
-                                                                    strcat(confronto,typeToString(q->callParams->valueType));
-                                                                    printf("Fin qui se arrivo festeggio \n");
+                                                                    strcat(calledParameters,typeToString(q->callParams->valueType));
                                                                 }
-                                                                printf("Parametri della function Decl: %s \n \n",s->funcParameters);
-                                                                printf("Parametri della function Call: %s \n",confronto);
-                                                                int a = strcmp(s->funcParameters,confronto);
-                                                                if (a==0) {
-                                                                    printf("I parametri sono corretti \n"); */
+                                                                printf("Parameters of the declared function: %s \n", s->funcParameters);
+                                                                printf("Parameters of the called function: %s \n", calledParameters);
+                                                                int boolean = strcmp(s->funcParameters,calledParameters);
+                                                                if (boolean == 0) {
+                                                                    printf("The parameters are correct\n");
                                                                     $$->functionName = $1;
                                                                     $$->returnType = s->returnType;
                                                                     $$->functionParams = $3;
-                                                                /* } else {
-                                                                    printf("Tipo dei parametri inserito non valido \n \n");
+                                                                } else {
+                                                                    rintf("The parameters in the function call are incorrect\n");
                                                                 }
-                                                            } else {
-                                                                printf("Error: function %s not declared\n", $1);
-                                                            } */
+                                                            }
                                                         };
 
 functionParams:
