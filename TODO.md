@@ -5,7 +5,7 @@
 ### Todo
 
 - [ ] Move beginScope and endScope inside the body node because beginScope and endScope currently only work for functions and not for if, else and elseif statements
-- [ ] Implement void only for function declaration
+- [x] Implement void only for function declaration
 
 ### In Progress
 - [x] Implement Lexer (lexer.l)

@@ -130,7 +130,10 @@ assignment SEMICOL                                      {
                                                             struct SymTab *s = findSym($1->variableName, actualList);
                                                             if((s->dataType != $1->variableType) || strcmp(typeToString(s->dataType), "Type none") == 0) {
                                                                 printf("Error: Variable %s has been declared as a %s but type %s is assigned.\n", $1->variableName, typeToString(s->dataType), typeToString($1->variableType));
-                                                            } else {
+                                                            } else if(s->dataType == DATA_TYPE_VOID) {
+                                                                printf("You cannot assign a variable of type void\n");
+                                                                
+                                                            }else {
                                                                 $$->value.assign = $1;
                                                                 s->valueOper = $1->assignValue;
                                                             }
@@ -141,10 +144,14 @@ assignment SEMICOL                                      {
                                                             //for (struct AstNodeInit *init = $1; init != NULL; init = init->nextInit) {
                                                                 s = findSym($1->variableName, actualList);
                                                                 if (s == NULL) {
-                                                                    printf("AstNodeInstruction allocated for 'initialization SEMICOL'\n");
-                                                                    $$->nodeType = INIT_NODE;
-                                                                    $$->value.init = $1;
-                                                                    s = createSym($1->variableName, actualList, SYMBOL_VARIABLE, $1->dataType, $1->dataType, NULL, NULL, NULL, nullValue);
+                                                                    if($1->dataType == DATA_TYPE_VOID) {
+                                                                        printf("You cannot initialize a variable of type void\n");
+                                                                    } else {
+                                                                        printf("AstNodeInstruction allocated for 'initialization SEMICOL'\n");
+                                                                        $$->nodeType = INIT_NODE;
+                                                                        $$->value.init = $1;
+                                                                        s = createSym($1->variableName, actualList, SYMBOL_VARIABLE, $1->dataType, $1->dataType, NULL, NULL, NULL, nullValue);
+                                                                    }
                                                                 } else {
                                                                     printf("Error: variable already declared.\n");
                                                                 }
