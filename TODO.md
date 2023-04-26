@@ -5,6 +5,7 @@
 ### Todo
 
 - [ ] Move beginScope and endScope inside the body node because beginScope and endScope currently only work for functions and not for if, else and elseif statements
+- [ ] Implement void only for function declaration
 
 ### In Progress
 - [x] Implement Lexer (lexer.l)
@@ -65,11 +66,11 @@
     - [x] translateAssignment(struct AstNodeAssign *assign); (` to test `)
     - [x] translateOperand(union ValueOper value, int contentType); (` to test `)
     - [x] translateExpression(struct AstNodeExpression *expression); (` to test `)
-    - [ ] translateArrayDecleration(struct AstNodeArrayDecl *arrayDecl);
-    - [ ] translateArrayCall(struct AstNodeArrayCall *arrayCall);
-    - [ ] translateArrayInitialization(struct AstNodeArrayInit *arrayInit);
-    - [ ] translateArrayAssignment(struct AstNodeArrayAssign *arrayAssign);
-    - [ ] translateArrayElements(struct AstNodeArrayElements *arrayElements);
+    - [x] translateArrayDecleration(struct AstNodeArrayDecl *arrayDecl);
+    - [x] translateArrayCall(struct AstNodeArrayCall *arrayCall);
+    - [x] translateArrayInitialization(struct AstNodeArrayInit *arrayInit);
+    - [x] translateArrayAssignment(struct AstNodeArrayAssign *arrayAssign);
+    - [x] translateArrayElements(struct AstNodeArrayElements *arrayElements);
     - [x] translateFunctionDeclaration(struct AstNodeFunctionDecl *functionDecl); (` to test `)
     - [x] translateFunctionCall(struct AstNodeFunctionCall *functionCall); (` to test `)
     - [x] translateFunctionParams(struct AstNodeFunctionParams *functionParams); (` to test `)
@@ -78,10 +79,10 @@
     - [x] translateElse(struct AstNodeElse *elseStatement); (` to test `)
     - [x] translateWhile(struct AstNodeWhile *whileLoop); (` to test `)
     - [x] translateBody(struct AstNodeBody *body); (` to test `)
-    - [ ] translateFunctionOutput(struct AstNodeFunctionOutput *outputFunction);
-    - [ ] translateFunctionInput(struct AstNodeFunctionInput *inputFunction);
-    - [ ] translateOutputElements(struct AstNodeOutputElements *outputElements);
-    - [ ] translateInputElements(struct AstNodeInputElements *inputElements);
+    - [x] translateFunctionOutput(struct AstNodeFunctionOutput *outputFunction);
+    - [x] translateFunctionInput(struct AstNodeFunctionInput *inputFunction);
+    - [x] translateOutputElements(struct AstNodeOutputElements *outputElements);
+    - [x] translateInputElements(struct AstNodeInputElements *inputElements);
 
 ### Done ✓
 - [x] Understand lexer

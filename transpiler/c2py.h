@@ -35,7 +35,7 @@ void translateInputElements(struct AstNodeInputElements *inputElements);
 // Function to print indentation in .py file
 void printCounter(int counter) {
     for (int i = 0; i<counter; i++) {
-        fprintf(fptr, "\t", counter);
+        fprintf(fptr, "\t");
     }
 }
 
@@ -265,15 +265,12 @@ void translateOperand(union ValueOper value, int contentType) {
             fprintf(fptr, "%s", value.val);
             break;
         case CONTENT_TYPE_EXPRESSION:
-            //fprintf(fptr, "%s", value.expression);
             translateExpression(value.expression);
             break;
         case CONTENT_TYPE_FUNCTION:
-            //fprintf(fptr, "%s", value.funtionCall);
             translateFunctionCall(value.funtionCall);
             break;
         case CONTENT_TYPE_ARRAY:
-            //fprintf(fptr, "%s", value.arrayCall);
             translateArrayCall(value.arrayCall);
             break;
         default:
@@ -338,7 +335,6 @@ void translateFunctionDeclaration(struct AstNodeFunctionDecl *functionDecl) {
     translateBody(functionDecl->functiontBody);
     counter--;
     fprintf(fptr, "\n");
-    //TODO: test indent and test return inside body
 }
 
 void translateFunctionCall(struct AstNodeFunctionCall *functionCall) {

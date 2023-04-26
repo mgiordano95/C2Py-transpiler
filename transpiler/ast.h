@@ -72,10 +72,7 @@ union yystype {
     struct AstNodeFunctionOutput      *outputFunction;
     struct AstNodeFunctionInput       *inputFunction;
     struct AstNodeOutputElements      *outputElements;
-    struct AstNodeInputElements       *inputElements;
-    /* struct AstNodeValue               *value;
-    struct AstNodeVariable            *variable; */
-    
+    struct AstNodeInputElements       *inputElements;    
 };
 
 /*--------------- Other Types ---------------*/

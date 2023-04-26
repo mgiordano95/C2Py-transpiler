@@ -923,6 +923,7 @@ ID                                                      {
                                                             printf("AstNodeOperand allocated for 'ID'\n"); //Ci troviamo nel caso in cui abbiamo int a = b
                                                             struct SymTab *s = findSymtab($1,actualList);
                                                             if(s == NULL) {
+                                                                //TODO print error because ID does not exist
                                                                 $$->valueType = DATA_TYPE_NONE;
                                                             } else {
                                                                 $$->value.val = $1;
@@ -1032,8 +1033,10 @@ char *typeToString(int type) {
         case DATA_TYPE_CHAR:
             return "char";
         break;
+        case DATA_TYPE_NONE:
+            return "Type none";
         default:
-            return "NULL";
+            return "Type not defined";
         break;
     }
 }
