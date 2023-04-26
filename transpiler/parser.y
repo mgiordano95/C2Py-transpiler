@@ -421,12 +421,18 @@ LBRA statements RBRA                                    {
                                                             $$->bodyStatements = $2;
                                                             $$->returnValue = NULL;
                                                         }
-| LBRA statements RETURN content SEMICOL RBRA           {
+|   LBRA statements RETURN content SEMICOL RBRA         {
                                                             $$ = malloc(sizeof(struct AstNodeBody));
                                                             printf("AstNodeBody allocated for 'LBRA statements RETURN content SEMICOL RBRA'\n");
                                                             $$->bodyStatements = $2;
                                                             $$->returnValue = $4;
-                                                        };
+                                                        }
+|   LBRA RETURN content SEMICOL RBRA                    {
+                                                            $$=malloc(sizeof(struct AstNodeBody));
+                                                            printf("AstNodeBody allocated for 'LBRA RETURN content SEMICOL RBRA'\n");
+                                                            $$->bodyStatements = NULL;
+                                                            $$->returnValue = $3;
+                                                            };
 
 ifStatement:
 IF LPAR expression RPAR body                            {
