@@ -138,17 +138,17 @@ assignment SEMICOL                                      {
 | initialization SEMICOL                                {
                                                             $$ = malloc(sizeof(struct AstNodeInstruction));
                                                             struct SymTab *s = NULL;
-                                                            for (struct AstNodeInit *init = $1; init != NULL; init = init->nextInit) {
-                                                                s = findSym(init->assign->variableName, actualList);
+                                                            //for (struct AstNodeInit *init = $1; init != NULL; init = init->nextInit) {
+                                                                s = findSym(init->variableName, actualList);
                                                                 if (s == NULL) {
                                                                     printf("AstNodeInstruction allocated for 'initialization SEMICOL'\n");
                                                                     $$->nodeType = INIT_NODE;
                                                                     $$->value.init = $1;
-                                                                    s = createSym(init->assign->variableName, actualList, SYMBOL_VARIABLE, $1->dataType, $1->dataType, NULL, NULL, NULL, nullValue);
+                                                                    s = createSym(init->variableName, actualList, SYMBOL_VARIABLE, $1->dataType, $1->dataType, NULL, NULL, NULL, nullValue);
                                                                 } else {
                                                                     printf("Error: variable already declared.\n");
                                                                 }
-                                                            }
+                                                            //}
                                                         }
 |   functionDecl                                        {
                                                             $$ = malloc(sizeof(struct AstNodeInstruction));
@@ -285,7 +285,7 @@ types MAIN LPAR RPAR body                               {
                                                                 beginScope();
                                                                 $$ = malloc(sizeof(struct AstNodeFunctionDecl));
                                                                 printf("AstNodeFunctionDecl allocated for 'initialization LPAR RPAR body'\n");
-                                                                $$->functionName = $1->assign->variableName;
+                                                                $$->functionName = $1->variableName;
                                                                 $$->returnType = $1->dataType;
                                                                 printf("returnType assigned\n");
                                                                 $$->functionParams = NULL;
@@ -312,7 +312,7 @@ types MAIN LPAR RPAR body                               {
                                                                 /* printf("Appoggio alla fine vale: %s \n \n",appoggio); */
                                                                 $$ = malloc(sizeof(struct AstNodeFunctionDecl));
                                                                 printf("AstNodeFunctionDecl allocated for 'initialization LPAR functionParams RPAR body'\n");
-                                                                $$->functionName = $1->assign->variableName;
+                                                                $$->functionName = $1->variableName;
                                                                 $$->returnType = $1->dataType;
                                                                 $$->functionParams = $3;
                                                                 $$->functiontBody = $5;
@@ -645,14 +645,15 @@ initialization:
 types ID                                                {
                                                             $$ = malloc(sizeof(struct AstNodeInit));
                                                             printf("AstNodeInit allocated for 'types ID'\n");
+                                                            $$->variableName = $2;
                                                             $$->dataType = stringToType($1);
-                                                            $$->nextInit = NULL;
+                                                            /* $$->nextInit = NULL;
                                                             $$->assign = malloc(sizeof(struct AstNodeAssign));
                                                             printf("AstNodeAssign allocated for 'types ID'\n");
                                                             $$->assign->variableName = $2;
                                                             $$->assign->variableType = stringToType($1);
                                                             $$->assign->assignValue.val = NULL;
-                                                            $$->assign->assignType = CONTENT_TYPE_ID;
+                                                            $$->assign->assignType = CONTENT_TYPE_ID; */
                                                         };
 
 assignment:

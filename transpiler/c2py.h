@@ -230,7 +230,7 @@ void translate(struct AstNodeStatements *root) {
 }
 
 void translateInitialization(struct AstNodeInit *init) {
-    fprintf(fptr, "%s = %s", init->assign->variableName, init->assign->assignValue.val);
+    fprintf(fptr, "%s = None", init->variableName);
     fprintf(fptr, "\n");
 }
 
