@@ -1,4 +1,4 @@
-int i = 3;
+int i;
 
 int myFunction(int a, int b) {
     int j = 5;

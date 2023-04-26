@@ -350,7 +350,7 @@ void translateFunctionCall(struct AstNodeFunctionCall *functionCall) {
 void translateFunctionParams(struct AstNodeFunctionParams *functionParams) {
     if (functionParams->initParam != NULL) {
         //Translate parameters inside a function declaration
-        fprintf(fptr, "%s", functionParams->initParam->assign->variableName);
+        fprintf(fptr, "%s", functionParams->initParam->variableName);
         if (functionParams->nextParams != NULL) {
             fprintf(fptr, ", ");
             translateFunctionParams(functionParams->nextParams);
