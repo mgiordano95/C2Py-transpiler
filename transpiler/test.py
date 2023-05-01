@@ -1,21 +1,9 @@
-i = None
-def myFunction(a, b):
-	j = 5
-	return j
-
-def main():
-	myFunction(3, 4)
-	a = 5
-	b = 6
-	if a > b:
-		c = 7
-	elif a < b:
-		d = 4
-	else:
-		e = 5.5
-
-	while a < b:
-		a = a + b
-
-	return 0
-
+myNum = None
+myNum2 = None
+print("Type a number: \n")
+print(" ")
+myNum = input()
+myNum2 = input()
+print("Your first number is: \n" + myNum)
+print("Your second number is: \n" + myNum2)
+print("Your numbers are:   \n" + myNum + myNum2)

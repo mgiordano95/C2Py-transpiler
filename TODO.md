@@ -49,7 +49,6 @@
 
 ### In Progress
 - [x] Implement Lexer (lexer.l)
-    - [ ] Implement string detection with %d %s %c
     - [ ] Improve token detection of multi-line comments, single-line comments and strings
     - [ ] Add token to detect the # symbol (include library)
 - [ ] Create Abstract Syntax Tree (ast.h)
@@ -120,7 +119,9 @@
     - [x] translateWhile(struct AstNodeWhile *whileLoop); (` to test `)
     - [x] translateBody(struct AstNodeBody *body); (` to test `)
     - [x] translateFunctionOutput(struct AstNodeFunctionOutput *outputFunction);
+        - [x] Implement detection and removal of substrings "%d", "%i", "%lf", "%f", "%c" and "%s" from string
     - [x] translateFunctionInput(struct AstNodeFunctionInput *inputFunction);
+        - [x] Implement detection and removal of substrings "%d", "%i", "%lf", "%f", "%c" and "%s" from string
     - [x] translateOutputElements(struct AstNodeOutputElements *outputElements);
     - [x] translateInputElements(struct AstNodeInputElements *inputElements);
 
