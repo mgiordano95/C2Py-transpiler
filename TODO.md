@@ -7,6 +7,45 @@
 - [ ] Move beginScope and endScope inside the body node because beginScope and endScope currently only work for functions and not for if, else and elseif statements
 - [x] Implement void only for function declaration
 - [x] Insert parameter type check in the functionCall production (line 335-348)
+- [ ] Sort instruction production:
+    - functionDecl
+    - functionCall
+    - initialization
+    - assignment
+    - arrayInit
+    - arrayAssign
+    - outputFunction
+    - inputFunction
+    - ifStatement
+    - elseifStatement
+    - elseStatement
+    - whileLoop
+- [ ] Sort production:
+    - program
+    - statements
+    - instruction
+    - functionDecl
+    - functionCall
+    - functionParams
+    - ifStatement
+    - elseifStatement
+    - elseStatement
+    - whileLoop
+    - body
+    - arrayInit
+    - arrayAssign
+    - arrayDecl
+    - arrayCall
+    - arrayElements
+    - outputFunction
+    - inputFunction
+    - outputElements
+    - inputElements
+    - initialization
+    - assignment
+    - expression
+    - content
+    - types
 
 ### In Progress
 - [x] Implement Lexer (lexer.l)
