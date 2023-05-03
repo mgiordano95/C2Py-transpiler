@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <string.h>
 
 int counter = 0;
 FILE *fptr;
@@ -230,7 +231,7 @@ void translate(struct AstNodeStatements *root) {
 }
 
 void translateInitialization(struct AstNodeInit *init) {
-    fprintf(fptr, "%s = %s", init->assign->variableName, init->assign->assignValue.val);
+    fprintf(fptr, "%s = None", init->variableName);
     fprintf(fptr, "\n");
 }
 
@@ -350,7 +351,7 @@ void translateFunctionCall(struct AstNodeFunctionCall *functionCall) {
 void translateFunctionParams(struct AstNodeFunctionParams *functionParams) {
     if (functionParams->initParam != NULL) {
         //Translate parameters inside a function declaration
-        fprintf(fptr, "%s", functionParams->initParam->assign->variableName);
+        fprintf(fptr, "%s", functionParams->initParam->variableName);
         if (functionParams->nextParams != NULL) {
             fprintf(fptr, ", ");
             translateFunctionParams(functionParams->nextParams);
@@ -417,6 +418,17 @@ void translateBody(struct AstNodeBody *body) {
 }
 
 void translateFunctionOutput(struct AstNodeFunctionOutput *outputFunction) {
+	char formatSpecifier[][3] = {"%d", "%i", "%lf", "%f", "%c", "%s"};
+	int i, j;
+    
+	for (i = 0; i<6; i++) {
+		char *substr = strstr(outputFunction->string, formatSpecifier[i]);
+		while (substr != NULL) {
+			strcpy(substr, substr + strlen(formatSpecifier[i]));
+			substr = strstr(outputFunction->string, formatSpecifier[i]);
+		}
+	}
+    
     if(outputFunction->outputElements == NULL) {
         fprintf(fptr, "print(");
         fprintf(fptr, "%s",outputFunction->string);
@@ -432,6 +444,17 @@ void translateFunctionOutput(struct AstNodeFunctionOutput *outputFunction) {
 }
 
 void translateFunctionInput(struct AstNodeFunctionInput *inputFunction) {
+    char formatSpecifier[][3] = {"%d", "%i", "%lf", "%f", "%c", "%s"};
+	int i, j;
+    
+	for (i = 0; i<6; i++) {
+		char *substr = strstr(inputFunction->string, formatSpecifier[i]);
+		while (substr != NULL) {
+			strcpy(substr, substr + strlen(formatSpecifier[i]));
+			substr = strstr(inputFunction->string, formatSpecifier[i]);
+		}
+	}
+    
     if(inputFunction->inputElements != NULL) {
         fprintf(fptr, "print(");
         fprintf(fptr, "%s",inputFunction->string);

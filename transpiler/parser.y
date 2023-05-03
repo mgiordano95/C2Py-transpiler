@@ -130,7 +130,10 @@ assignment SEMICOL                                      {
                                                             struct SymTab *s = findSym($1->variableName, actualList);
                                                             if((s->dataType != $1->variableType) || strcmp(typeToString(s->dataType), "Type none") == 0) {
                                                                 printf("Error: Variable %s has been declared as a %s but type %s is assigned.\n", $1->variableName, typeToString(s->dataType), typeToString($1->variableType));
-                                                            } else {
+                                                            } else if(s->dataType == DATA_TYPE_VOID) {
+                                                                printf("You cannot assign a variable of type void\n");
+                                                                
+                                                            }else {
                                                                 $$->value.assign = $1;
                                                                 s->valueOper = $1->assignValue;
                                                             }
@@ -138,17 +141,21 @@ assignment SEMICOL                                      {
 | initialization SEMICOL                                {
                                                             $$ = malloc(sizeof(struct AstNodeInstruction));
                                                             struct SymTab *s = NULL;
-                                                            for (struct AstNodeInit *init = $1; init != NULL; init = init->nextInit) {
-                                                                s = findSym(init->assign->variableName, actualList);
+                                                            //for (struct AstNodeInit *init = $1; init != NULL; init = init->nextInit) {
+                                                                s = findSym($1->variableName, actualList);
                                                                 if (s == NULL) {
-                                                                    printf("AstNodeInstruction allocated for 'initialization SEMICOL'\n");
-                                                                    $$->nodeType = INIT_NODE;
-                                                                    $$->value.init = $1;
-                                                                    s = createSym(init->assign->variableName, actualList, SYMBOL_VARIABLE, $1->dataType, $1->dataType, NULL, NULL, NULL, nullValue);
+                                                                    if($1->dataType == DATA_TYPE_VOID) {
+                                                                        printf("You cannot initialize a variable of type void\n");
+                                                                    } else {
+                                                                        printf("AstNodeInstruction allocated for 'initialization SEMICOL'\n");
+                                                                        $$->nodeType = INIT_NODE;
+                                                                        $$->value.init = $1;
+                                                                        s = createSym($1->variableName, actualList, SYMBOL_VARIABLE, $1->dataType, $1->dataType, NULL, NULL, NULL, nullValue);
+                                                                    }
                                                                 } else {
                                                                     printf("Error: variable already declared.\n");
                                                                 }
-                                                            }
+                                                            //}
                                                         }
 |   functionDecl                                        {
                                                             $$ = malloc(sizeof(struct AstNodeInstruction));
@@ -160,7 +167,7 @@ assignment SEMICOL                                      {
                                                                 $$->value.functionDecl = $1;
                                                                 char declaredParameters[100] = {};
                                                                 for(struct AstNodeFunctionParams *p = $1->functionParams; p != NULL; p = p->nextParams) {
-                                                                    struct SymTab *s = createSym(p->initParam->assign->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->functionName, NULL, NULL, p->initParam->assign->assignValue);
+                                                                    struct SymTab *s = createSym(p->initParam->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->functionName, NULL, NULL, nullValue);
                                                                     strcat(declaredParameters,typeToString(p->initParam->dataType));
                                                                 }
                                                                 struct SymTab *s = createSym($1->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $1->returnType, $1->functionName, declaredParameters, NULL, nullValue);
@@ -181,8 +188,8 @@ assignment SEMICOL                                      {
                                                                 }
                                                                 printf("Parameters of the declared function: %s \n", s->funcParameters);
                                                                 printf("Parameters of the called function: %s \n", calledParameters);
-                                                                int a = strcmp(s->funcParameters, calledParameters);
-                                                                if (a == 0) {
+                                                                int boolean = strcmp(s->funcParameters, calledParameters);
+                                                                if (boolean == 0) {
                                                                     printf("The parameters are correct\n");
                                                                 } else {
                                                                     printf("The parameters in the function call are incorrect\n");
@@ -285,7 +292,7 @@ types MAIN LPAR RPAR body                               {
                                                                 beginScope();
                                                                 $$ = malloc(sizeof(struct AstNodeFunctionDecl));
                                                                 printf("AstNodeFunctionDecl allocated for 'initialization LPAR RPAR body'\n");
-                                                                $$->functionName = $1->assign->variableName;
+                                                                $$->functionName = $1->variableName;
                                                                 $$->returnType = $1->dataType;
                                                                 printf("returnType assigned\n");
                                                                 $$->functionParams = NULL;
@@ -312,7 +319,7 @@ types MAIN LPAR RPAR body                               {
                                                                 /* printf("Appoggio alla fine vale: %s \n \n",appoggio); */
                                                                 $$ = malloc(sizeof(struct AstNodeFunctionDecl));
                                                                 printf("AstNodeFunctionDecl allocated for 'initialization LPAR functionParams RPAR body'\n");
-                                                                $$->functionName = $1->assign->variableName;
+                                                                $$->functionName = $1->variableName;
                                                                 $$->returnType = $1->dataType;
                                                                 $$->functionParams = $3;
                                                                 $$->functiontBody = $5;
@@ -340,31 +347,25 @@ ID LPAR RPAR                                            {
                                                         }
 |   ID LPAR functionParams RPAR                         {
                                                             $$ = malloc(sizeof(struct AstNodeFunctionCall));
-                                                            /* char confronto[100] = {}; */
                                                             printf("AstNodeFunctionCall allocated for 'ID LPAR functionParams RPAR'\n");
+                                                            char calledParameters[100] = {};
                                                             struct SymTab *s = findSymtab($1, actualList);
-                                                            /* printf("Vedo se la funzione e' stata dichiarata \n");
                                                             if (s != NULL) {
-                                                                printf("Inizio a scorrere i parametri \n");
                                                                 for(struct AstNodeFunctionParams *q = $3; q != NULL; q = q->nextParams) {
-                                                                    printf("Qui non so se arrivo \n");
-                                                                    strcat(confronto,typeToString(q->callParams->valueType));
-                                                                    printf("Fin qui se arrivo festeggio \n");
+                                                                    strcat(calledParameters,typeToString(q->callParams->valueType));
                                                                 }
-                                                                printf("Parametri della function Decl: %s \n \n",s->funcParameters);
-                                                                printf("Parametri della function Call: %s \n",confronto);
-                                                                int a = strcmp(s->funcParameters,confronto);
-                                                                if (a==0) {
-                                                                    printf("I parametri sono corretti \n"); */
+                                                                printf("Parameters of the declared function: %s \n", s->funcParameters);
+                                                                printf("Parameters of the called function: %s \n", calledParameters);
+                                                                int boolean = strcmp(s->funcParameters,calledParameters);
+                                                                if (boolean == 0) {
+                                                                    printf("The parameters are correct\n");
                                                                     $$->functionName = $1;
                                                                     $$->returnType = s->returnType;
                                                                     $$->functionParams = $3;
-                                                                /* } else {
-                                                                    printf("Tipo dei parametri inserito non valido \n \n");
+                                                                } else {
+                                                                    printf("The parameters in the function call are incorrect\n");
                                                                 }
-                                                            } else {
-                                                                printf("Error: function %s not declared\n", $1);
-                                                            } */
+                                                            }
                                                         };
 
 functionParams:
@@ -375,12 +376,13 @@ types ID                                                {
                                                             $$->callParams = NULL;
                                                             $$->initParam = malloc(sizeof(struct AstNodeInit));
                                                             $$->initParam->dataType = stringToType($1);
-                                                            $$->initParam->nextInit = NULL;
-                                                            $$->initParam->assign = malloc(sizeof(struct AstNodeAssign));
-                                                            $$->initParam->assign->variableName = $2;
-                                                            $$->initParam->assign->variableType = stringToType($1);
-                                                            $$->initParam->assign->assignValue.val = NULL;
-                                                            $$->initParam->assign->assignType = CONTENT_TYPE_ID;
+                                                            $$->initParam->variableName = $2;
+                                                            //$$->initParam->nextInit = NULL;
+                                                            //$$->initParam->assign = malloc(sizeof(struct AstNodeAssign));
+                                                            //$$->initParam->assign->variableName = $2;
+                                                            //$$->initParam->assign->variableType = stringToType($1);
+                                                            //$$->initParam->assign->assignValue.val = NULL;
+                                                            //$$->initParam->assign->assignType = CONTENT_TYPE_ID;
                                                         }
 |   content                                             {
                                                             $$ = malloc(sizeof(struct AstNodeFunctionParams));
@@ -396,12 +398,13 @@ types ID                                                {
                                                             $$->callParams = NULL;
                                                             $$->initParam = malloc(sizeof(struct AstNodeInit));
                                                             $$->initParam->dataType = stringToType($1);
-                                                            $$->initParam->nextInit = NULL;
-                                                            $$->initParam->assign = malloc(sizeof(struct AstNodeAssign));
-                                                            $$->initParam->assign->variableName = $2;
-                                                            $$->initParam->assign->variableType = stringToType($1);
-                                                            $$->initParam->assign->assignValue.val = NULL;
-                                                            $$->initParam->assign->assignType = CONTENT_TYPE_ID;
+                                                            $$->initParam->variableName = $2;
+                                                            //$$->initParam->nextInit = NULL;
+                                                            //$$->initParam->assign = malloc(sizeof(struct AstNodeAssign));
+                                                            //$$->initParam->assign->variableName = $2;
+                                                            //$$->initParam->assign->variableType = stringToType($1);
+                                                            //$$->initParam->assign->assignValue.val = NULL;
+                                                            //$$->initParam->assign->assignType = CONTENT_TYPE_ID;
                                                         }
 |   content COMMA functionParams                        {
                                                             $$ = malloc(sizeof(struct AstNodeFunctionParams));
@@ -418,12 +421,18 @@ LBRA statements RBRA                                    {
                                                             $$->bodyStatements = $2;
                                                             $$->returnValue = NULL;
                                                         }
-| LBRA statements RETURN content SEMICOL RBRA           {
+|   LBRA statements RETURN content SEMICOL RBRA         {
                                                             $$ = malloc(sizeof(struct AstNodeBody));
                                                             printf("AstNodeBody allocated for 'LBRA statements RETURN content SEMICOL RBRA'\n");
                                                             $$->bodyStatements = $2;
                                                             $$->returnValue = $4;
-                                                        };
+                                                        }
+|   LBRA RETURN content SEMICOL RBRA                    {
+                                                            $$=malloc(sizeof(struct AstNodeBody));
+                                                            printf("AstNodeBody allocated for 'LBRA RETURN content SEMICOL RBRA'\n");
+                                                            $$->bodyStatements = NULL;
+                                                            $$->returnValue = $3;
+                                                            };
 
 ifStatement:
 IF LPAR expression RPAR body                            {
@@ -645,31 +654,19 @@ initialization:
 types ID                                                {
                                                             $$ = malloc(sizeof(struct AstNodeInit));
                                                             printf("AstNodeInit allocated for 'types ID'\n");
+                                                            $$->variableName = $2;
                                                             $$->dataType = stringToType($1);
-                                                            $$->nextInit = NULL;
+                                                            /* $$->nextInit = NULL;
                                                             $$->assign = malloc(sizeof(struct AstNodeAssign));
                                                             printf("AstNodeAssign allocated for 'types ID'\n");
                                                             $$->assign->variableName = $2;
                                                             $$->assign->variableType = stringToType($1);
                                                             $$->assign->assignValue.val = NULL;
-                                                            $$->assign->assignType = CONTENT_TYPE_ID;
+                                                            $$->assign->assignType = CONTENT_TYPE_ID; */
                                                         };
 
 assignment:
-ID EQ ID                                                {
-                                                            $$ = malloc(sizeof(struct AstNodeAssign));
-                                                            printf("AstNodeAssign allocated for 'ID EQ ID'\n");
-                                                            $$->variableName = $1;
-                                                            $$->assignType = CONTENT_TYPE_ID;
-                                                            $$->assignValue.val = $3;
-                                                            struct SymTab *s = findSym($3, actualList);
-                                                            if (s == NULL) {
-                                                                $$->variableType = DATA_TYPE_NONE;
-                                                            } else {
-                                                                $$->variableType = s->dataType;
-                                                            }
-                                                        }
-|   types ID EQ content                                 {
+types ID EQ content                                 {
                                                             struct SymTab *s = NULL;  //sarà diverso da NULL solo se trova il simbolo
                                                             s = findSym($2, actualList);  //controlla se il simbolo è stato già dichiarato
                                                             if (s==NULL) {
@@ -685,7 +682,7 @@ ID EQ ID                                                {
                                                                 printf("AstNodeAssign allocated for 'types ID EQ content'\n");
                                                                 $$->variableName = $2;
                                                                 $$->variableType = stringToType($1);
-                                                                $$->assignValue.val = $4->value.val;
+                                                                $$->assignValue = $4->value;
                                                                 $$->assignType = $4->contentType;
                                                             }
                                                         }

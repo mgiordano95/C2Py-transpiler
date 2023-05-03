@@ -5,11 +5,50 @@
 ### Todo
 
 - [ ] Move beginScope and endScope inside the body node because beginScope and endScope currently only work for functions and not for if, else and elseif statements
-- [ ] Implement void only for function declaration
+- [x] Implement void only for function declaration
+- [x] Insert parameter type check in the functionCall production (line 335-348)
+- [ ] Sort instruction production:
+    - functionDecl
+    - functionCall
+    - initialization
+    - assignment
+    - arrayInit
+    - arrayAssign
+    - outputFunction
+    - inputFunction
+    - ifStatement
+    - elseifStatement
+    - elseStatement
+    - whileLoop
+- [ ] Sort production:
+    - program
+    - statements
+    - instruction
+    - functionDecl
+    - functionCall
+    - functionParams
+    - ifStatement
+    - elseifStatement
+    - elseStatement
+    - whileLoop
+    - body
+    - arrayInit
+    - arrayAssign
+    - arrayDecl
+    - arrayCall
+    - arrayElements
+    - outputFunction
+    - inputFunction
+    - outputElements
+    - inputElements
+    - initialization
+    - assignment
+    - expression
+    - content
+    - types
 
 ### In Progress
 - [x] Implement Lexer (lexer.l)
-    - [ ] Implement string detection with %d %s %c
     - [ ] Improve token detection of multi-line comments, single-line comments and strings
     - [ ] Add token to detect the # symbol (include library)
 - [ ] Create Abstract Syntax Tree (ast.h)
@@ -80,7 +119,9 @@
     - [x] translateWhile(struct AstNodeWhile *whileLoop); (` to test `)
     - [x] translateBody(struct AstNodeBody *body); (` to test `)
     - [x] translateFunctionOutput(struct AstNodeFunctionOutput *outputFunction);
+        - [x] Implement detection and removal of substrings "%d", "%i", "%lf", "%f", "%c" and "%s" from string
     - [x] translateFunctionInput(struct AstNodeFunctionInput *inputFunction);
+        - [x] Implement detection and removal of substrings "%d", "%i", "%lf", "%f", "%c" and "%s" from string
     - [x] translateOutputElements(struct AstNodeOutputElements *outputElements);
     - [x] translateInputElements(struct AstNodeInputElements *inputElements);
 
