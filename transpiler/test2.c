@@ -13,7 +13,7 @@ int b[3] = {i, i, 9};
 
 float c[3] = {5.4, 7.6 + 1.2, 4.5};
 
-char c[2] = {'c', 'i'};
+char d[2] = {'c', 'i'};
 
 int main() {
     int j = 1;

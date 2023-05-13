@@ -128,7 +128,6 @@ assignment SEMICOL                                      {
                                                             printf("AstNodeInstruction allocated for 'assignment SEMICOL'\n");
                                                             $$->nodeType = ASSIGN_NODE;
                                                             $$->value.assign = $1;
-                                                            s->valueOper = $1->assignValue;
                                                         }
 | initialization SEMICOL                                {
                                                             $$ = malloc(sizeof(struct AstNodeInstruction));
@@ -663,7 +662,7 @@ types ID EQ content                                     {
                                                             s = findSym($2, actualList);  //controlla se il simbolo è stato già dichiarato
                                                             if (s != NULL) {
                                                                 printf("Error: variable %s already declared\n", $2);
-                                                            } else if ((stringToType($1) != $4->valueType) || strcmp(typeToString($4->dataType), "Type none") == 0) {
+                                                            } else if ((stringToType($1) != $4->valueType) || strcmp(typeToString($4->valueType), "Type none") == 0) {
                                                                 printf("Error: Cannot assign type %s to type %s \n", typeToString($4->valueType), $1);
                                                             } else if(stringToType($1) == DATA_TYPE_VOID) {
                                                                 printf("You cannot assign a variable of type void\n");
@@ -681,6 +680,7 @@ types ID EQ content                                     {
 |   ID EQ content                                       {
                                                             $$ = malloc(sizeof(struct AstNodeAssign)); //inserire qui la verifica che int a sia stato dichiarato prima di fare a = qualcosa
                                                             printf("AstNodeAssign allocated for 'ID EQ content'\n");
+                                                            struct SymTab *s = NULL;
                                                             s = findSym($1, actualList); 
                                                             if (s == NULL) {
                                                                 printf("Error: variable %s not declared\n", $1);
