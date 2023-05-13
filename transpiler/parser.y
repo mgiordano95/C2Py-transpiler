@@ -127,16 +127,8 @@ assignment SEMICOL                                      {
                                                             $$ = malloc(sizeof(struct AstNodeInstruction));
                                                             printf("AstNodeInstruction allocated for 'assignment SEMICOL'\n");
                                                             $$->nodeType = ASSIGN_NODE;
-                                                            struct SymTab *s = findSym($1->variableName, actualList);
-                                                            if((s->dataType != $1->variableType) || strcmp(typeToString(s->dataType), "Type none") == 0) {
-                                                                printf("Error: Variable %s has been declared as a %s but type %s is assigned.\n", $1->variableName, typeToString(s->dataType), typeToString($1->variableType));
-                                                            } else if(s->dataType == DATA_TYPE_VOID) {
-                                                                printf("You cannot assign a variable of type void\n");
-                                                                
-                                                            }else {
-                                                                $$->value.assign = $1;
-                                                                s->valueOper = $1->assignValue;
-                                                            }
+                                                            $$->value.assign = $1;
+                                                            s->valueOper = $1->assignValue;
                                                         }
 | initialization SEMICOL                                {
                                                             $$ = malloc(sizeof(struct AstNodeInstruction));
@@ -666,33 +658,42 @@ types ID                                                {
                                                         };
 
 assignment:
-types ID EQ content                                 {
+types ID EQ content                                     {
                                                             struct SymTab *s = NULL;  //sarà diverso da NULL solo se trova il simbolo
                                                             s = findSym($2, actualList);  //controlla se il simbolo è stato già dichiarato
-                                                            if (s==NULL) {
+                                                            if (s != NULL) {
+                                                                printf("Error: variable %s already declared\n", $2);
+                                                            } else if ((stringToType($1) != $4->valueType) || strcmp(typeToString($4->dataType), "Type none") == 0) {
+                                                                printf("Error: Cannot assign type %s to type %s \n", typeToString($4->valueType), $1);
+                                                            } else if(stringToType($1) == DATA_TYPE_VOID) {
+                                                                printf("You cannot assign a variable of type void\n");
+                                                            } else
                                                                 s = createSym($2, actualList, SYMBOL_VARIABLE, stringToType($1), stringToType($1), NULL, NULL, NULL, $4->value);
                                                                 printf("'types ID EQ content': the variable %s has not already been declared and then I create the symbol table for this variable\n", $2);
-                                                            } else {
-                                                                printf("Error: variable %s already declared\n", $2);
-                                                            }
-                                                            if ((stringToType($1) != $4->valueType)) {
-                                                                printf("Error: Cannot assign type %s to type %s \n", typeToString($4->valueType), $1);
-                                                            } else {
                                                                 $$ = malloc(sizeof(struct AstNodeAssign));
                                                                 printf("AstNodeAssign allocated for 'types ID EQ content'\n");
                                                                 $$->variableName = $2;
                                                                 $$->variableType = stringToType($1);
                                                                 $$->assignValue = $4->value;
                                                                 $$->assignType = $4->contentType;
-                                                            }
                                                         }
+                                                        
 |   ID EQ content                                       {
                                                             $$ = malloc(sizeof(struct AstNodeAssign)); //inserire qui la verifica che int a sia stato dichiarato prima di fare a = qualcosa
                                                             printf("AstNodeAssign allocated for 'ID EQ content'\n");
+                                                            s = findSym($1, actualList); 
+                                                            if (s == NULL) {
+                                                                printf("Error: variable %s not declared\n", $1);
+                                                            } else {
+                                                                if (s->dataType != $3->valueType) {
+                                                                    printf("Error: cannot asign type %s to type %s \n", typeToString($3->valueType), typeToString(s->dataType));
+                                                                } else {
                                                             $$->variableName = $1;
                                                             $$->variableType = $3->valueType;
                                                             $$->assignValue = $3->value;   //forse va- assignValue.val ma fors no perche- anche $3 e' generico
                                                             $$->assignType = $3->contentType;
+                                                                }
+                                                            }
                                                         };
 
 expression:
