@@ -150,44 +150,15 @@ assignment SEMICOL                                      {
                                                         }
 |   functionDecl                                        {
                                                             $$ = malloc(sizeof(struct AstNodeInstruction));
-                                                            struct SymTab *s = NULL;
-                                                            s = findSymtab($1->functionName, actualList);
-                                                            if (s == NULL) {
-                                                                printf("AstNodeInstruction allocated for 'functionDecl SEMICOL'\n");
-                                                                $$->nodeType = FUNCTION_DECL_NODE;
-                                                                $$->value.functionDecl = $1;
-                                                                char declaredParameters[100] = {};
-                                                                for(struct AstNodeFunctionParams *p = $1->functionParams; p != NULL; p = p->nextParams) {
-                                                                    struct SymTab *s = createSym(p->initParam->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->functionName, NULL, NULL, nullValue);
-                                                                    strcat(declaredParameters,typeToString(p->initParam->dataType));
-                                                                }
-                                                                struct SymTab *s = createSym($1->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $1->returnType, $1->functionName, declaredParameters, NULL, nullValue);
-                                                            } else {
-                                                                printf("Error: function %s already declared \n",$1->functionName);
-                                                            }
+                                                            printf("AstNodeInstruction allocated for 'functionDecl SEMICOL'\n");
+                                                            $$->nodeType = FUNCTION_DECL_NODE;
+                                                            $$->value.functionDecl = $1;
                                                         }
 |   functionCall SEMICOL                                {
                                                             $$ = malloc(sizeof(struct AstNodeInstruction));
-                                                            char calledParameters[100] = {};
-                                                            struct SymTab *s = findSymtab($1->functionName, actualList);
-                                                            if( s != NULL) {
-                                                                printf("AstNodeInstruction allocated for 'functionCall SEMICOL'\n");
-                                                                $$->nodeType = FUNCTION_CALL_NODE;
-                                                                $$->value.functionCall = $1;
-                                                                for (struct AstNodeFunctionParams *q = $1->functionParams; q != NULL; q = q->nextParams) {
-                                                                    strcat(calledParameters, typeToString(q->callParams->valueType));
-                                                                }
-                                                                printf("Parameters of the declared function: %s \n", s->funcParameters);
-                                                                printf("Parameters of the called function: %s \n", calledParameters);
-                                                                int boolean = strcmp(s->funcParameters, calledParameters);
-                                                                if (boolean == 0) {
-                                                                    printf("The parameters are correct\n");
-                                                                } else {
-                                                                    printf("The parameters in the function call are incorrect\n");
-                                                                }
-                                                            } else {
-                                                                printf("Error: function %s not declared\n", $1->functionName);
-                                                            }
+                                                            printf("AstNodeInstruction allocated for 'functionCall SEMICOL'\n");
+                                                            $$->nodeType = FUNCTION_CALL_NODE;
+                                                            $$->value.functionCall = $1;
                                                         }
 |   ifStatement                                         {
                                                             $$ = malloc(sizeof(struct AstNodeInstruction));
@@ -258,10 +229,10 @@ assignment SEMICOL                                      {
 
 functionDecl:
 types MAIN LPAR RPAR body                               {
-                                                            /* struct SymTab *s = NULL;
+                                                            struct SymTab *s = NULL;
                                                             char *main = "main";
                                                             s = findSymtab(main, actualList);
-                                                            if (s == NULL) { */
+                                                            if (s == NULL) {
                                                                 beginScope();
                                                                 $$ = malloc(sizeof(struct AstNodeFunctionDecl));
                                                                 printf("AstNodeFunctionDecl allocated for 'types MAIN LPAR RPAR body'\n");
@@ -270,16 +241,16 @@ types MAIN LPAR RPAR body                               {
                                                                 $$->functionParams = NULL;
                                                                 $$->functiontBody = $5;
                                                                 endScope();
-                                                                /* struct SymTab *s = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, NULL, NULL, nullValue);
+                                                                struct SymTab *s = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, NULL, NULL, nullValue);
                                                                 printf("Funzione main inserita nella symtab \n");
                                                             } else {
                                                                 printf("Error: function MAIN already declared \n");
-                                                            } */
+                                                            } 
                                                         }
 |   initialization LPAR RPAR body                       {
-                                                            /* struct SymTab *s = NULL;
+                                                            struct SymTab *s = NULL;
                                                             s = findSymtab($1->assign->variableName, actualList);
-                                                            if (s == NULL) { */
+                                                            if (s == NULL) { 
                                                                 beginScope();
                                                                 $$ = malloc(sizeof(struct AstNodeFunctionDecl));
                                                                 printf("AstNodeFunctionDecl allocated for 'initialization LPAR RPAR body'\n");
@@ -289,25 +260,25 @@ types MAIN LPAR RPAR body                               {
                                                                 $$->functionParams = NULL;
                                                                 $$->functiontBody = $4;
                                                                 endScope();
-                                                                /* struct SymTab *s = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, NULL, NULL, nullValue);
+                                                                struct SymTab *s = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, NULL, NULL, nullValue);
                                                                 printf("Funzione inserita nella symtab \n");
                                                         } else {
                                                                 printf("Error: function %s already declared \n",$1->assign->variableName);
-                                                            } */
+                                                            } 
                                                         }
 |   initialization LPAR functionParams RPAR body        {
-                                                            /* struct SymTab *s = NULL;
+                                                            struct SymTab *s = NULL;
                                                             s = findSymtab($1->assign->variableName, actualList);
-                                                            if (s == NULL) { */
+                                                            if (s == NULL) { 
                                                                 beginScope();
-                                                                /* char appoggio[100] = {};
+                                                                char appoggio[100] = {};
                                                                 for(struct AstNodeFunctionParams *p = $3; p != NULL; p = p->nextParams) {
                                                                     printf("Sono entrato nel ciclo for \n \n");
                                                                     struct SymTab *s = createSym(p->initParam->assign->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->assign->variableName, NULL, NULL, p->initParam->assign->assignValue);
                                                                     printf("Aggiunto parametro alla symbol table\n");
                                                                     strcat(appoggio,typeToString(p->initParam->dataType));
-                                                                } */
-                                                                /* printf("Appoggio alla fine vale: %s \n \n",appoggio); */
+                                                                } 
+                                                                printf("Appoggio alla fine vale: %s \n \n",appoggio); 
                                                                 $$ = malloc(sizeof(struct AstNodeFunctionDecl));
                                                                 printf("AstNodeFunctionDecl allocated for 'initialization LPAR functionParams RPAR body'\n");
                                                                 $$->functionName = $1->variableName;
@@ -315,12 +286,12 @@ types MAIN LPAR RPAR body                               {
                                                                 $$->functionParams = $3;
                                                                 $$->functiontBody = $5;
                                                                 endScope();
-                                                                /* printf("Sto per entrare in symtab \n"); */
-                                                                /* struct SymTab *s = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, appoggio, NULL, nullValue);
+                                                                printf("Sto per entrare in symtab \n"); */
+                                                                struct SymTab *s = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, appoggio, NULL, nullValue);
                                                                 printf("Funzione inserita nella symtab \n"); */
-                                                            /* } else {
+                                                             } else {
                                                                 printf("Error: function %s already declared \n",$1->assign->variableName);
-                                                            } */
+                                                             } 
                                                         };
 
 functionCall:
@@ -328,13 +299,13 @@ ID LPAR RPAR                                            {
                                                             $$ = malloc(sizeof(struct AstNodeFunctionCall));
                                                             printf("AstNodeFunctionCall allocated for 'ID LPAR RPAR'\n");
                                                             struct SymTab *s = findSymtab($1, actualList);
-                                                            /* if (s != NULL) { */
+                                                            if (s != NULL) { 
                                                                 $$->functionName = $1;
                                                                 $$->returnType = s->returnType;
                                                                 $$->functionParams = NULL;
-                                                            /* } else {
+                                                            } else {
                                                                 printf("Error: function %s not declared\n", $1);
-                                                            } */
+                                                            } 
                                                         }
 |   ID LPAR functionParams RPAR                         {
                                                             $$ = malloc(sizeof(struct AstNodeFunctionCall));
@@ -356,6 +327,8 @@ ID LPAR RPAR                                            {
                                                                 } else {
                                                                     printf("The parameters in the function call are incorrect\n");
                                                                 }
+                                                            } else {
+                                                                printf("Error: function %s not declared\n", $1);
                                                             }
                                                         };
 
