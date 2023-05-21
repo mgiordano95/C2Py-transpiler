@@ -16,6 +16,7 @@ FILE *fptr;
 
 struct AstNodeStatements *root;
 struct List *actualList = NULL;
+char appoggio[100] = {};
 
 char *typeToString(int);
 int stringToType(char*);
@@ -266,32 +267,33 @@ types MAIN LPAR RPAR body                               {
                                                                 printf("Error: function %s already declared \n",$1->variableName);
                                                             } 
                                                         }
-|   initialization LPAR functionParams RPAR body        {
-                                                            struct SymTab *s = NULL;
-                                                            s = findSymtab($1->variableName, actualList);
-                                                            if (s == NULL) { 
-                                                                beginScope();
-                                                                char appoggio[100] = {};
-                                                                for(struct AstNodeFunctionParams *p = $3; p != NULL; p = p->nextParams) {
+|   initialization LPAR                                 {   beginScope(); printf("scope aperto \n \n"); }
+    functionParams                                      {
+                                                                for(struct AstNodeFunctionParams *p = $4; p != NULL; p = p->nextParams) {
                                                                     printf("Sono entrato nel ciclo for \n \n");
                                                                     struct SymTab *s = createSym(p->initParam->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->variableName, NULL, NULL, nullValue);
                                                                     printf("Aggiunto parametro alla symbol table\n");
                                                                     strcat(appoggio,typeToString(p->initParam->dataType));
                                                                 } 
-                                                                printf("Appoggio alla fine vale: %s \n \n",appoggio); 
+                                                                printf("Appoggio alla fine vale: %s \n \n",appoggio);
+                                                        }
+    RPAR body                                           {
+                                                            struct SymTab *s = NULL;
+                                                            s = findSymtab($1->variableName, actualList);
+                                                            if (s == NULL) { 
                                                                 $$ = malloc(sizeof(struct AstNodeFunctionDecl));
                                                                 printf("AstNodeFunctionDecl allocated for 'initialization LPAR functionParams RPAR body'\n");
                                                                 $$->functionName = $1->variableName;
                                                                 $$->returnType = $1->dataType;
-                                                                $$->functionParams = $3;
-                                                                $$->functiontBody = $5;
-                                                                endScope();
-                                                                printf("Sto per entrare in symtab \n"); 
-                                                                struct SymTab *s = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, appoggio, NULL, nullValue);
-                                                                printf("Funzione inserita nella symtab \n"); 
-                                                             } else {
+                                                                $$->functionParams = $4;
+                                                                $$->functiontBody = $7; 
+                                                            } else {
                                                                 printf("Error: function %s already declared \n",$1->variableName);
-                                                             } 
+                                                            } 
+                                                            endScope();
+                                                            printf("Sto per entrare in symtab \n"); 
+                                                            s = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, appoggio, NULL, nullValue);
+                                                            printf("Funzione inserita nella symtab \n");
                                                         };
 
 functionCall:
