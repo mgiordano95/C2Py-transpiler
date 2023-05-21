@@ -269,6 +269,9 @@ types MAIN LPAR RPAR body                               {
                                                         }
 |   initialization LPAR                                 {   beginScope(); printf("scope aperto \n \n"); }
     functionParams                                      {
+                                                                for(int i=0; i<sizeof(appoggio);i++) {
+                                                                    appoggio[i] = NULL;
+                                                                }
                                                                 for(struct AstNodeFunctionParams *p = $4; p != NULL; p = p->nextParams) {
                                                                     printf("Sono entrato nel ciclo for \n \n");
                                                                     struct SymTab *s = createSym(p->initParam->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->variableName, NULL, NULL, nullValue);
@@ -292,7 +295,7 @@ types MAIN LPAR RPAR body                               {
                                                             } 
                                                             endScope();
                                                             printf("Sto per entrare in symtab \n"); 
-                                                            s = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, appoggio, NULL, nullValue);
+                                                            struct SymTab *q = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, appoggio, NULL, nullValue);
                                                             printf("Funzione inserita nella symtab \n");
                                                         };
 
