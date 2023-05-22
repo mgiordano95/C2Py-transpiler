@@ -13,7 +13,7 @@ int main() {
     
     myFunction(c, d);
     
-    void myFunction2(float c, flot d) {
+    void myFunction2(float c, float d) {
         printf("Hello myFunction2!!!");
     }
     
