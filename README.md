@@ -30,10 +30,7 @@
       </ul>
     </li>
     <li><a href="#requirements">Requirements</a></li>
-    <li><a href="#installation">Installation</a></li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#features">Features</a></li>
-    <!--<li><a href="#contributing">Contributing</a></li>-->
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
@@ -43,14 +40,13 @@
 ## About The Project
 
 
-
 ### Built With
 
 [![c][c]][c-url] 
 
 [![python][python]][python-url]
 
-<!-- -->
+
 ## Requirements
 
 Windows:
@@ -87,10 +83,6 @@ To compile this project we used:
 - Bison v. 3.8.2
 - GCC v. 11.3.0
 
-<!-- Installation -->
-## Installation
-
-
 
 <!-- Usage -->
 ## Usage
@@ -104,26 +96,20 @@ To compile this project we used:
 
     `flex lexer.l`
 
-    `gcc parser.tab.c lex.yy.c -lfl -lm`
+    `gcc parser.tab.c lex.yy.c -lfl -lm` 
+
+5. Or, symply run the following command:
+
+    `make`
+
+6. Run the transpiler with the command:
 
     `./a.out`
 
+7. Or, run the command:
 
-<!-- Features -->
-## Features
+    `./a.out < source_file.c`
 
-
-
-<!-- Contributing -->
-<!-- ## Contributing
-
-If you want to contribute to the project, follow these steps:
-
-1. Fork the repository.
-2. Create a new branch for your changes: `git checkout -b my-new-feature`.
-3. Commit your changes: `git commit -am 'Added a new feature'`.
-4. Push your branch: `git push origin my-new-feature`.
-5. Submit a pull request.-->
 
 <!-- License -->
 ## License
@@ -146,7 +132,6 @@ Project Link: [https://github.com/mgiordano95/C2Py-transpiler](https://github.co
 [c]: https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white
 [python]: https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue
 [json]: https://img.shields.io/badge/json-5E5C5C?style=for-the-badge&logo=json&logoColor=white
-
 
 [c-url]: https://www.w3schools.com/c/c_intro.php
 [python-url]: python.org
