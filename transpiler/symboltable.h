@@ -19,7 +19,7 @@ struct SymTab {
     enum DataType dataType;
     enum DataType returnType;
     char *funcName; //nome della funzione a cui a appartiene il parametro
-    char funcParameters[30];
+    char funcParameters[100];
     char *arrayLength;
     union ValueOper valueOper;
 
@@ -83,7 +83,7 @@ struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType sy
         s->returnType = returnType;
         s->funcName = funcName;
         if (funcParameters != NULL) {
-            for(int i=0;i<(sizeof(funcParameters));i++) {
+            for(int i=0;i<100;i++) {
             s->funcParameters[i] = funcParameters[i]; 
             }
         }
