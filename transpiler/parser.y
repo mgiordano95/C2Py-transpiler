@@ -269,7 +269,7 @@ types MAIN LPAR RPAR body                               {
                                                         }
     functionParams                                      {
                                                             for(int i=0; i<sizeof(appoggio);i++) {
-                                                                appoggio[i] = NULL;
+                                                                appoggio[i] = '\0';
                                                             }
                                                             for(struct AstNodeFunctionParams *p = $4; p != NULL; p = p->nextParams) {
                                                                 struct SymTab *s = createSym(p->initParam->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->variableName, NULL, NULL, nullValue);

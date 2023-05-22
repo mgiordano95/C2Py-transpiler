@@ -33,7 +33,7 @@
     <li><a href="#installation">Installation</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#features">Features</a></li>
-    <li><a href="#contributing">Contributing</a></li>
+    <!--<li><a href="#contributing">Contributing</a></li>-->
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
@@ -115,7 +115,7 @@ To compile this project we used:
 
 
 <!-- Contributing -->
-## Contributing
+<!-- ## Contributing
 
 If you want to contribute to the project, follow these steps:
 
@@ -123,7 +123,7 @@ If you want to contribute to the project, follow these steps:
 2. Create a new branch for your changes: `git checkout -b my-new-feature`.
 3. Commit your changes: `git commit -am 'Added a new feature'`.
 4. Push your branch: `git push origin my-new-feature`.
-5. Submit a pull request.
+5. Submit a pull request.-->
 
 <!-- License -->
 ## License

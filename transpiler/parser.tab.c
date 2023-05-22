@@ -1557,7 +1557,7 @@ yyreduce:
 #line 270 "parser.y"
                                                         {
                                                             for(int i=0; i<sizeof(appoggio);i++) {
-                                                                appoggio[i] = NULL;
+                                                                appoggio[i] = '\0';
                                                             }
                                                             for(struct AstNodeFunctionParams *p = (yyvsp[0].functionParams); p != NULL; p = p->nextParams) {
                                                                 struct SymTab *s = createSym(p->initParam->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, (yyvsp[-3].init)->variableName, NULL, NULL, nullValue);
