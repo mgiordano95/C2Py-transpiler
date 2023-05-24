@@ -402,31 +402,43 @@ body                                                    {
                                                             $$ = malloc(sizeof(struct AstNodeIf));
                                                             printf("AstNodeIf allocated for 'IF LPAR expression RPAR body'\n");
                                                             $$->ifCondition = $3;
-                                                            $$->ifBody = $5;
+                                                            $$->ifBody = $6;
                                                             endScope();
                                                         };
 
 elseifStatement:
-ELSE IF LPAR expression RPAR body                       {
+ELSE IF LPAR expression RPAR                            {
+                                                            beginScope();
+                                                        }
+body                                                    {
                                                             $$ = malloc(sizeof(struct AstNodeElseIf));
                                                             printf("AstNodeElseIf allocated for 'ELSE IF LPAR expression RPAR body'\n");
                                                             $$->elseifCondition = $4;
-                                                            $$->elseifBody = $6;
+                                                            $$->elseifBody = $7;
+                                                            endScope();
                                                         };
 
 elseStatement:
-ELSE body                                               {
+ELSE                                                    {
+                                                            beginScope();
+                                                        }
+body                                                    {
                                                             $$ = malloc(sizeof(struct AstNodeElse));
                                                             printf("AstNodeElse allocated for 'ELSE body'\n");
-                                                            $$->elseBody = $2;
+                                                            $$->elseBody = $3;
+                                                            endScope();
                                                         };
 
 whileLoop:
-WHILE LPAR expression RPAR body                         {
+WHILE LPAR expression RPAR                              {
+                                                            beginScope();
+                                                        }
+body                                                    {
                                                             $$ = malloc(sizeof(struct AstNodeWhile));
                                                             printf("AstNodeWhile allocated for 'WHILE LPAR expression RPAR body'\n");
                                                             $$->whileCondition = $3;
-                                                            $$->whileBody = $5;
+                                                            $$->whileBody = $6;
+                                                            endScope();
                                                         };
 
 arrayInit:
