@@ -419,13 +419,15 @@ void translateBody(struct AstNodeBody *body) {
 
 void translateFunctionOutput(struct AstNodeFunctionOutput *outputFunction) {
 	char formatSpecifier[][3] = {"%d", "%i", "%lf", "%f", "%c", "%s"};
-	int i, j;
+    int numFormats = sizeof(formatSpecifier) / sizeof(formatSpecifier[0]);
     
-	for (i = 0; i<6; i++) {
-		char *substr = strstr(outputFunction->string, formatSpecifier[i]);
+	for (int i = 0; i<numFormats; i++) {
+        char *format = formatSpecifier[i];
+		char *substr = strstr(outputFunction->string, format);
+        
 		while (substr != NULL) {
-			strcpy(substr, substr + strlen(formatSpecifier[i]));
-			substr = strstr(outputFunction->string, formatSpecifier[i]);
+            memset(substr, ' ', strlen(format));
+            substr = strstr(outputFunction->string, format);
 		}
 	}
     
@@ -445,13 +447,15 @@ void translateFunctionOutput(struct AstNodeFunctionOutput *outputFunction) {
 
 void translateFunctionInput(struct AstNodeFunctionInput *inputFunction) {
     char formatSpecifier[][3] = {"%d", "%i", "%lf", "%f", "%c", "%s"};
-	int i, j;
+    int numFormats = sizeof(formatSpecifier) / sizeof(formatSpecifier[0]);
     
-	for (i = 0; i<6; i++) {
-		char *substr = strstr(inputFunction->string, formatSpecifier[i]);
+	for (int i = 0; i<numFormats; i++) {
+        char *format = formatSpecifier[i];
+		char *substr = strstr(inputFunction->string, format);
+        
 		while (substr != NULL) {
-			strcpy(substr, substr + strlen(formatSpecifier[i]));
-			substr = strstr(inputFunction->string, formatSpecifier[i]);
+            memset(substr, ' ', strlen(format));
+            substr = strstr(inputFunction->string, format);
 		}
 	}
     
@@ -479,6 +483,7 @@ void translateOutputElements(struct AstNodeOutputElements *outputElements) {
 }
 
 void translateInputElements(struct AstNodeInputElements *inputElements) {
+    printCounter(counter);
     if (inputElements->nextElement != NULL) {
         translateOperand(inputElements->element->value, inputElements->element->contentType);
         fprintf(fptr, " =");
