@@ -1,3 +1,4 @@
+#include <stdio.h>
 int myNum;
 int myNum2;
 printf("Type a number: \n");

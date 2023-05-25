@@ -1,7 +1,9 @@
 int main() {
-    
+    //Questo è un commento
     int a = 5;
     int b = 6;
+    int c;
+    int d;
     
     if (a > b) {
         int c = 7;

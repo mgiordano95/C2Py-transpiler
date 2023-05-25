@@ -124,13 +124,19 @@ instruction statements                                  {
                                                         };
 
 instruction:
-assignment SEMICOL                                      {
+functionDecl                                            {
                                                             $$ = malloc(sizeof(struct AstNodeInstruction));
-                                                            printf("AstNodeInstruction allocated for 'assignment SEMICOL'\n");
-                                                            $$->nodeType = ASSIGN_NODE;
-                                                            $$->value.assign = $1;
+                                                            printf("AstNodeInstruction allocated for 'functionDecl SEMICOL'\n");
+                                                            $$->nodeType = FUNCTION_DECL_NODE;
+                                                            $$->value.functionDecl = $1;
                                                         }
-| initialization SEMICOL                                {
+|   functionCall SEMICOL                                {
+                                                            $$ = malloc(sizeof(struct AstNodeInstruction));
+                                                            printf("AstNodeInstruction allocated for 'functionCall SEMICOL'\n");
+                                                            $$->nodeType = FUNCTION_CALL_NODE;
+                                                            $$->value.functionCall = $1;
+                                                        }
+|   initialization SEMICOL                              {
                                                             $$ = malloc(sizeof(struct AstNodeInstruction));
                                                             struct SymTab *s = NULL;
                                                             s = findSym($1->variableName, actualList);
@@ -147,42 +153,12 @@ assignment SEMICOL                                      {
                                                                 printf("Error: variable already declared.\n");
                                                             }
                                                         }
-|   functionDecl                                        {
+|   assignment SEMICOL                                  {
                                                             $$ = malloc(sizeof(struct AstNodeInstruction));
-                                                            printf("AstNodeInstruction allocated for 'functionDecl SEMICOL'\n");
-                                                            $$->nodeType = FUNCTION_DECL_NODE;
-                                                            $$->value.functionDecl = $1;
+                                                            printf("AstNodeInstruction allocated for 'assignment SEMICOL'\n");
+                                                            $$->nodeType = ASSIGN_NODE;
+                                                            $$->value.assign = $1;
                                                         }
-|   functionCall SEMICOL                                {
-                                                            $$ = malloc(sizeof(struct AstNodeInstruction));
-                                                            printf("AstNodeInstruction allocated for 'functionCall SEMICOL'\n");
-                                                            $$->nodeType = FUNCTION_CALL_NODE;
-                                                            $$->value.functionCall = $1;
-                                                        }
-|   ifStatement                                         {
-                                                            $$ = malloc(sizeof(struct AstNodeInstruction));
-                                                            printf("AstNodeInstruction allocated for 'ifStatement'\n");
-                                                            $$->nodeType = IF_NODE;
-                                                            $$->value.ifStatement = $1;
-                                                        }
-|   elseifStatement                                     {
-                                                            $$ = malloc(sizeof(struct AstNodeInstruction));
-                                                            printf("AstNodeInstruction allocated for 'elseifStatement'\n");
-                                                            $$->nodeType = ELSE_IF_NODE;
-                                                            $$->value.elseifStatement = $1;
-                                                        }
-|   elseStatement                                       {
-                                                            $$ = malloc(sizeof(struct AstNodeInstruction));
-                                                            printf("AstNodeInstruction allocated for 'elseStatement'\n");
-                                                            $$->nodeType = ELSE_NODE;
-                                                            $$->value.elseStatement = $1;
-                                                        }
-|   whileLoop                                           {
-                                                            $$ = malloc(sizeof(struct AstNodeInstruction));
-                                                            printf("AstNodeInstruction allocated for 'whileLoop'\n");
-                                                            $$->nodeType = WHILE_NODE;
-                                                            $$->value.whileLoop = $1;
-                                                        }                       
 |   arrayInit SEMICOL                                   {
                                                             struct SymTab *s = findSym($1->arrayDecl->arrayName, actualList);
                                                             if (s == NULL) {
@@ -224,7 +200,31 @@ assignment SEMICOL                                      {
                                                             printf("AstNodeInstruction allocated for 'inputFunction SEMICOL'\n");
                                                             $$->nodeType = INPUT_NODE;
                                                             $$->value.inputFunction = $1;
-                                                        };
+                                                        }
+|   ifStatement                                         {
+                                                            $$ = malloc(sizeof(struct AstNodeInstruction));
+                                                            printf("AstNodeInstruction allocated for 'ifStatement'\n");
+                                                            $$->nodeType = IF_NODE;
+                                                            $$->value.ifStatement = $1;
+                                                        }
+|   elseifStatement                                     {
+                                                            $$ = malloc(sizeof(struct AstNodeInstruction));
+                                                            printf("AstNodeInstruction allocated for 'elseifStatement'\n");
+                                                            $$->nodeType = ELSE_IF_NODE;
+                                                            $$->value.elseifStatement = $1;
+                                                        }
+|   elseStatement                                       {
+                                                            $$ = malloc(sizeof(struct AstNodeInstruction));
+                                                            printf("AstNodeInstruction allocated for 'elseStatement'\n");
+                                                            $$->nodeType = ELSE_NODE;
+                                                            $$->value.elseStatement = $1;
+                                                        }
+|   whileLoop                                           {
+                                                            $$ = malloc(sizeof(struct AstNodeInstruction));
+                                                            printf("AstNodeInstruction allocated for 'whileLoop'\n");
+                                                            $$->nodeType = WHILE_NODE;
+                                                            $$->value.whileLoop = $1;
+                                                        };                      
 
 functionDecl:
 types MAIN LPAR RPAR                                    {
@@ -373,26 +373,6 @@ types ID                                                {
                                                             $$->initParam = NULL;
                                                         };
 
-body:
-LBRA statements RBRA                                    {
-                                                            $$ = malloc(sizeof(struct AstNodeBody));
-                                                            printf("AstNodeBody allocated for 'LBRA statements RBRA'\n");
-                                                            $$->bodyStatements = $2;
-                                                            $$->returnValue = NULL;
-                                                        }
-|   LBRA statements RETURN content SEMICOL RBRA         {
-                                                            $$ = malloc(sizeof(struct AstNodeBody));
-                                                            printf("AstNodeBody allocated for 'LBRA statements RETURN content SEMICOL RBRA'\n");
-                                                            $$->bodyStatements = $2;
-                                                            $$->returnValue = $4;
-                                                        }
-|   LBRA RETURN content SEMICOL RBRA                    {
-                                                            $$=malloc(sizeof(struct AstNodeBody));
-                                                            printf("AstNodeBody allocated for 'LBRA RETURN content SEMICOL RBRA'\n");
-                                                            $$->bodyStatements = NULL;
-                                                            $$->returnValue = $3;
-                                                            };
-
 ifStatement:
 IF LPAR expression RPAR                                 {
                                                             beginScope();
@@ -438,6 +418,26 @@ body                                                    {
                                                             $$->whileCondition = $3;
                                                             $$->whileBody = $6;
                                                             endScope();
+                                                        };
+
+body:
+LBRA statements RBRA                                    {
+                                                            $$ = malloc(sizeof(struct AstNodeBody));
+                                                            printf("AstNodeBody allocated for 'LBRA statements RBRA'\n");
+                                                            $$->bodyStatements = $2;
+                                                            $$->returnValue = NULL;
+                                                        }
+|   LBRA statements RETURN content SEMICOL RBRA         {
+                                                            $$ = malloc(sizeof(struct AstNodeBody));
+                                                            printf("AstNodeBody allocated for 'LBRA statements RETURN content SEMICOL RBRA'\n");
+                                                            $$->bodyStatements = $2;
+                                                            $$->returnValue = $4;
+                                                        }
+|   LBRA RETURN content SEMICOL RBRA                    {
+                                                            $$=malloc(sizeof(struct AstNodeBody));
+                                                            printf("AstNodeBody allocated for 'LBRA RETURN content SEMICOL RBRA'\n");
+                                                            $$->bodyStatements = NULL;
+                                                            $$->returnValue = $3;
                                                         };
 
 arrayInit:

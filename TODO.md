@@ -1,13 +1,89 @@
 # C2Py Transpiler TODO.md
 
 ## Task
-
-### Todo
-
-- [x] Move beginScope and endScope inside the body node because beginScope and endScope currently only work for functions and not for if, else and elseif statements
+- [x] Understand lexer
+- [x] Understand parser
+- [x] Study [uthash](https://troydhanson.github.io/uthash/) library 
+- [x] Import utash header file
+- [x] Understand symtab
+- [x] Create Symbol Table (symboltable.h)
+- [x] Implement Lexer (lexer.l)
+    - [x] Improve token detection of multi-line comments, single-line comments and strings
+    - [x] Add token to detect the # symbol (include library)
+- [x] Create Abstract Syntax Tree (ast.h)
+    - [x] Add struct AstNodeStatements
+    - [x] Add struct AstNodeInstruction
+    - [x] Add struct AstNodeInit
+    - [x] Add struct AstNodeAssign
+    - [x] Add struct AstNodeExpression
+    - [x] Add struct AstNodeOperand
+    - [x] Add struct AstNodeArrayDecl
+    - [x] Add struct AstNodeArrayCall
+    - [x] Add struct AstNodeArrayInit
+    - [x] Add struct AstNodeArrayAssign
+    - [x] Add struct AstNodeArrayElements
+    - [x] Add struct AstNodeFunctionDecl
+    - [x] Add struct AstNodeFunctionCall
+    - [x] Add struct AstNodeFunctionParams
+    - [x] Add struct AstNodeBody
+    - [x] Add struct AstNodeIf
+    - [x] Add struct AstNodeElseIf
+    - [x] Add struct AstNodeElse
+    - [x] Add struct AstNodeWhile
+- [x] Create Parser (parser.y)
+    - [x] Implement statements
+    - [x] Implement instruction
+    - [x] Implement initialization
+    - [x] Implement assignment
+    - [x] Implement expression
+    - [x] Implement content
+    - [x] Implement arrayDecl
+    - [x] Implement arrayCall
+    - [x] Implement arrayInit
+        - [x] Implement findSym e createSym with ("Error: array already declared.\n")
+    - [x] Implement arrayAssign
+        - [x] Implement findSym with ("Error: array not declared.")
+    - [x] Implement arrayElements
+    - [x] Implement functionDecl
+    - [x] Implement functionCall
+    - [x] Implement functionParams
+    - [x] Implement body
+    - [x] Implement if
+    - [x] Implement elseif
+    - [x] Implement else
+    - [x] Implement while
+    - [x] Implement outputFunction
+    - [x] Implement inputFunction
+    - [x] Implement outputelements
+    - [x] Implement inputElements
+- [x] Create Transpiler (c2py.h)
+    - [x] translateInitialization(struct AstNodeInit *init);
+    - [x] translateAssignment(struct AstNodeAssign *assign);
+    - [x] translateOperand(union ValueOper value, int contentType);
+    - [x] translateExpression(struct AstNodeExpression *expression);
+    - [x] translateArrayDecleration(struct AstNodeArrayDecl *arrayDecl);
+    - [x] translateArrayCall(struct AstNodeArrayCall *arrayCall);
+    - [x] translateArrayInitialization(struct AstNodeArrayInit *arrayInit);
+    - [x] translateArrayAssignment(struct AstNodeArrayAssign *arrayAssign);
+    - [x] translateArrayElements(struct AstNodeArrayElements *arrayElements);
+    - [x] translateFunctionDeclaration(struct AstNodeFunctionDecl *functionDecl);
+    - [x] translateFunctionCall(struct AstNodeFunctionCall *functionCall);
+    - [x] translateFunctionParams(struct AstNodeFunctionParams *functionParams);
+    - [x] translateIf(struct AstNodeIf *ifStatement);
+    - [x] translateElseIf(struct AstNodeElseIf *elseifStatement);
+    - [x] translateElse(struct AstNodeElse *elseStatement);
+    - [x] translateWhile(struct AstNodeWhile *whileLoop);
+    - [x] translateBody(struct AstNodeBody *body);
+    - [x] translateFunctionOutput(struct AstNodeFunctionOutput *outputFunction);
+        - [x] Implement detection and removal of substrings "%d", "%i", "%lf", "%f", "%c" and "%s" from string
+    - [x] translateFunctionInput(struct AstNodeFunctionInput *inputFunction);
+        - [x] Implement detection and removal of substrings "%d", "%i", "%lf", "%f", "%c" and "%s" from string
+    - [x] translateOutputElements(struct AstNodeOutputElements *outputElements);
+    - [x] translateInputElements(struct AstNodeInputElements *inputElements);
+- [x] Move beginScope and endScope inside the body node because beginScope and endScope currently work for functions and not for if, else and elseif statements
 - [x] Implement void only for function declaration
 - [x] Insert parameter type check in the functionCall production (line 335-348)
-- [ ] Sort instruction production:
+- [x] Sort instruction production:
     - functionDecl
     - functionCall
     - initialization
@@ -20,7 +96,7 @@
     - elseifStatement
     - elseStatement
     - whileLoop
-- [ ] Sort production:
+- [x] Sort production:
     - program
     - statements
     - instruction
@@ -46,89 +122,3 @@
     - expression
     - content
     - types
-
-### In Progress
-- [x] Implement Lexer (lexer.l)
-    - [ ] Improve token detection of multi-line comments, single-line comments and strings
-    - [ ] Add token to detect the # symbol (include library)
-- [ ] Create Abstract Syntax Tree (ast.h)
-    - [x] Add struct AstNodeStatements
-    - [x] Add struct AstNodeInstruction
-    - [x] Add struct AstNodeInit
-    - [x] Add struct AstNodeAssign
-    - [x] Add struct AstNodeExpression
-    - [x] Add struct AstNodeOperand
-    - [x] Add struct AstNodeArrayDecl
-    - [x] Add struct AstNodeArrayCall
-    - [x] Add struct AstNodeArrayInit
-    - [x] Add struct AstNodeArrayAssign
-    - [x] Add struct AstNodeArrayElements
-    - [x] Add struct AstNodeFunctionDecl
-    - [x] Add struct AstNodeFunctionCall
-    - [x] Add struct AstNodeFunctionParams
-    - [x] Add struct AstNodeBody
-    - [x] Add struct AstNodeIf
-    - [x] Add struct AstNodeElseIf
-    - [x] Add struct AstNodeElse
-    - [x] Add struct AstNodeWhile
-- [ ] Create Parser (parser.y)
-    - [x] Implement statements
-    - [x] Implement instruction (` to test `)
-    - [x] Implement initialization (` to test `)
-    - [x] Implement assignment (` to test `)
-    - [x] Implement expression (` to test `)
-    - [x] Implement content
-    - [x] Implement arrayDecl (` to test `)
-    - [x] Implement arrayCall (` to test `)
-    - [x] Implement arrayInit (` to test `)
-        - [x] Implement findSym e createSym with ("Error: array already declared.\n")
-    - [x] Implement arrayAssign (` to test `)
-        - [x] Implement findSym with ("Error: array not declared.")
-    - [x] Implement arrayElements (` to test `)
-    - [x] Implement functionDecl (` to test `)
-    - [x] Implement functionCall (` to test `)
-    - [x] Implement functionParams (` to test `)
-    - [x] Implement body (` to test `)
-    - [x] Implement if (` to test `)
-        - [ ] Insert ifStatements production without body
-    - [x] Implement elseif (` to test `)
-        - [ ] Insert ifStatements production without body
-    - [x] Implement else (` to test `)
-        - [ ] Insert ifStatements production without body
-    - [x] Implement while (` to test `)
-    - [x] Implement outputFunction (` to test `)
-    - [x] Implement inputFunction (` to test `)
-    - [x] Implement outputelements (` to test `)
-    - [x] Implement inputElements (` to test `)
-- [ ] Create Transpiler (c2py.h)
-    - [x] translateInitialization(struct AstNodeInit *init); (` to test `)
-    - [x] translateAssignment(struct AstNodeAssign *assign); (` to test `)
-    - [x] translateOperand(union ValueOper value, int contentType); (` to test `)
-    - [x] translateExpression(struct AstNodeExpression *expression); (` to test `)
-    - [x] translateArrayDecleration(struct AstNodeArrayDecl *arrayDecl);
-    - [x] translateArrayCall(struct AstNodeArrayCall *arrayCall);
-    - [x] translateArrayInitialization(struct AstNodeArrayInit *arrayInit);
-    - [x] translateArrayAssignment(struct AstNodeArrayAssign *arrayAssign);
-    - [x] translateArrayElements(struct AstNodeArrayElements *arrayElements);
-    - [x] translateFunctionDeclaration(struct AstNodeFunctionDecl *functionDecl); (` to test `)
-    - [x] translateFunctionCall(struct AstNodeFunctionCall *functionCall); (` to test `)
-    - [x] translateFunctionParams(struct AstNodeFunctionParams *functionParams); (` to test `)
-    - [x] translateIf(struct AstNodeIf *ifStatement); (` to test `)
-    - [x] translateElseIf(struct AstNodeElseIf *elseifStatement); (` to test `)
-    - [x] translateElse(struct AstNodeElse *elseStatement); (` to test `)
-    - [x] translateWhile(struct AstNodeWhile *whileLoop); (` to test `)
-    - [x] translateBody(struct AstNodeBody *body); (` to test `)
-    - [x] translateFunctionOutput(struct AstNodeFunctionOutput *outputFunction);
-        - [x] Implement detection and removal of substrings "%d", "%i", "%lf", "%f", "%c" and "%s" from string
-    - [x] translateFunctionInput(struct AstNodeFunctionInput *inputFunction);
-        - [x] Implement detection and removal of substrings "%d", "%i", "%lf", "%f", "%c" and "%s" from string
-    - [x] translateOutputElements(struct AstNodeOutputElements *outputElements);
-    - [x] translateInputElements(struct AstNodeInputElements *inputElements);
-
-### Done ✓
-- [x] Understand lexer
-- [x] Understand parser
-- [x] Study [uthash](https://troydhanson.github.io/uthash/) library 
-- [x] Import utash header file
-- [x] Understand symtab
-- [x] Create Symbol Table (symboltable.h)

@@ -1,6 +1,8 @@
 def main():
 	a = 5
 	b = 6
+	c = None
+	d = None
 	if a > b:
 		c = 7
 	elif a < b:

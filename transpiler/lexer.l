@@ -17,21 +17,26 @@ char_value      (\')({letter}|{digit})(\')
 id              {letter}({letter}|{digit})*
 string_value    \"[^\"]*\"
 
-%x  MLCOMMENT
-%x  SLCOMMENT
+%x MLCOMMENT
+%x SLCOMMENT
+%x LIBRARY
 
 %%
 
 "/*"                        BEGIN(MLCOMMENT);   printf("found MULTI-LINE comment\n");
-<MLCOMMENT>[^*\n]*          { } /* se non trovi asterisco vai avanti  */
-<MLCOMMENT>"*"+[^*/n]*      { } /*  asterischi senza lo slash   */
-<MLCOMMENT>\n               { } /* se vado a capo */
+<MLCOMMENT>[^*\n]*          /* se non trovi asterisco vai avanti  */
+<MLCOMMENT>"*"+[^*/n]*      /*  asterischi senza lo slash   */
+<MLCOMMENT>\n               /* se vado a capo */
 <MLCOMMENT>"*"+"/"          BEGIN(INITIAL);     printf("end of MULTI-LINE comment\n");
 
 "//" 						BEGIN(SLCOMMENT);   printf("found SINGLE-LINE comment\n");
 <SLCOMMENT>[^\n]* 			/* tutto tranne a capo */
 <SLCOMMENT>\n 				BEGIN(INITIAL);     printf("end of SINGLE-LINE comment\n");
 
+"#include"                  BEGIN(LIBRARY);     printf("found #include<library>\n");
+<LIBRARY>^.*
+<LIBRARY>[^\n]*
+<LIBRARY>\n                 BEGIN(INITIAL);     printf("end of #include<library>\n");
 
 "void"      {yylval.string=strdup(yytext); printf("keyword 'VOID' detected\n"); return(VOID);}
 "int"       {yylval.string=strdup(yytext); printf("keyword 'INT' detected\n"); return(INT); }
