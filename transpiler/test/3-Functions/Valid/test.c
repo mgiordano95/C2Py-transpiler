@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 int a;
 
 int myFunction(int a, int b) {
@@ -17,7 +19,7 @@ int main() {
         printf("Hello myFunction2!!!");
     }
     
-    myFunction2();
+    myFunction2(4.2, 6.9);
     
     return 0;
 }

@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 int main() {
     //Questo è un commento
     int a = 5;

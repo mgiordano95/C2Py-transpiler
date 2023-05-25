@@ -16,5 +16,4 @@ int main() {
     character2 = character;
     
     return 0;
-    
 }
