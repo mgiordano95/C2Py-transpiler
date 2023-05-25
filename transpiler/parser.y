@@ -243,16 +243,16 @@ body                                                    {
                                                                 $$->functiontBody = $6;
                                                                 endScope();
                                                                 struct SymTab *s = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, NULL, NULL, nullValue);
-                                                                printf("Funzione main inserita nella symtab \n");
+                                                                printf("Function MAIN inserted in the symtab\n");
                                                             } else {
-                                                                printf("Error: function MAIN already declared \n");
+                                                                printf("Error: function MAIN already declared\n");
                                                                 endScope();
                                                             } 
                                                         }
 |   initialization LPAR RPAR                            {
                                                             beginScope();
                                                         }
-    body                                                    {
+    body                                                {
                                                             struct SymTab *s = NULL;
                                                             s = findSymtab($1->variableName, actualList);
                                                             if (s == NULL) { 
@@ -281,7 +281,7 @@ body                                                    {
                                                                 struct SymTab *s = createSym(p->initParam->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->variableName, NULL, NULL, nullValue);
                                                                 strcat(appoggio,typeToString(p->initParam->dataType));
                                                             } 
-                                                            printf("Appoggio alla fine vale: %s \n \n",appoggio);
+                                                            printf("Parameters of the declared function: %s \n",appoggio);
                                                         }
     RPAR body                                           {
                                                             struct SymTab *s = NULL;
@@ -298,8 +298,7 @@ body                                                    {
                                                             } else {
                                                                 printf("Error: function %s already declared \n",$1->variableName);
                                                                 endScope();
-                                                            } 
-
+                                                            }
                                                         };
 
 functionCall:
@@ -482,12 +481,11 @@ types arrayDecl                                         {
                                                             $$->arrayDecl->arrayType = stringToType($1);
                                                             int ele = 0;
                                                             for(struct AstNodeArrayElements *q = $5; q != NULL; q = q->nextElement) {
-                                                                    ele++;
-                                                                    printf("Conto elemento %d del vettore \n",ele);
-                                                                }
+                                                                ele++;
+                                                            }
                                                             char ch[3];
                                                             sprintf(ch,"%d",ele);
-                                                            printf("Numero elementi del vettore %s \n",ch);
+                                                            printf("Number of elements in the array %s\n",ch);
                                                             $$->arrayDecl->arrayLength = ch;
                                                         };
 
@@ -544,7 +542,7 @@ ID LSBRA RSBRA                                          {
                                                             $$->arrayName = $1;
                                                             $$->elementIndex = $3;
                                                             if($$->elementIndex->contentType != CONTENT_TYPE_ID || $$->elementIndex->contentType != CONTENT_TYPE_INT_NUMBER) {
-                                                                printf("Error: invalid array index type \n");
+                                                                printf("Error: invalid array index type\n");
                                                             }
                                                         };
 
@@ -613,13 +611,13 @@ content                                                 {
                                                         };
 
 inputElements:
-REFOP content                                                 {
+REFOP content                                           {
                                                             $$ = malloc(sizeof(struct AstNodeInputElements));
                                                             printf("AstNodeInputElements allocated for 'content'\n");
                                                             $$->element = $2;
                                                             $$->nextElement = NULL;
                                                         }
-|   REFOP content COMMA inputElements                         {
+|   REFOP content COMMA inputElements                   {
                                                             $$ = malloc(sizeof(struct AstNodeInputElements));
                                                             printf("AstNodeInputElements allocated for 'content COMMA inputElements'\n");
                                                             $$->element = $2;
@@ -646,17 +644,17 @@ types ID EQ content                                     {
                                                                 printf("You cannot assign a variable of type void\n");
                                                             } else {
                                                                 s = createSym($2, actualList, SYMBOL_VARIABLE, stringToType($1), stringToType($1), NULL, NULL, NULL, $4->value);
-                                                                printf("'types ID EQ content': the variable %s has not already been declared and then I create the symbol table for this variable\n", $2);
                                                                 $$ = malloc(sizeof(struct AstNodeAssign));
                                                                 printf("AstNodeAssign allocated for 'types ID EQ content'\n");
                                                                 $$->variableName = $2;
                                                                 $$->variableType = stringToType($1);
                                                                 $$->assignValue = $4->value;
                                                                 $$->assignType = $4->contentType;
+                                                                //printf("'types ID EQ content': the variable %s has not already been declared and then I create the symbol table for this variable\n", $2);
                                                             }
                                                         }
 |   ID EQ content                                       {
-                                                            $$ = malloc(sizeof(struct AstNodeAssign)); //inserire qui la verifica che int a sia stato dichiarato prima di fare a = qualcosa
+                                                            $$ = malloc(sizeof(struct AstNodeAssign));
                                                             printf("AstNodeAssign allocated for 'ID EQ content'\n");
                                                             struct SymTab *s = NULL;
                                                             s = findSymtab($1, actualList); 
@@ -664,11 +662,11 @@ types ID EQ content                                     {
                                                                 printf("Error: variable %s not declared\n", $1);
                                                             } else {
                                                                 if (s->dataType != $3->valueType) {
-                                                                    printf("Error: cannot asign type %s to type %s \n", typeToString($3->valueType), typeToString(s->dataType));
+                                                                    printf("Error: cannot asign type %s to type %s\n", typeToString($3->valueType), typeToString(s->dataType));
                                                                 } else {
                                                                     $$->variableName = $1;
                                                                     $$->variableType = $3->valueType;
-                                                                    $$->assignValue = $3->value;   //forse va- assignValue.val ma fors no perche- anche $3 e' generico
+                                                                    $$->assignValue = $3->value;
                                                                     $$->assignType = $3->contentType;
                                                                 }
                                                             }
@@ -889,7 +887,7 @@ content ADD content                                     {
                                                             } else if  ($2->valueType == DATA_TYPE_VOID) {
                                                                 printf("Error: cannot compare variables of type void\n");
                                                             } else {
-                                                                printf("Expression of type NOT \n");
+                                                                printf("Expression of type NOT\n");
                                                             }
                                                         };
 
@@ -900,7 +898,6 @@ ID                                                      {
                                                             struct SymTab *s = findSymtab($1,actualList);
                                                             if(s == NULL) {
                                                                 printf("Error: The variable %s does not exist\n", $1);
-                                                                //$$->valueType = DATA_TYPE_NONE;
                                                             } else {
                                                                 $$->value.val = $1;
                                                                 $$->valueType = s->dataType;
