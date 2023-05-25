@@ -1,7 +1,10 @@
 int main() {
     x = 28; //Assign_Error_1 (Error: variable x not declared)
     
-    int i = 7.9; //Assign_Error_2 ()
+    int i = 7.9; //Assign_Error_2 (Error: Cannot assign type float to type int )
+
+    int a = 3;
+    int a = 6; //Init_Error_1 (Error: variable a already declared)
 
     char c1 = 'F';
     char c2 = 'L';
