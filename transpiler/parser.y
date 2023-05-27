@@ -161,16 +161,15 @@ functionDecl                                            {
                                                         }
 |   arrayInit SEMICOL                                   {
                                                             struct SymTab *s = findSym($1->arrayDecl->arrayName, actualList);
-                                                            if (s == NULL) {
-                                                                $$ = malloc(sizeof(struct AstNodeInstruction));
-                                                                printf("AstNodeInstruction allocated for 'arrayInit'\n");
-                                                                $$->nodeType = ARRAY_INIT_NODE;
-                                                                $$->value.arrayInit = $1;
-                                                                s = createSym($1->arrayDecl->arrayName, actualList, SYMBOL_ARRAY, $1->arrayType, $1->arrayType, NULL, NULL, $1->arrayDecl->arrayLength, nullValue);
-                                                                printf("Symbol created. symbolName %s\n",$1->arrayDecl->arrayName);
-                                                            } else {
+                                                            if (s != NULL)  {
                                                                 printf("Error: array %s already declared\n", $1->arrayDecl->arrayName);
                                                             }
+                                                            $$ = malloc(sizeof(struct AstNodeInstruction));
+                                                            printf("AstNodeInstruction allocated for 'arrayInit'\n");
+                                                            $$->nodeType = ARRAY_INIT_NODE;
+                                                            $$->value.arrayInit = $1;
+                                                            s = createSym($1->arrayDecl->arrayName, actualList, SYMBOL_ARRAY, $1->arrayType, $1->arrayType, NULL, NULL, $1->arrayDecl->arrayLength, nullValue);
+                                                            printf("Symbol created. symbolName %s\n",$1->arrayDecl->arrayName);
                                                         }
 |   arrayAssign SEMICOL                                 {
                                                             struct SymTab *s = findSym($1->arrayCall->arrayName, actualList);
@@ -446,14 +445,13 @@ types arrayDecl                                         {
                                                             //int myArray[3]; Corretct
                                                             if($2->arrayLength == NULL) {
                                                                 printf("Error: array size missing in %s \n", $2->arrayName);
-                                                            } else {
-                                                                $$=malloc(sizeof(struct AstNodeArrayInit));
-                                                                printf("AstNodeArrayInit allocated for 'types arrayDecl'\n");
-                                                                $$->arrayType = stringToType($1);
-                                                                $$->arrayDecl = $2;
-                                                                $$->elements = NULL;
-                                                                $$->arrayDecl->arrayType = stringToType($1);
-                                                            }
+                                                            } 
+                                                            $$=malloc(sizeof(struct AstNodeArrayInit));
+                                                            printf("AstNodeArrayInit allocated for 'types arrayDecl'\n");
+                                                            $$->arrayType = stringToType($1);
+                                                            $$->arrayDecl = $2;
+                                                            $$->elements = NULL;
+                                                            $$->arrayDecl->arrayType = stringToType($1);
                                                         }
 |   types arrayDecl EQ LBRA RBRA                        {
                                                             //int myArray[] = {};
