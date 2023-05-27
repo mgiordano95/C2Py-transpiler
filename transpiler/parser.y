@@ -160,16 +160,10 @@ functionDecl                                            {
                                                             $$->value.assign = $1;
                                                         }
 |   arrayInit SEMICOL                                   {
-                                                            struct SymTab *s = findSym($1->arrayDecl->arrayName, actualList);
-                                                            if (s != NULL)  {
-                                                                printf("Error: array %s already declared\n", $1->arrayDecl->arrayName);
-                                                            }
                                                             $$ = malloc(sizeof(struct AstNodeInstruction));
                                                             printf("AstNodeInstruction allocated for 'arrayInit'\n");
                                                             $$->nodeType = ARRAY_INIT_NODE;
                                                             $$->value.arrayInit = $1;
-                                                            s = createSym($1->arrayDecl->arrayName, actualList, SYMBOL_ARRAY, $1->arrayType, $1->arrayType, NULL, NULL, $1->arrayDecl->arrayLength, nullValue);
-                                                            printf("Symbol created. symbolName %s\n",$1->arrayDecl->arrayName);
                                                         }
 |   arrayAssign SEMICOL                                 {
                                                             struct SymTab *s = findSym($1->arrayCall->arrayName, actualList);
@@ -443,48 +437,77 @@ arrayInit:
 types arrayDecl                                         {
                                                             //int myArray[]; Error: array size missing in ‘myArray’ !!!
                                                             //int myArray[3]; Corretct
-                                                            if($2->arrayLength == NULL) {
-                                                                printf("Error: array size missing in %s \n", $2->arrayName);
-                                                            } 
-                                                            $$=malloc(sizeof(struct AstNodeArrayInit));
-                                                            printf("AstNodeArrayInit allocated for 'types arrayDecl'\n");
-                                                            $$->arrayType = stringToType($1);
-                                                            $$->arrayDecl = $2;
-                                                            $$->elements = NULL;
-                                                            $$->arrayDecl->arrayType = stringToType($1);
+                                                            struct SymTab *s = findSym($2->arrayName, actualList);
+                                                            if (s == NULL) {
+                                                                $$=malloc(sizeof(struct AstNodeArrayInit));
+                                                                printf("AstNodeArrayInit allocated for 'types arrayDecl'\n");
+                                                                $$->arrayType = stringToType($1);
+                                                                $$->arrayDecl = $2;
+                                                                $$->elements = NULL;
+                                                                $$->arrayDecl->arrayType = stringToType($1);
+                                                                if($2->arrayLength == NULL) {
+                                                                    printf("Error: array size missing in %s \n", $2->arrayName);
+                                                                } else {
+                                                                    s = createSym($2->arrayName, actualList, SYMBOL_ARRAY, $$->arrayType, $$->arrayType, NULL, NULL, $2->arrayLength, nullValue);
+                                                                    printf("Symbol created for array %s\n",$2->arrayName);
+                                                                }
+                                                            } else {
+                                                                printf("Error: array %s already declared\n", $2->arrayName);
+                                                            }
+                                                            
                                                         }
 |   types arrayDecl EQ LBRA RBRA                        {
                                                             //int myArray[] = {};
                                                             //int myArray[3] = {};
-                                                            $$=malloc(sizeof(struct AstNodeArrayInit));
-                                                            printf("AstNodeArrayInit allocated for 'types arrayDecl EQ LBRA RBRA'\n");
-                                                            $$->arrayType = stringToType($1);
-                                                            $$->arrayDecl = $2;
-                                                            $$->elements = NULL;
-                                                            $$->arrayDecl->arrayType = stringToType($1);
+                                                            struct SymTab *s = findSym($2->arrayName, actualList);
+                                                            if (s == NULL) {
+                                                                $$=malloc(sizeof(struct AstNodeArrayInit));
+                                                                printf("AstNodeArrayInit allocated for 'types arrayDecl EQ LBRA RBRA'\n");
+                                                                $$->arrayType = stringToType($1);
+                                                                $$->arrayDecl = $2;
+                                                                $$->elements = NULL;
+                                                                $$->arrayDecl->arrayType = stringToType($1);
+                                                                s = createSym($2->arrayName, actualList, SYMBOL_ARRAY, $$->arrayType, $$->arrayType, NULL, NULL, $2->arrayLength, nullValue);
+                                                                printf("Symbol created for array %s\n",$2->arrayName);
+                                                            } else {
+                                                                printf("Error: array %s already declared\n", $2->arrayName);
+                                                            }
                                                         }
-|    types arrayDecl EQ arrayElements                   {
+|   types arrayDecl EQ arrayElements                    {
                                                             //int myArray[] = 24; Error: invalid initializer !!!
                                                             //int myArray[3] = 24; Error: invalid initializer !!!
+                                                            $$=malloc(sizeof(struct AstNodeArrayInit));
+                                                            printf("AstNodeArrayInit allocated for 'types arrayDecl EQ arrayElements'\n");
+                                                            $$->arrayType = stringToType($1);
+                                                            $$->arrayDecl = $2;
+                                                            $$->elements = $4;
+                                                            $$->arrayDecl->arrayType = stringToType($1);
                                                             printf("Error: invalid initializer of %s\n", $2->arrayName);
                                                         }
 |   types arrayDecl EQ LBRA arrayElements RBRA          {
                                                             //int myArray[] = {24, 27, 29};
                                                             //int myArray[3] = {24, 27, 29};
-                                                            $$=malloc(sizeof(struct AstNodeArrayInit));
-                                                            printf("AstNodeArrayInit allocated for 'types arrayDecl EQ LBRA arrayElements RBRA'\n");
-                                                            $$->arrayType = stringToType($1);
-                                                            $$->arrayDecl = $2;
-                                                            $$->elements = $5;
-                                                            $$->arrayDecl->arrayType = stringToType($1);
-                                                            int ele = 0;
-                                                            for(struct AstNodeArrayElements *q = $5; q != NULL; q = q->nextElement) {
-                                                                ele++;
+                                                            struct SymTab *s = findSym($2->arrayName, actualList);
+                                                            if (s == NULL) {
+                                                                $$=malloc(sizeof(struct AstNodeArrayInit));
+                                                                printf("AstNodeArrayInit allocated for 'types arrayDecl EQ LBRA arrayElements RBRA'\n");
+                                                                $$->arrayType = stringToType($1);
+                                                                $$->arrayDecl = $2;
+                                                                $$->elements = $5;
+                                                                $$->arrayDecl->arrayType = stringToType($1);
+                                                                int ele = 0;
+                                                                for(struct AstNodeArrayElements *q = $5; q != NULL; q = q->nextElement) {
+                                                                    ele++;
+                                                                }
+                                                                char ch[3];
+                                                                sprintf(ch,"%d",ele);
+                                                                printf("Number of elements in the array %s\n",ch);
+                                                                $$->arrayDecl->arrayLength = ch;
+                                                                s = createSym($2->arrayName, actualList, SYMBOL_ARRAY, $$->arrayType, $$->arrayType, NULL, NULL, $2->arrayLength, nullValue);
+                                                                printf("Symbol created for array %s\n",$2->arrayName);
+                                                            } else {
+                                                                printf("Error: array %s already declared\n", $2->arrayName);
                                                             }
-                                                            char ch[3];
-                                                            sprintf(ch,"%d",ele);
-                                                            printf("Number of elements in the array %s\n",ch);
-                                                            $$->arrayDecl->arrayLength = ch;
                                                         };
 
 arrayAssign:
