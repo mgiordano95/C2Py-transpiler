@@ -562,7 +562,13 @@ ID LSBRA RSBRA                                          {
                                                             printf("AstNodeArrayCall allocated for 'ID LSBRA content RSBRA'\n");
                                                             $$->arrayName = $1;
                                                             $$->elementIndex = $3;
-                                                            if($$->elementIndex->contentType != CONTENT_TYPE_ID || $$->elementIndex->contentType != CONTENT_TYPE_INT_NUMBER) {
+                                                            if ($$->elementIndex->contentType == CONTENT_TYPE_INT_NUMBER) {
+                                                                $$->arrayName = $1;
+                                                                $$->elementIndex = $3;
+                                                            } else if ($$->elementIndex->contentType == CONTENT_TYPE_ID) {
+                                                                $$->arrayName = $1;
+                                                                $$->elementIndex = $3;
+                                                            } else {
                                                                 printf("Error: invalid array index type\n");
                                                             }
                                                         };

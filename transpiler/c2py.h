@@ -336,6 +336,11 @@ void translateFunctionDeclaration(struct AstNodeFunctionDecl *functionDecl) {
     translateBody(functionDecl->functiontBody);
     counter--;
     fprintf(fptr, "\n");
+
+    char *main = "main";
+    if (strcmp(functionDecl->functionName, main) == 0) {
+        fprintf(fptr, "main()");
+    }
 }
 
 void translateFunctionCall(struct AstNodeFunctionCall *functionCall) {
