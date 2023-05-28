@@ -11,6 +11,7 @@
 
 int yylex(void);
 int yyerror(char *s);
+extern int yylineno;
 
 FILE *fptr;
 
@@ -142,7 +143,7 @@ functionDecl                                            {
                                                             s = findSym($1->variableName, actualList);
                                                             if (s == NULL) {
                                                                 if($1->dataType == DATA_TYPE_VOID) {
-                                                                    printf("You cannot initialize a variable of type void\n");
+                                                                    printf("\n\t***Line: %d - Error: You cannot initialize a variable of type void***\n\n", yylineno);
                                                                 } else {
                                                                     printf("AstNodeInstruction allocated for 'initialization SEMICOL'\n");
                                                                     $$->nodeType = INIT_NODE;
@@ -150,7 +151,7 @@ functionDecl                                            {
                                                                     s = createSym($1->variableName, actualList, SYMBOL_VARIABLE, $1->dataType, $1->dataType, NULL, NULL, NULL, nullValue);
                                                                 }
                                                             } else {
-                                                                printf("Error: variable already declared.\n");
+                                                                printf("\n\t***Line: %d - Error: variable already declared.***\n\n", yylineno);
                                                             }
                                                         }
 |   assignment SEMICOL                                  {
@@ -169,9 +170,9 @@ functionDecl                                            {
                                                             struct SymTab *s = findSym($1->arrayCall->arrayName, actualList);
                                                             if (s != NULL) {
                                                                 if(s->dataType != $1->arrayType) {
-                                                                    printf("Error: Array %s has been declared as a %s but type %s is assigned.\n", $1->arrayCall->arrayName, typeToString(s->dataType), typeToString($1->arrayType));
+                                                                    printf("\n\t***Line: %d - Error: Array %s has been declared as a %s but type %s is assigned***\n\n", yylineno, $1->arrayCall->arrayName, typeToString(s->dataType), typeToString($1->arrayType));
                                                                 } else if(atoi(s->arrayLength) <= atoi($1->arrayCall->elementIndex->value.val)) {
-                                                                    printf("OUT OF MEMORY: the length of %s is %s", s->symbolName, s->arrayLength);
+                                                                    printf("\n\t***Line: %d - Error: the length of %s is %s***\n\n", yylineno,s->symbolName, s->arrayLength);
                                                                 }else {
                                                                     $$ = malloc(sizeof(struct AstNodeInstruction));
                                                                     printf("AstNodeInstruction allocated for 'arrayAssign'\n");
@@ -179,7 +180,7 @@ functionDecl                                            {
                                                                     $$->value.arrayAssign = $1;
                                                                 }
                                                             } else {
-                                                                printf("Error: array %s not declared\n", $1->arrayCall->arrayName);
+                                                                printf("\n\t***Line: %d - Error: array %s not declared***\n\n", yylineno,$1->arrayCall->arrayName);
                                                             }
                                                         }
 |   outputFunction SEMICOL                              {
@@ -236,9 +237,8 @@ body                                                    {
                                                                 $$->functiontBody = $6;
                                                                 endScope();
                                                                 struct SymTab *s = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, NULL, NULL, nullValue);
-                                                                printf("Function MAIN inserted in the symtab\n");
                                                             } else {
-                                                                printf("Error: function MAIN already declared\n");
+                                                                printf("\n\t***Line: %d - Error: function MAIN already declared***\n\n", yylineno);
                                                                 endScope();
                                                             } 
                                                         }
@@ -253,13 +253,12 @@ body                                                    {
                                                                 printf("AstNodeFunctionDecl allocated for 'initialization LPAR RPAR body'\n");
                                                                 $$->functionName = $1->variableName;
                                                                 $$->returnType = $1->dataType;
-                                                                printf("returnType assigned\n");
                                                                 $$->functionParams = NULL;
                                                                 $$->functiontBody = $5;
                                                                 endScope();
                                                                 struct SymTab *s = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, NULL, NULL, nullValue);
                                                             } else {
-                                                                printf("Error: function %s already declared \n",$1->variableName);
+                                                                printf("\n\t***Line: %d - Error: function %s already declared***\n\n", yylineno,$1->variableName);
                                                                 endScope();
                                                             } 
                                                         }
@@ -274,7 +273,7 @@ body                                                    {
                                                                 struct SymTab *s = createSym(p->initParam->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->variableName, NULL, NULL, nullValue);
                                                                 strcat(appoggio,typeToString(p->initParam->dataType));
                                                             } 
-                                                            printf("Parameters of the declared function: %s \n",appoggio);
+                                                            printf("Parameters of the declared function: %s\n",appoggio);
                                                         }
     RPAR body                                           {
                                                             struct SymTab *s = NULL;
@@ -289,7 +288,7 @@ body                                                    {
                                                                 endScope();
                                                                 struct SymTab *q = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, appoggio, NULL, nullValue);
                                                             } else {
-                                                                printf("Error: function %s already declared \n",$1->variableName);
+                                                                printf("\n\t***Line: %d - Error: function %s already declared***\n\n", yylineno,$1->variableName);
                                                                 endScope();
                                                             }
                                                         };
@@ -304,7 +303,7 @@ ID LPAR RPAR                                            {
                                                                 $$->returnType = s->returnType;
                                                                 $$->functionParams = NULL;
                                                             } else {
-                                                                printf("Error: function %s not declared\n", $1);
+                                                                printf("\n\t***Line: %d - Error: function %s not declared***\n\n", yylineno,$1);
                                                             } 
                                                         }
 |   ID LPAR functionParams RPAR                         {
@@ -316,8 +315,8 @@ ID LPAR RPAR                                            {
                                                                 for(struct AstNodeFunctionParams *q = $3; q != NULL; q = q->nextParams) {
                                                                     strcat(calledParameters,typeToString(q->callParams->valueType));
                                                                 }
-                                                                printf("Parameters of the declared function: %s \n", s->funcParameters);
-                                                                printf("Parameters of the called function: %s \n", calledParameters);
+                                                                printf("Parameters of the declared function: %s\n", s->funcParameters);
+                                                                printf("Parameters of the called function: %s\n", calledParameters);
                                                                 int boolean = strcmp(s->funcParameters,calledParameters);
                                                                 if (boolean == 0) {
                                                                     printf("The parameters are correct\n");
@@ -328,7 +327,7 @@ ID LPAR RPAR                                            {
                                                                     printf("The parameters in the function call are incorrect\n");
                                                                 }
                                                             } else {
-                                                                printf("Error: function %s not declared\n", $1);
+                                                                printf("\n\t***Line: %d - Error: function %s not declared***\n\n", yylineno,$1);
                                                             }
                                                         };
 
@@ -446,15 +445,13 @@ types arrayDecl                                         {
                                                                 $$->elements = NULL;
                                                                 $$->arrayDecl->arrayType = stringToType($1);
                                                                 if($2->arrayLength == NULL) {
-                                                                    printf("Error: array size missing in %s \n", $2->arrayName);
+                                                                    printf("\n\t***Line: %d - Error: array size missing in %s***\n\n", yylineno,$2->arrayName);
                                                                 } else {
                                                                     s = createSym($2->arrayName, actualList, SYMBOL_ARRAY, $$->arrayType, $$->arrayType, NULL, NULL, $2->arrayLength, nullValue);
-                                                                    printf("Symbol created for array %s\n",$2->arrayName);
                                                                 }
                                                             } else {
-                                                                printf("Error: array %s already declared\n", $2->arrayName);
+                                                                printf("\n\t***Line: %d - Error: array %s already declared***\n\n", yylineno,$2->arrayName);
                                                             }
-                                                            
                                                         }
 |   types arrayDecl EQ LBRA RBRA                        {
                                                             //int myArray[] = {};
@@ -468,9 +465,8 @@ types arrayDecl                                         {
                                                                 $$->elements = NULL;
                                                                 $$->arrayDecl->arrayType = stringToType($1);
                                                                 s = createSym($2->arrayName, actualList, SYMBOL_ARRAY, $$->arrayType, $$->arrayType, NULL, NULL, $2->arrayLength, nullValue);
-                                                                printf("Symbol created for array %s\n",$2->arrayName);
                                                             } else {
-                                                                printf("Error: array %s already declared\n", $2->arrayName);
+                                                                printf("\n\t***Line: %d - Error: array %s already declared***\n\n", yylineno,$2->arrayName);
                                                             }
                                                         }
 |   types arrayDecl EQ arrayElements                    {
@@ -482,7 +478,7 @@ types arrayDecl                                         {
                                                             $$->arrayDecl = $2;
                                                             $$->elements = $4;
                                                             $$->arrayDecl->arrayType = stringToType($1);
-                                                            printf("Error: invalid initializer of %s\n", $2->arrayName);
+                                                            printf("\n\t***Line: %d - Error: invalid initializer of %s***\n\n", yylineno,$2->arrayName);
                                                         }
 |   types arrayDecl EQ LBRA arrayElements RBRA          {
                                                             //int myArray[] = {24, 27, 29};
@@ -504,9 +500,8 @@ types arrayDecl                                         {
                                                                 printf("Number of elements in the array %s\n",ch);
                                                                 $$->arrayDecl->arrayLength = ch;
                                                                 s = createSym($2->arrayName, actualList, SYMBOL_ARRAY, $$->arrayType, $$->arrayType, NULL, NULL, $2->arrayLength, nullValue);
-                                                                printf("Symbol created for array %s\n",$2->arrayName);
                                                             } else {
-                                                                printf("Error: array %s already declared\n", $2->arrayName);
+                                                                printf("\n\t***Line: %d - Error: array %s already declared***\n\n", yylineno,$2->arrayName);
                                                             }
                                                         };
 
@@ -514,26 +509,25 @@ arrayAssign:
 arrayCall EQ LBRA RBRA                                  {
                                                             // myArray[] = {}; Syntax Error
                                                             // myArray[3] = {}; Syntax Error
-                                                            printf("Syntax Error!!!\n");
+                                                            printf("\n\t***Line: %d - Syntax Error!!!***\n\n", yylineno);
                                                         }
 |   arrayCall EQ arrayElements                          {
-                                                            // myArray[] = 24; Synrtax Error
-                                                            // myArray[2] = 24; Corret
+                                                            // myArray[] = 24; Syntax Error
+                                                            // myArray[2] = 24; Correct
+                                                            $$=malloc(sizeof(struct AstNodeArrayAssign));
+                                                            printf("AstNodeArrayAssign allocated for 'arrayCall EQ arrayElements'\n");
+                                                            $$->arrayType = $3->element->valueType;
+                                                            $$->arrayCall = $1;
+                                                            $$->elements = $3;
+                                                            $$->arrayCall->arrayType = $3->element->valueType;
                                                             if($1->elementIndex == NULL) {
-                                                                printf("Syntax Error!!!\n");
-                                                            } else {
-                                                                $$=malloc(sizeof(struct AstNodeArrayAssign));
-                                                                printf("AstNodeArrayAssign allocated for 'arrayCall EQ arrayElements'\n");
-                                                                $$->arrayType = $3->element->valueType;
-                                                                $$->arrayCall = $1;
-                                                                $$->elements = $3;
-                                                                $$->arrayCall->arrayType = $3->element->valueType;
+                                                                printf("\n\t***Line: %d - Syntax Error!!!***\n\n", yylineno);
                                                             }
                                                         }
 |   arrayCall EQ LBRA arrayElements RBRA                {
                                                             //myArray[] = {24, 27, 29}; Syntax Error
                                                             //myArray[3] = {24, 27, 29}; Syntax Error
-                                                            printf("Syntax Error!!!\n");
+                                                            printf("\n\t***Line: %d - Syntax Error!!!***\n\n", yylineno);
                                                         };
 
 arrayDecl:
@@ -569,7 +563,7 @@ ID LSBRA RSBRA                                          {
                                                                 $$->arrayName = $1;
                                                                 $$->elementIndex = $3;
                                                             } else {
-                                                                printf("Error: invalid array index type\n");
+                                                                printf("\n\t***Line: %d - Error: invalid array index type***\n\n", yylineno);
                                                             }
                                                         };
 
@@ -664,11 +658,11 @@ types ID EQ content                                     {
                                                             struct SymTab *s = NULL;
                                                             s = findSym($2, actualList);
                                                             if (s != NULL) {
-                                                                printf("Error: variable %s already declared\n", $2);
+                                                                printf("\n\t***Line: %d - Error: variable %s already declared***\n\n", yylineno,$2);
                                                             } else if ((stringToType($1) != $4->valueType) || strcmp(typeToString($4->valueType), "Type none") == 0) {
-                                                                printf("Error: Cannot assign type %s to type %s \n", typeToString($4->valueType), $1);
+                                                                printf("\n\t***Line: %d - Error: cannot assign type %s to type %s***\n\n", yylineno,typeToString($4->valueType), $1);
                                                             } else if(stringToType($1) == DATA_TYPE_VOID) {
-                                                                printf("You cannot assign a variable of type void\n");
+                                                                printf("\n\t***Line: %d - Error: cannot assign a variable of type void***\n\n", yylineno);
                                                             } else {
                                                                 s = createSym($2, actualList, SYMBOL_VARIABLE, stringToType($1), stringToType($1), NULL, NULL, NULL, $4->value);
                                                                 $$ = malloc(sizeof(struct AstNodeAssign));
@@ -686,10 +680,10 @@ types ID EQ content                                     {
                                                             struct SymTab *s = NULL;
                                                             s = findSymtab($1, actualList); 
                                                             if (s == NULL) {
-                                                                printf("Error: variable %s not declared\n", $1);
+                                                                printf("\n\t***Line: %d - Error: variable %s not declared***\n\n", yylineno,$1);
                                                             } else {
                                                                 if (s->dataType != $3->valueType) {
-                                                                    printf("Error: cannot asign type %s to type %s\n", typeToString($3->valueType), typeToString(s->dataType));
+                                                                    printf("\n\t***Line: %d - Error: cannot asign type %s to type %s***\n\n", yylineno,typeToString($3->valueType), typeToString(s->dataType));
                                                                 } else {
                                                                     $$->variableName = $1;
                                                                     $$->variableType = $3->valueType;
@@ -710,11 +704,11 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = $1->valueType;
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("Error: cannot add variables of type char\n");
+                                                                printf("\n\t***Line: %d - Error: cannot add variables of type char***\n\n", yylineno);
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("Error: cannot add variables of type void\n");
+                                                                printf("\n\t***Line: %d - Error: cannot add variables of type void***\n\n", yylineno);
                                                             } else if ($1->valueType != $3->valueType) {
-                                                                printf("Error: cannot add variables of different types\n");
+                                                                printf("\n\t***Line: %d - Error: cannot add variables of different types***\n\n", yylineno);
                                                             } else {
                                                                 printf("Expression of type Sum\n");
                                                             }
@@ -729,11 +723,11 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = $1->valueType;
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("Error: cannot subtract variables of type char\n");
+                                                                printf("\n\t***Line: %d - Error: cannot subtract variables of type char***\n\n", yylineno);
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("Error: cannot subtract variables of type void\n");
+                                                                printf("\n\t***Line: %d - Error: cannot subtract variables of type void***\n\n", yylineno);
                                                             } else if ($1->valueType != $3->valueType) {
-                                                                printf("Error: cannot subtract variables of different types\n");
+                                                                printf("\n\t***Line: %d - Error: cannot subtract variables of different types***\n\n", yylineno);
                                                             } else {
                                                                 printf("Expression of type Subtraction\n");
                                                             }
@@ -748,11 +742,11 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = $1->valueType;
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("Error: cannot multiply variables of type char\n");
+                                                                printf("\n\t***Line: %d - Error: cannot multiply variables of type char***\n\n", yylineno);
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("Error: cannot multiply variables of type void\n");
+                                                                printf("\n\t***Line: %d - Error: cannot multiply variables of type void***\n\n", yylineno);
                                                             } else if ($1->valueType != $3->valueType) {
-                                                                printf("Error: cannot multiply variables of different types\n");
+                                                                printf("\n\t***Line: %d - Error: cannot multiply variables of different types***\n\n", yylineno);
                                                             } else {
                                                                 printf("Expression of type Multiplication\n");
                                                             }
@@ -767,11 +761,11 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = DATA_TYPE_FLOAT; //forziamo il tipo a Float essendo una divisione
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("Error: cannot divide variables of type char\n");
+                                                                printf("\n\t***Line: %d - Error: cannot divide variables of type char***\n\n", yylineno);
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("Error: cannot divide variables of type void\n");
+                                                                printf("\n\t***Line: %d - Error: cannot divide variables of type void***\n\n", yylineno);
                                                             } else if ($1->valueType != $3->valueType) {
-                                                                printf("Error: cannot divide variables of different types\n");
+                                                                printf("\n\t***Line: %d - Error: cannot divide variables of different types***\n\n", yylineno);
                                                             } else {
                                                                 printf("Expression of type Division\n");
                                                             }
@@ -808,9 +802,9 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = DATA_TYPE_INT;
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("Error: cannot compare variables of type char\n");
+                                                                printf("\n\t***Line: %d - Error: cannot compare variables of type char***\n\n", yylineno);
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("Error: cannot compare variables of type void\n");
+                                                                printf("\n\t***Line: %d - Error: cannot compare variables of type void***\n\n", yylineno);
                                                             } else {
                                                                 printf("Expression of type Greater than\n");
                                                             }
@@ -825,9 +819,9 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = DATA_TYPE_INT;
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("Error: cannot compare variables of type char\n");
+                                                                printf("\n\t***Line: %d - Error: cannot compare variables of type char***\n\n", yylineno);
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("Error: cannot compare variables of type void\n");
+                                                                printf("\n\t***Line: %d - Error: cannot compare variables of type void***\n\n", yylineno);
                                                             } else {
                                                                 printf("Expression of type Less than\n");
                                                             }
@@ -842,9 +836,9 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = DATA_TYPE_INT;
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("Error: cannot compare variables of type char\n");
+                                                                printf("\n\t***Line: %d - Error: cannot compare variables of type char***\n\n", yylineno);
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("Error: cannot compare variables of type void\n");
+                                                                printf("\n\t***Line: %d - Error: cannot compare variables of type void***\n\n", yylineno);
                                                             } else {
                                                                 printf("Expression of type Greater than or equal to\n");
                                                             }
@@ -859,9 +853,9 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = DATA_TYPE_INT;
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("Error: cannot compare variables of type char\n");
+                                                                printf("\n\t***Line: %d - Error: cannot compare variables of type char***\n\n", yylineno);
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("Error: cannot compare variables of type void\n");
+                                                                printf("\n\t***Line: %d - Error: cannot compare variables of type void***\n\n", yylineno);
                                                             } else {
                                                                 printf("Expression of type Less than or equal to\n");
                                                             }
@@ -876,9 +870,9 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = DATA_TYPE_INT;
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("Error: cannot compare variables of type char\n");
+                                                                printf("\n\t***Line: %d - Error: cannot compare variables of type char***\n\n", yylineno);
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("Error: cannot compare variables of type void\n");
+                                                                printf("\n\t***Line: %d - Error: cannot compare variables of type void***\n\n", yylineno);
                                                             } else {
                                                                 printf("Expression of type AND\n");
                                                             }
@@ -893,9 +887,9 @@ content ADD content                                     {
                                                             $$->rightOper = $3;
                                                             $$->exprType = DATA_TYPE_INT;
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
-                                                                printf("Error: cannot compare variables of type char\n");
+                                                                printf("\n\t***Line: %d - Error: cannot compare variables of type char***\n\n", yylineno);
                                                             } else if  ($1->valueType == DATA_TYPE_VOID || $3->valueType == DATA_TYPE_VOID) {
-                                                                printf("Error: cannot compare variables of type void\n");
+                                                                printf("\n\t***Line: %d - Error: cannot compare variables of type void***\n\n", yylineno);
                                                             } else {
                                                                 printf("Expression of type OR\n");
                                                             }
@@ -910,9 +904,9 @@ content ADD content                                     {
                                                             $$->rightOper = NULL;
                                                             $$->exprType = DATA_TYPE_INT;
                                                             if  ($2->valueType == DATA_TYPE_CHAR) {
-                                                                printf("Error: cannot compare variables of type char\n");
+                                                                printf("\n\t***Line: %d - Error: cannot compare variables of type char***\n\n", yylineno);
                                                             } else if  ($2->valueType == DATA_TYPE_VOID) {
-                                                                printf("Error: cannot compare variables of type void\n");
+                                                                printf("\n\t***Line: %d - Error: cannot compare variables of type void***\n\n", yylineno);
                                                             } else {
                                                                 printf("Expression of type NOT\n");
                                                             }
@@ -924,7 +918,7 @@ ID                                                      {
                                                             printf("AstNodeOperand allocated for 'ID'\n"); //Ci troviamo nel caso in cui abbiamo int a = b
                                                             struct SymTab *s = findSymtab($1,actualList);
                                                             if(s == NULL) {
-                                                                printf("Error: The variable %s does not exist\n", $1);
+                                                                printf("\n\t***Line: %d - Error: The variable %s does not exist***\n\n", yylineno,$1);
                                                             } else {
                                                                 $$->value.val = $1;
                                                                 $$->valueType = s->dataType;
@@ -1006,7 +1000,7 @@ int main() {
 }
 
 int yyerror(char *s) {
-    printf("%s\n", s);
+    printf("Line: %d - %s\n", yylineno,s);
 }
 
 void beginScope() {

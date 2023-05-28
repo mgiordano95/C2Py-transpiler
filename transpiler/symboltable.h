@@ -91,8 +91,10 @@ struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType sy
         s->valueOper = valueOper;
         
         HASH_ADD_STR(list->symTab, symbolName, s);  // hash table lista, chiave che identifica il simbolo, tabella puntatore struct da aggiungere
+        
+        printf("Symbol '%s' created\n", symbolName);
     } else {
-        printf("\n Error: Symbol %s already exists\n", symbolName);
+        printf("\n\t***Error: Symbol %s already exists***\n\n", symbolName);
     }
 }
 
@@ -101,10 +103,9 @@ struct SymTab *findSym(char *symbolName, struct List *symList) {
     HASH_FIND_STR(symList->symTab, symbolName, s);  //hash table lista, puntatore alla chiave che cerco, puntatore alla struct con la chiave cercata
     return s; //puntatore alla symbol table cercata
     if (s==NULL) {
-        printf("\n Error: Symbol %s not found \n", symbolName);
+        printf("\n\t***Error: Symbol %s not found***\n\n", symbolName);
         return NULL;
-    } 
-    else {
+    } else {
         return s;
     }
 }
