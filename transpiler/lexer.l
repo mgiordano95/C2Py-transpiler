@@ -82,6 +82,8 @@ string_value    \"[^\"]*\"
 ";"         {yylval.string=strdup(yytext); printf("Found SEMICOLON\n"); return(SEMICOL);}
 ","         {yylval.string=strdup(yytext); printf("Found COMMA\n"); return(COMMA);}
 
+"\n"        {}
+
 {delim}             {printf("Found DELIM\n");}
 {ws}                {printf("Found WHITE SPACE\n");}
 {int_value}         {yylval.string=strdup(yytext); printf("Found INTEGER NUMBER\n"); return(INT_VALUE);}

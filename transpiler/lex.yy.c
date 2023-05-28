@@ -370,8 +370,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 55
-#define YY_END_OF_BUFFER 56
+#define YY_NUM_RULES 56
+#define YY_END_OF_BUFFER 57
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -381,20 +381,20 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[132] =
     {   0,
-        0,    0,    2,    2,    7,    7,   11,   10,   56,   54,
-       47,   55,   38,   54,   54,   24,   54,   39,   40,   27,
-       25,   46,   26,   54,   28,   49,   49,   45,   33,   29,
-       32,   51,   41,   42,   51,   51,   51,   51,   51,   51,
-       51,   51,   51,   51,   43,   54,   44,    2,    4,    3,
-        7,    8,   11,   12,   10,   48,   31,    0,   53,    0,
-       36,    0,    0,   49,   49,   50,   50,    1,    6,   50,
-        0,   49,   35,   30,   34,   51,   51,   51,   51,   17,
-       51,   51,   51,   51,   51,   51,   51,   37,    2,    3,
-        3,    5,    7,   11,   10,    0,   52,    0,   50,   51,
+        0,    0,    2,    2,    7,    7,   11,   10,   57,   55,
+       48,   47,   38,   55,   55,   24,   55,   39,   40,   27,
+       25,   46,   26,   55,   28,   50,   50,   45,   33,   29,
+       32,   52,   41,   42,   52,   52,   52,   52,   52,   52,
+       52,   52,   52,   52,   43,   55,   44,    2,    4,    3,
+        7,    8,   11,   12,   10,   49,   31,    0,   54,    0,
+       36,    0,    0,   50,   50,   51,   51,    1,    6,   51,
+        0,   50,   35,   30,   34,   52,   52,   52,   52,   17,
+       52,   52,   52,   52,   52,   52,   52,   37,    2,    3,
+        3,    5,    7,   11,   10,    0,   53,    0,   51,   52,
 
-       51,   51,   14,   51,   51,   51,   51,   51,   51,    0,
-       16,   18,   51,   23,   51,   51,   51,   13,   51,    0,
-       15,   51,   51,   21,   19,    0,   20,   22,    0,    9,
+       52,   52,   14,   52,   52,   52,   52,   52,   52,    0,
+       16,   18,   52,   23,   52,   52,   52,   13,   52,    0,
+       15,   52,   52,   21,   19,    0,   20,   22,    0,    9,
         0
     } ;
 
@@ -546,11 +546,11 @@ static const flex_int16_t yy_chk[264] =
     } ;
 
 /* Table of booleans, true if rule could match eol. */
-static const flex_int32_t yy_rule_can_match_eol[56] =
+static const flex_int32_t yy_rule_can_match_eol[57] =
     {   0,
 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,     };
+    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0,     };
 
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
@@ -1104,52 +1104,58 @@ YY_RULE_SETUP
 {yylval.string=strdup(yytext); printf("Found COMMA\n"); return(COMMA);}
 	YY_BREAK
 case 47:
+/* rule 47 can match eol */
 YY_RULE_SETUP
 #line 85 "lexer.l"
-{printf("Found DELIM\n");}
+{}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 86 "lexer.l"
-{printf("Found WHITE SPACE\n");}
+#line 87 "lexer.l"
+{printf("Found DELIM\n");}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 87 "lexer.l"
-{yylval.string=strdup(yytext); printf("Found INTEGER NUMBER\n"); return(INT_VALUE);}
+#line 88 "lexer.l"
+{printf("Found WHITE SPACE\n");}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 88 "lexer.l"
-{yylval.string=strdup(yytext); printf("Found FLOAT NUMBER\n"); return(FLOAT_VALUE);}
+#line 89 "lexer.l"
+{yylval.string=strdup(yytext); printf("Found INTEGER NUMBER\n"); return(INT_VALUE);}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 89 "lexer.l"
-{yylval.string=strdup(yytext); printf("Found ID\n"); return(ID);}
+#line 90 "lexer.l"
+{yylval.string=strdup(yytext); printf("Found FLOAT NUMBER\n"); return(FLOAT_VALUE);}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 90 "lexer.l"
-{yylval.string=strdup(yytext); printf("Found CHAR\n"); return(CHAR_VALUE);}
+#line 91 "lexer.l"
+{yylval.string=strdup(yytext); printf("Found ID\n"); return(ID);}
 	YY_BREAK
 case 53:
-/* rule 53 can match eol */
-YY_RULE_SETUP
-#line 91 "lexer.l"
-{yylval.string=strdup(yytext); printf("Found STRING\n"); return(STRING_VALUE);}
-	YY_BREAK
-case 54:
 YY_RULE_SETUP
 #line 92 "lexer.l"
-{printf("Unknown character\n"); return(UNKNOWN);}
+{yylval.string=strdup(yytext); printf("Found CHAR\n"); return(CHAR_VALUE);}
+	YY_BREAK
+case 54:
+/* rule 54 can match eol */
+YY_RULE_SETUP
+#line 93 "lexer.l"
+{yylval.string=strdup(yytext); printf("Found STRING\n"); return(STRING_VALUE);}
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
 #line 94 "lexer.l"
+{printf("Unknown character\n"); return(UNKNOWN);}
+	YY_BREAK
+case 56:
+YY_RULE_SETUP
+#line 96 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 1153 "lex.yy.c"
+#line 1159 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(MLCOMMENT):
 case YY_STATE_EOF(SLCOMMENT):
@@ -2171,5 +2177,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 94 "lexer.l"
+#line 96 "lexer.l"
 
