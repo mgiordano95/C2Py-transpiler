@@ -174,8 +174,8 @@ functionDecl                                            {
                                                                 if(s->dataType != $1->arrayType) {
                                                                     printf("\n\t***Line: %d - Error: Array %s has been declared as a %s but type %s is assigned***\n\n", yylineno, $1->arrayCall->arrayName, typeToString(s->dataType), typeToString($1->arrayType));
                                                                     numberError++;
-                                                                } else if(atoi(s->arrayLength) <= atoi($1->arrayCall->elementIndex->value.val)) {
-                                                                    printf("\n\t***Line: %d - Error: the length of %s is %s***\n\n", yylineno,s->symbolName, s->arrayLength);
+                                                                } else if($1->arrayCall->elementIndex != NULL && (atoi(s->arrayLength) <= atoi($1->arrayCall->elementIndex->value.val))) {
+                                                                    printf("\n\t***Line: %d - Error: the length of '%s' is %s***\n\n", yylineno,s->symbolName, s->arrayLength);
                                                                     numberError++;
                                                                 }else {
                                                                     $$ = malloc(sizeof(struct AstNodeInstruction));
@@ -184,7 +184,7 @@ functionDecl                                            {
                                                                     $$->value.arrayAssign = $1;
                                                                 }
                                                             } else {
-                                                                printf("\n\t***Line: %d - Error: array %s not declared***\n\n", yylineno,$1->arrayCall->arrayName);
+                                                                printf("\n\t***Line: %d - Error: array '%s' not declared***\n\n", yylineno,$1->arrayCall->arrayName);
                                                                 numberError++;
                                                             }
                                                         }
@@ -243,7 +243,7 @@ body                                                    {
                                                                 endScope();
                                                                 struct SymTab *s = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, NULL, NULL, nullValue);
                                                             } else {
-                                                                printf("\n\t***Line: %d - Error: function MAIN already declared***\n\n", yylineno);
+                                                                printf("\n\t***Line: %d - Error: function 'MAIN' already declared***\n\n", yylineno);
                                                                 numberError++;
                                                                 endScope();
                                                             } 
@@ -264,7 +264,7 @@ body                                                    {
                                                                 endScope();
                                                                 struct SymTab *s = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, NULL, NULL, nullValue);
                                                             } else {
-                                                                printf("\n\t***Line: %d - Error: function %s already declared***\n\n", yylineno,$1->variableName);
+                                                                printf("\n\t***Line: %d - Error: function '%s' already declared***\n\n", yylineno,$1->variableName);
                                                                 numberError++;
                                                                 endScope();
                                                             } 
@@ -295,7 +295,7 @@ body                                                    {
                                                                 endScope();
                                                                 struct SymTab *q = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, appoggio, NULL, nullValue);
                                                             } else {
-                                                                printf("\n\t***Line: %d - Error: function %s already declared***\n\n", yylineno,$1->variableName);
+                                                                printf("\n\t***Line: %d - Error: function '%s' already declared***\n\n", yylineno,$1->variableName);
                                                                 numberError++;
                                                                 endScope();
                                                             }
@@ -311,7 +311,7 @@ ID LPAR RPAR                                            {
                                                                 $$->returnType = s->returnType;
                                                                 $$->functionParams = NULL;
                                                             } else {
-                                                                printf("\n\t***Line: %d - Error: function %s not declared***\n\n", yylineno,$1);
+                                                                printf("\n\t***Line: %d - Error: function '%s' not declared***\n\n", yylineno,$1);
                                                             } 
                                                         }
 |   ID LPAR functionParams RPAR                         {
@@ -336,7 +336,7 @@ ID LPAR RPAR                                            {
                                                                 $$->returnType = s->returnType;
                                                                 $$->functionParams = $3;
                                                             } else {
-                                                                printf("\n\t***Line: %d - Error: function %s not declared***\n\n", yylineno,$1);
+                                                                printf("\n\t***Line: %d - Error: function '%s' not declared***\n\n", yylineno,$1);
                                                                 numberError++;
                                                             }
                                                         };
@@ -455,13 +455,13 @@ types arrayDecl                                         {
                                                                 $$->elements = NULL;
                                                                 $$->arrayDecl->arrayType = stringToType($1);
                                                                 if($2->arrayLength == NULL) {
-                                                                    printf("\n\t***Line: %d - Error: array size missing in %s***\n\n", yylineno,$2->arrayName);
+                                                                    printf("\n\t***Line: %d - Error: array size missing in '%s'***\n\n", yylineno,$2->arrayName);
                                                                     numberError++;
                                                                 } else {
                                                                     s = createSym($2->arrayName, actualList, SYMBOL_ARRAY, $$->arrayType, $$->arrayType, NULL, NULL, $2->arrayLength, nullValue);
                                                                 }
                                                             } else {
-                                                                printf("\n\t***Line: %d - Error: array %s already declared***\n\n", yylineno,$2->arrayName);
+                                                                printf("\n\t***Line: %d - Error: array '%s' already declared***\n\n", yylineno,$2->arrayName);
                                                                 numberError++;
                                                             }
                                                         }
@@ -478,7 +478,7 @@ types arrayDecl                                         {
                                                                 $$->arrayDecl->arrayType = stringToType($1);
                                                                 s = createSym($2->arrayName, actualList, SYMBOL_ARRAY, $$->arrayType, $$->arrayType, NULL, NULL, $2->arrayLength, nullValue);
                                                             } else {
-                                                                printf("\n\t***Line: %d - Error: array %s already declared***\n\n", yylineno,$2->arrayName);
+                                                                printf("\n\t***Line: %d - Error: array '%s' already declared***\n\n", yylineno,$2->arrayName);
                                                                 numberError++;
                                                             }
                                                         }
@@ -491,7 +491,7 @@ types arrayDecl                                         {
                                                             $$->arrayDecl = $2;
                                                             $$->elements = $4;
                                                             $$->arrayDecl->arrayType = stringToType($1);
-                                                            printf("\n\t***Line: %d - Error: invalid initializer of %s***\n\n", yylineno,$2->arrayName);
+                                                            printf("\n\t***Line: %d - Error: invalid initializer of '%s'***\n\n", yylineno,$2->arrayName);
                                                             numberError++;
                                                         }
 |   types arrayDecl EQ LBRA arrayElements RBRA          {
@@ -511,11 +511,11 @@ types arrayDecl                                         {
                                                                 }
                                                                 char ch[3];
                                                                 sprintf(ch,"%d",ele);
-                                                                printf("Number of elements in the array %s\n",ch);
+                                                                printf("Number of elements in the array '%s'\n",ch);
                                                                 $$->arrayDecl->arrayLength = ch;
                                                                 s = createSym($2->arrayName, actualList, SYMBOL_ARRAY, $$->arrayType, $$->arrayType, NULL, NULL, $2->arrayLength, nullValue);
                                                             } else {
-                                                                printf("\n\t***Line: %d - Error: array %s already declared***\n\n", yylineno,$2->arrayName);
+                                                                printf("\n\t***Line: %d - Error: array '%s' already declared***\n\n", yylineno,$2->arrayName);
                                                                 numberError++;
                                                             }
                                                         };
@@ -524,7 +524,10 @@ arrayAssign:
 arrayCall EQ LBRA RBRA                                  {
                                                             // myArray[] = {}; Syntax Error
                                                             // myArray[3] = {}; Syntax Error
-                                                            printf("\n\t***Line: %d - Syntax Error!!!***\n\n", yylineno);
+                                                            $$=malloc(sizeof(struct AstNodeArrayAssign));
+                                                            printf("AstNodeArrayAssign allocated for 'arrayCall EQ LBRA RBRA'\n");
+                                                            $$->arrayCall = $1;
+                                                            printf("\n\t***Line: %d - Syntax Error***\n\n", yylineno);
                                                             numberError++;
                                                         }
 |   arrayCall EQ arrayElements                          {
@@ -537,14 +540,20 @@ arrayCall EQ LBRA RBRA                                  {
                                                             $$->elements = $3;
                                                             $$->arrayCall->arrayType = $3->element->valueType;
                                                             if($1->elementIndex == NULL) {
-                                                                printf("\n\t***Line: %d - Syntax Error!!!***\n\n", yylineno);
+                                                                printf("\n\t***Line: %d - Error: element index not specified***\n\n", yylineno);
                                                                 numberError++;
                                                             }
                                                         }
 |   arrayCall EQ LBRA arrayElements RBRA                {
                                                             //myArray[] = {24, 27, 29}; Syntax Error
                                                             //myArray[3] = {24, 27, 29}; Syntax Error
-                                                            printf("\n\t***Line: %d - Syntax Error!!!***\n\n", yylineno);
+                                                            $$=malloc(sizeof(struct AstNodeArrayAssign));
+                                                            printf("AstNodeArrayAssign allocated for 'arrayCall EQ LBRA arrayElements RBRA'\n");
+                                                            $$->arrayType = $4->element->valueType;
+                                                            $$->arrayCall = $1;
+                                                            $$->elements = $4;
+                                                            $$->arrayCall->arrayType = $4->element->valueType;
+                                                            printf("\n\t***Line: %d - Syntax Error***\n\n", yylineno);
                                                             numberError++;
                                                         };
 
