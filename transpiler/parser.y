@@ -388,8 +388,9 @@ body                                                    {
                                                         }
 |   IF LPAR RPAR body                                   {
                                                             $$ = malloc(sizeof(struct AstNodeIf));
-                                                            printf("AstNodeIf allocated for 'IF LPAR expression RPAR body'\n");
+                                                            printf("AstNodeIf allocated for 'IF LPAR RPAR body'\n");
                                                             printf("\n\t***Line: %d - Error: missing condition in 'if statement'***\n\n", yylineno);
+                                                            numberError++;
                                                         };
 
 elseifStatement:
@@ -405,8 +406,9 @@ body                                                    {
                                                         }
 |   ELSE IF LPAR RPAR body                              {
                                                             $$ = malloc(sizeof(struct AstNodeIf));
-                                                            printf("AstNodeIf allocated for 'IF LPAR expression RPAR body'\n");
+                                                            printf("AstNodeIf allocated for 'IF LPAR RPAR body'\n");
                                                             printf("\n\t***Line: %d - Error: missing condition in 'else if statement'***\n\n", yylineno);
+                                                            numberError++;
                                                         };
 
 elseStatement:
@@ -426,7 +428,7 @@ WHILE LPAR expression RPAR                              {
                                                         }
 body                                                    {
                                                             $$ = malloc(sizeof(struct AstNodeWhile));
-                                                            printf("AstNodeWhile allocated for 'WHILE LPAR expression RPAR body'\n");
+                                                            printf("AstNodeWhile allocated for 'WHILE LPAR RPAR body'\n");
                                                             $$->whileCondition = $3;
                                                             $$->whileBody = $6;
                                                             endScope();
@@ -435,6 +437,7 @@ body                                                    {
                                                             $$ = malloc(sizeof(struct AstNodeIf));
                                                             printf("AstNodeIf allocated for 'IF LPAR expression RPAR body'\n");
                                                             printf("\n\t***Line: %d - Error: missing condition in 'while statement'***\n\n", yylineno);
+                                                            numberError++;
                                                         };
 
 body:
@@ -644,6 +647,14 @@ PRINTF LPAR STRING_VALUE RPAR                           {
                                                             printf("AstNodeFunctionOutput allocated for 'PRINTF LPAR STRING_VALUE RPAR COMMA outputElements'\n");
                                                             $$->string = $3;
                                                             $$->outputElements = $5;
+                                                        }
+|   PRINTF LPAR RPAR                                    {
+                                                            $$ = malloc(sizeof(struct AstNodeFunctionOutput));
+                                                            printf("AstNodeFunctionOutput allocated for 'PRINTF LPAR RPAR'\n");
+                                                            printf("\n\t***Line: %d -  Error: too few arguments to function 'printf'***\n\n", yylineno);
+                                                            numberError++;
+                                                            $$->string = NULL;
+                                                            $$->outputElements = NULL;
                                                         };
 
 inputFunction:
@@ -658,6 +669,12 @@ SCANF LPAR STRING_VALUE RPAR                            {
                                                             printf("AstNodeFunctionInput allocated for 'SCANF LPAR STRING_VALUE RPAR COMMA inputElements'\n");
                                                             $$->string = $3;
                                                             $$->inputElements = $5;
+                                                        }
+|   SCANF LPAR RPAR                                     {
+                                                            $$ = malloc(sizeof(struct AstNodeFunctionInput));
+                                                            printf("AstNodeFunctionInput allocated for 'SCANF LPAR RPAR'\n");
+                                                            printf("\n\t***Line: %d -  Error: too few arguments to function 'scanf'***\n\n", yylineno);
+                                                            numberError++;
                                                         };
 
 outputElements:
@@ -1081,6 +1098,7 @@ int main() {
 
 int yyerror(char *s) {
     printf("\n\t***Line: %d - %s***\n\n", yylineno,s);
+    numberError++;
 }
 
 void beginScope() {
