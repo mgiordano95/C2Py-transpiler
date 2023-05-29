@@ -328,12 +328,13 @@ ID LPAR RPAR                                            {
                                                                 int boolean = strcmp(s->funcParameters,calledParameters);
                                                                 if (boolean == 0) {
                                                                     printf("The parameters are correct\n");
-                                                                    $$->functionName = $1;
-                                                                    $$->returnType = s->returnType;
-                                                                    $$->functionParams = $3;
                                                                 } else {
-                                                                    printf("The parameters in the function call are incorrect\n");
+                                                                    printf("\n\t***Line: %d - Error: the parameters in the function call are incorrect***\n\n", yylineno);
+                                                                    numberError++;
                                                                 }
+                                                                $$->functionName = $1;
+                                                                $$->returnType = s->returnType;
+                                                                $$->functionParams = $3;
                                                             } else {
                                                                 printf("\n\t***Line: %d - Error: function %s not declared***\n\n", yylineno,$1);
                                                                 numberError++;
@@ -1055,7 +1056,7 @@ int main() {
 }
 
 int yyerror(char *s) {
-    printf("Line: %d - %s\n", yylineno,s);
+    printf("\n\t***Line: %d - %s***\n\n", yylineno,s);
 }
 
 void beginScope() {
