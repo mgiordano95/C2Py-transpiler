@@ -13,3 +13,4 @@ def main():
 	character2 = character
 	return 0
 
+main()

@@ -9,4 +9,6 @@ int main() {
     
     printf("Enter an integer:\n");
     scanf("%d", x); //inputFunction_Error_2 (syntax error)
+    
+    return 0;
 }

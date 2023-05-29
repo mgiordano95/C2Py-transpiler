@@ -12,6 +12,7 @@ def main():
 	def myFunction2(c, d):
 		print("Hello myFunction2!!!")
 
-	myFunction2()
+	myFunction2(4.2, 6.9)
 	return 0
 
+main()

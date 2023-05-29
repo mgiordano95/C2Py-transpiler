@@ -12,3 +12,4 @@ def main():
 	d = [ 'c', 'i' ]
 	return 0
 
+main()

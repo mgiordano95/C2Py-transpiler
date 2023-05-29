@@ -10,3 +10,4 @@ def main():
 	print("Your numbers are:       \n" + myNumber + myNumber2)
 	return 0
 
+main()
