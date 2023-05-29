@@ -1,9 +1,9 @@
 #include <stdio.h>
 
 int main() {
-    //Questo è un commento
+    //This is a single line comment
     /*
-    Questo è un commento multilinea
+    This is a multi line comment
     */
     int a = 5;
     int b = 6;

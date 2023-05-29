@@ -385,6 +385,11 @@ body                                                    {
                                                             $$->ifCondition = $3;
                                                             $$->ifBody = $6;
                                                             endScope();
+                                                        }
+|   IF LPAR RPAR body                                   {
+                                                            $$ = malloc(sizeof(struct AstNodeIf));
+                                                            printf("AstNodeIf allocated for 'IF LPAR expression RPAR body'\n");
+                                                            printf("\n\t***Line: %d - Error: missing condition in 'if statement'***\n\n", yylineno);
                                                         };
 
 elseifStatement:
@@ -397,6 +402,11 @@ body                                                    {
                                                             $$->elseifCondition = $4;
                                                             $$->elseifBody = $7;
                                                             endScope();
+                                                        }
+|   ELSE IF LPAR RPAR body                              {
+                                                            $$ = malloc(sizeof(struct AstNodeIf));
+                                                            printf("AstNodeIf allocated for 'IF LPAR expression RPAR body'\n");
+                                                            printf("\n\t***Line: %d - Error: missing condition in 'else if statement'***\n\n", yylineno);
                                                         };
 
 elseStatement:
@@ -420,6 +430,11 @@ body                                                    {
                                                             $$->whileCondition = $3;
                                                             $$->whileBody = $6;
                                                             endScope();
+                                                        }
+|   WHILE LPAR RPAR body                                {
+                                                            $$ = malloc(sizeof(struct AstNodeIf));
+                                                            printf("AstNodeIf allocated for 'IF LPAR expression RPAR body'\n");
+                                                            printf("\n\t***Line: %d - Error: missing condition in 'while statement'***\n\n", yylineno);
                                                         };
 
 body:
