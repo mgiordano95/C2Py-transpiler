@@ -653,8 +653,6 @@ PRINTF LPAR STRING_VALUE RPAR                           {
                                                             printf("AstNodeFunctionOutput allocated for 'PRINTF LPAR RPAR'\n");
                                                             printf("\n\t***Line: %d -  Error: too few arguments to function 'printf'***\n\n", yylineno);
                                                             numberError++;
-                                                            $$->string = NULL;
-                                                            $$->outputElements = NULL;
                                                         };
 
 inputFunction:
