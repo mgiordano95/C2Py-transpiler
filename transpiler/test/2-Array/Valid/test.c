@@ -4,7 +4,7 @@ int main() {
     int myArray3[3] = {};
     int myArray4[] = {24, 27, 29};
     int myArray5[3] = {24, 27, 29};
-    myArray[2] = 24;
+    myArray5[2] = 24;
     
     int a = myArray5[1];
     

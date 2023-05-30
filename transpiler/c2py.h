@@ -356,7 +356,7 @@ void translateArrayCall(struct AstNodeArrayCall *arrayCall) {
 void translateArrayInitialization(struct AstNodeArrayInit *arrayInit) {
     if(arrayInit->elements == NULL) {
         translateArrayDecleration(arrayInit->arrayDecl);
-        fprintf(fptr, " = None");
+        fprintf(fptr, " = []");
     } else {
         translateArrayDecleration(arrayInit->arrayDecl);
         fprintf(fptr, " = ");
