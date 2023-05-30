@@ -55,10 +55,10 @@ char* DataType(enum DataType dataType) {
         case DATA_TYPE_CHAR:
             return "str";
             break;
-        default :
+        default:
             return "unknown";
             break;
-    } 
+    }
 }
 
 // Function to convert the Node Type
@@ -336,7 +336,7 @@ void translateFunctionDeclaration(struct AstNodeFunctionDecl *functionDecl) {
     translateBody(functionDecl->functiontBody);
     counter--;
     fprintf(fptr, "\n");
-
+    
     char *main = "main";
     if (strcmp(functionDecl->functionName, main) == 0) {
         fprintf(fptr, "main()");
@@ -473,7 +473,6 @@ void translateFunctionInput(struct AstNodeFunctionInput *inputFunction) {
     } else {
         printf("Syntax Error\n");
     }
-    
 }
 
 void translateOutputElements(struct AstNodeOutputElements *outputElements) {

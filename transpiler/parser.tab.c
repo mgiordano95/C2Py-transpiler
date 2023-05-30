@@ -74,7 +74,8 @@
 #include <ctype.h>
 #include <string.h> //strcmp, strdup
 #include <stdbool.h> //true, false
-#include <stdlib.h> //atoi()
+#include <stdlib.h> //atoi
+
 #include "ast.h"
 #include "symboltable.h"
 #include "c2py.h"
@@ -96,7 +97,7 @@ void beginScope();
 void endScope();
 
 
-#line 100 "parser.tab.c"
+#line 101 "parser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -1326,7 +1327,7 @@ yyreduce:
                                                         {
                                                             beginScope();
                                                         }
-#line 1330 "parser.tab.c"
+#line 1331 "parser.tab.c"
     break;
 
   case 3: /* program: $@1 statements  */
@@ -1335,7 +1336,7 @@ yyreduce:
                                                             root = (yyvsp[0].statements);
                                                             endScope();
                                                         }
-#line 1339 "parser.tab.c"
+#line 1340 "parser.tab.c"
     break;
 
   case 4: /* statements: instruction statements  */
@@ -1347,7 +1348,7 @@ yyreduce:
                                                             (yyval.statements)->currentInstruction = (yyvsp[-1].instruction);
                                                             (yyval.statements)->nextStatement = (yyvsp[0].statements);
                                                         }
-#line 1351 "parser.tab.c"
+#line 1352 "parser.tab.c"
     break;
 
   case 5: /* statements: instruction  */
@@ -1359,7 +1360,7 @@ yyreduce:
                                                             (yyval.statements)->currentInstruction = (yyvsp[0].instruction);
                                                             (yyval.statements)->nextStatement = NULL;
                                                         }
-#line 1363 "parser.tab.c"
+#line 1364 "parser.tab.c"
     break;
 
   case 6: /* instruction: functionDecl  */
@@ -1370,7 +1371,7 @@ yyreduce:
                                                             (yyval.instruction)->nodeType = FUNCTION_DECL_NODE;
                                                             (yyval.instruction)->value.functionDecl = (yyvsp[0].functionDecl);
                                                         }
-#line 1374 "parser.tab.c"
+#line 1375 "parser.tab.c"
     break;
 
   case 7: /* instruction: functionCall SEMICOL  */
@@ -1381,7 +1382,7 @@ yyreduce:
                                                             (yyval.instruction)->nodeType = FUNCTION_CALL_NODE;
                                                             (yyval.instruction)->value.functionCall = (yyvsp[-1].functionCall);
                                                         }
-#line 1385 "parser.tab.c"
+#line 1386 "parser.tab.c"
     break;
 
   case 8: /* instruction: initialization SEMICOL  */
@@ -1405,7 +1406,7 @@ yyreduce:
                                                                 numberError++;
                                                             }
                                                         }
-#line 1409 "parser.tab.c"
+#line 1410 "parser.tab.c"
     break;
 
   case 9: /* instruction: assignment SEMICOL  */
@@ -1416,7 +1417,7 @@ yyreduce:
                                                             (yyval.instruction)->nodeType = ASSIGN_NODE;
                                                             (yyval.instruction)->value.assign = (yyvsp[-1].assign);
                                                         }
-#line 1420 "parser.tab.c"
+#line 1421 "parser.tab.c"
     break;
 
   case 10: /* instruction: arrayInit SEMICOL  */
@@ -1427,7 +1428,7 @@ yyreduce:
                                                             (yyval.instruction)->nodeType = ARRAY_INIT_NODE;
                                                             (yyval.instruction)->value.arrayInit = (yyvsp[-1].arrayInit);
                                                         }
-#line 1431 "parser.tab.c"
+#line 1432 "parser.tab.c"
     break;
 
   case 11: /* instruction: arrayAssign SEMICOL  */
@@ -1452,7 +1453,7 @@ yyreduce:
                                                                 numberError++;
                                                             }
                                                         }
-#line 1456 "parser.tab.c"
+#line 1457 "parser.tab.c"
     break;
 
   case 12: /* instruction: outputFunction SEMICOL  */
@@ -1463,7 +1464,7 @@ yyreduce:
                                                             (yyval.instruction)->nodeType = OUTPUT_NODE;
                                                             (yyval.instruction)->value.outputFunction = (yyvsp[-1].outputFunction);
                                                         }
-#line 1467 "parser.tab.c"
+#line 1468 "parser.tab.c"
     break;
 
   case 13: /* instruction: inputFunction SEMICOL  */
@@ -1474,7 +1475,7 @@ yyreduce:
                                                             (yyval.instruction)->nodeType = INPUT_NODE;
                                                             (yyval.instruction)->value.inputFunction = (yyvsp[-1].inputFunction);
                                                         }
-#line 1478 "parser.tab.c"
+#line 1479 "parser.tab.c"
     break;
 
   case 14: /* instruction: ifStatement  */
@@ -1485,7 +1486,7 @@ yyreduce:
                                                             (yyval.instruction)->nodeType = IF_NODE;
                                                             (yyval.instruction)->value.ifStatement = (yyvsp[0].ifStatement);
                                                         }
-#line 1489 "parser.tab.c"
+#line 1490 "parser.tab.c"
     break;
 
   case 15: /* instruction: elseifStatement  */
@@ -1496,7 +1497,7 @@ yyreduce:
                                                             (yyval.instruction)->nodeType = ELSE_IF_NODE;
                                                             (yyval.instruction)->value.elseifStatement = (yyvsp[0].elseifStatement);
                                                         }
-#line 1500 "parser.tab.c"
+#line 1501 "parser.tab.c"
     break;
 
   case 16: /* instruction: elseStatement  */
@@ -1507,7 +1508,7 @@ yyreduce:
                                                             (yyval.instruction)->nodeType = ELSE_NODE;
                                                             (yyval.instruction)->value.elseStatement = (yyvsp[0].elseStatement);
                                                         }
-#line 1511 "parser.tab.c"
+#line 1512 "parser.tab.c"
     break;
 
   case 17: /* instruction: whileLoop  */
@@ -1518,7 +1519,7 @@ yyreduce:
                                                             (yyval.instruction)->nodeType = WHILE_NODE;
                                                             (yyval.instruction)->value.whileLoop = (yyvsp[0].whileLoop);
                                                         }
-#line 1522 "parser.tab.c"
+#line 1523 "parser.tab.c"
     break;
 
   case 18: /* $@2: %empty  */
@@ -1526,7 +1527,7 @@ yyreduce:
                                                         {
                                                             beginScope();
                                                         }
-#line 1530 "parser.tab.c"
+#line 1531 "parser.tab.c"
     break;
 
   case 19: /* functionDecl: types MAIN LPAR RPAR $@2 body  */
@@ -1548,9 +1549,9 @@ yyreduce:
                                                                 printf("\n\t***Line: %d - Error: function 'MAIN' already declared***\n\n", yylineno);
                                                                 numberError++;
                                                                 endScope();
-                                                            } 
+                                                            }
                                                         }
-#line 1554 "parser.tab.c"
+#line 1555 "parser.tab.c"
     break;
 
   case 20: /* $@3: %empty  */
@@ -1558,7 +1559,7 @@ yyreduce:
                                                         {
                                                             beginScope();
                                                         }
-#line 1562 "parser.tab.c"
+#line 1563 "parser.tab.c"
     break;
 
   case 21: /* functionDecl: initialization LPAR RPAR $@3 body  */
@@ -1566,7 +1567,7 @@ yyreduce:
                                                         {
                                                             struct SymTab *s = NULL;
                                                             s = findSymtab((yyvsp[-4].init)->variableName, actualList);
-                                                            if (s == NULL) { 
+                                                            if (s == NULL) {
                                                                 (yyval.functionDecl) = malloc(sizeof(struct AstNodeFunctionDecl));
                                                                 printf("AstNodeFunctionDecl allocated for 'initialization LPAR RPAR body'\n");
                                                                 (yyval.functionDecl)->functionName = (yyvsp[-4].init)->variableName;
@@ -1579,17 +1580,17 @@ yyreduce:
                                                                 printf("\n\t***Line: %d - Error: function '%s' already declared***\n\n", yylineno,(yyvsp[-4].init)->variableName);
                                                                 numberError++;
                                                                 endScope();
-                                                            } 
+                                                            }
                                                         }
-#line 1585 "parser.tab.c"
+#line 1586 "parser.tab.c"
     break;
 
   case 22: /* $@4: %empty  */
 #line 272 "parser.y"
-                                                        {   
+                                                        {
                                                             beginScope();
                                                         }
-#line 1593 "parser.tab.c"
+#line 1594 "parser.tab.c"
     break;
 
   case 23: /* $@5: %empty  */
@@ -1601,10 +1602,10 @@ yyreduce:
                                                             for(struct AstNodeFunctionParams *p = (yyvsp[0].functionParams); p != NULL; p = p->nextParams) {
                                                                 struct SymTab *s = createSym(p->initParam->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, (yyvsp[-3].init)->variableName, NULL, NULL, nullValue);
                                                                 strcat(appoggio,typeToString(p->initParam->dataType));
-                                                            } 
+                                                            }
                                                             printf("Parameters of the declared function: %s\n",appoggio);
                                                         }
-#line 1608 "parser.tab.c"
+#line 1609 "parser.tab.c"
     break;
 
   case 24: /* functionDecl: initialization LPAR $@4 functionParams $@5 RPAR body  */
@@ -1612,13 +1613,13 @@ yyreduce:
                                                         {
                                                             struct SymTab *s = NULL;
                                                             s = findSymtab((yyvsp[-6].init)->variableName, actualList);
-                                                            if (s == NULL) { 
+                                                            if (s == NULL) {
                                                                 (yyval.functionDecl) = malloc(sizeof(struct AstNodeFunctionDecl));
                                                                 printf("AstNodeFunctionDecl allocated for 'initialization LPAR functionParams RPAR body'\n");
                                                                 (yyval.functionDecl)->functionName = (yyvsp[-6].init)->variableName;
                                                                 (yyval.functionDecl)->returnType = (yyvsp[-6].init)->dataType;
                                                                 (yyval.functionDecl)->functionParams = (yyvsp[-3].functionParams);
-                                                                (yyval.functionDecl)->functiontBody = (yyvsp[0].body); 
+                                                                (yyval.functionDecl)->functiontBody = (yyvsp[0].body);
                                                                 endScope();
                                                                 struct SymTab *q = createSym((yyval.functionDecl)->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, (yyval.functionDecl)->returnType, (yyval.functionDecl)->functionName, appoggio, NULL, nullValue);
                                                             } else {
@@ -1627,7 +1628,7 @@ yyreduce:
                                                                 endScope();
                                                             }
                                                         }
-#line 1631 "parser.tab.c"
+#line 1632 "parser.tab.c"
     break;
 
   case 25: /* functionCall: ID LPAR RPAR  */
@@ -1636,15 +1637,15 @@ yyreduce:
                                                             (yyval.functionCall) = malloc(sizeof(struct AstNodeFunctionCall));
                                                             printf("AstNodeFunctionCall allocated for 'ID LPAR RPAR'\n");
                                                             struct SymTab *s = findSymtab((yyvsp[-2].string), actualList);
-                                                            if (s != NULL) { 
+                                                            if (s != NULL) {
                                                                 (yyval.functionCall)->functionName = (yyvsp[-2].string);
                                                                 (yyval.functionCall)->returnType = s->returnType;
                                                                 (yyval.functionCall)->functionParams = NULL;
                                                             } else {
                                                                 printf("\n\t***Line: %d - Error: function '%s' not declared***\n\n", yylineno,(yyvsp[-2].string));
-                                                            } 
+                                                            }
                                                         }
-#line 1648 "parser.tab.c"
+#line 1649 "parser.tab.c"
     break;
 
   case 26: /* functionCall: ID LPAR functionParams RPAR  */
@@ -1675,7 +1676,7 @@ yyreduce:
                                                                 numberError++;
                                                             }
                                                         }
-#line 1679 "parser.tab.c"
+#line 1680 "parser.tab.c"
     break;
 
   case 27: /* functionParams: types ID  */
@@ -1689,7 +1690,7 @@ yyreduce:
                                                             (yyval.functionParams)->initParam->dataType = stringToType((yyvsp[-1].string));
                                                             (yyval.functionParams)->initParam->variableName = (yyvsp[0].string);
                                                         }
-#line 1693 "parser.tab.c"
+#line 1694 "parser.tab.c"
     break;
 
   case 28: /* functionParams: content  */
@@ -1701,7 +1702,7 @@ yyreduce:
                                                             (yyval.functionParams)->callParams = (yyvsp[0].operand);
                                                             (yyval.functionParams)->initParam = NULL;
                                                         }
-#line 1705 "parser.tab.c"
+#line 1706 "parser.tab.c"
     break;
 
   case 29: /* functionParams: types ID COMMA functionParams  */
@@ -1715,7 +1716,7 @@ yyreduce:
                                                             (yyval.functionParams)->initParam->dataType = stringToType((yyvsp[-3].string));
                                                             (yyval.functionParams)->initParam->variableName = (yyvsp[-2].string);
                                                         }
-#line 1719 "parser.tab.c"
+#line 1720 "parser.tab.c"
     break;
 
   case 30: /* functionParams: content COMMA functionParams  */
@@ -1727,7 +1728,7 @@ yyreduce:
                                                             (yyval.functionParams)->callParams = (yyvsp[-2].operand);
                                                             (yyval.functionParams)->initParam = NULL;
                                                         }
-#line 1731 "parser.tab.c"
+#line 1732 "parser.tab.c"
     break;
 
   case 31: /* $@6: %empty  */
@@ -1735,7 +1736,7 @@ yyreduce:
                                                         {
                                                             beginScope();
                                                         }
-#line 1739 "parser.tab.c"
+#line 1740 "parser.tab.c"
     break;
 
   case 32: /* ifStatement: IF LPAR expression RPAR $@6 body  */
@@ -1747,7 +1748,7 @@ yyreduce:
                                                             (yyval.ifStatement)->ifBody = (yyvsp[0].body);
                                                             endScope();
                                                         }
-#line 1751 "parser.tab.c"
+#line 1752 "parser.tab.c"
     break;
 
   case 33: /* ifStatement: IF LPAR RPAR body  */
@@ -1758,7 +1759,7 @@ yyreduce:
                                                             printf("\n\t***Line: %d - Error: missing condition in 'if statement'***\n\n", yylineno);
                                                             numberError++;
                                                         }
-#line 1762 "parser.tab.c"
+#line 1763 "parser.tab.c"
     break;
 
   case 34: /* $@7: %empty  */
@@ -1766,7 +1767,7 @@ yyreduce:
                                                         {
                                                             beginScope();
                                                         }
-#line 1770 "parser.tab.c"
+#line 1771 "parser.tab.c"
     break;
 
   case 35: /* elseifStatement: ELSE IF LPAR expression RPAR $@7 body  */
@@ -1778,18 +1779,18 @@ yyreduce:
                                                             (yyval.elseifStatement)->elseifBody = (yyvsp[0].body);
                                                             endScope();
                                                         }
-#line 1782 "parser.tab.c"
+#line 1783 "parser.tab.c"
     break;
 
   case 36: /* elseifStatement: ELSE IF LPAR RPAR body  */
 #line 407 "parser.y"
                                                         {
-                                                            (yyval.elseifStatement) = malloc(sizeof(struct AstNodeIf));
-                                                            printf("AstNodeIf allocated for 'IF LPAR RPAR body'\n");
+                                                            (yyval.elseifStatement) = malloc(sizeof(struct AstNodeElseIf));
+                                                            printf("AstNodeElseIf allocated for 'ELSE IF LPAR RPAR body'\n");
                                                             printf("\n\t***Line: %d - Error: missing condition in 'else if statement'***\n\n", yylineno);
                                                             numberError++;
                                                         }
-#line 1793 "parser.tab.c"
+#line 1794 "parser.tab.c"
     break;
 
   case 37: /* $@8: %empty  */
@@ -1797,7 +1798,7 @@ yyreduce:
                                                         {
                                                             beginScope();
                                                         }
-#line 1801 "parser.tab.c"
+#line 1802 "parser.tab.c"
     break;
 
   case 38: /* elseStatement: ELSE $@8 body  */
@@ -1808,7 +1809,7 @@ yyreduce:
                                                             (yyval.elseStatement)->elseBody = (yyvsp[0].body);
                                                             endScope();
                                                         }
-#line 1812 "parser.tab.c"
+#line 1813 "parser.tab.c"
     break;
 
   case 39: /* $@9: %empty  */
@@ -1816,7 +1817,7 @@ yyreduce:
                                                         {
                                                             beginScope();
                                                         }
-#line 1820 "parser.tab.c"
+#line 1821 "parser.tab.c"
     break;
 
   case 40: /* whileLoop: WHILE LPAR expression RPAR $@9 body  */
@@ -1828,18 +1829,18 @@ yyreduce:
                                                             (yyval.whileLoop)->whileBody = (yyvsp[0].body);
                                                             endScope();
                                                         }
-#line 1832 "parser.tab.c"
+#line 1833 "parser.tab.c"
     break;
 
   case 41: /* whileLoop: WHILE LPAR RPAR body  */
 #line 436 "parser.y"
                                                         {
-                                                            (yyval.whileLoop) = malloc(sizeof(struct AstNodeIf));
-                                                            printf("AstNodeIf allocated for 'IF LPAR expression RPAR body'\n");
+                                                            (yyval.whileLoop) = malloc(sizeof(struct AstNodeWhile));
+                                                            printf("AstNodeWhile allocated for 'WHILE LPAR RPAR body'\n");
                                                             printf("\n\t***Line: %d - Error: missing condition in 'while statement'***\n\n", yylineno);
                                                             numberError++;
                                                         }
-#line 1843 "parser.tab.c"
+#line 1844 "parser.tab.c"
     break;
 
   case 42: /* body: LBRA statements RBRA  */
@@ -1850,7 +1851,7 @@ yyreduce:
                                                             (yyval.body)->bodyStatements = (yyvsp[-1].statements);
                                                             (yyval.body)->returnValue = NULL;
                                                         }
-#line 1854 "parser.tab.c"
+#line 1855 "parser.tab.c"
     break;
 
   case 43: /* body: LBRA statements RETURN content SEMICOL RBRA  */
@@ -1861,7 +1862,7 @@ yyreduce:
                                                             (yyval.body)->bodyStatements = (yyvsp[-4].statements);
                                                             (yyval.body)->returnValue = (yyvsp[-2].operand);
                                                         }
-#line 1865 "parser.tab.c"
+#line 1866 "parser.tab.c"
     break;
 
   case 44: /* body: LBRA RETURN content SEMICOL RBRA  */
@@ -1872,14 +1873,14 @@ yyreduce:
                                                             (yyval.body)->bodyStatements = NULL;
                                                             (yyval.body)->returnValue = (yyvsp[-2].operand);
                                                         }
-#line 1876 "parser.tab.c"
+#line 1877 "parser.tab.c"
     break;
 
   case 45: /* arrayInit: types arrayDecl  */
 #line 464 "parser.y"
                                                         {
-                                                            //int myArray[]; Error: array size missing in ‘myArray’ !!!
-                                                            //int myArray[3]; Corretct
+                                                            //int myArray[]; Error: array size missing in ‘myArray’
+                                                            //int myArray[3]; Correct
                                                             struct SymTab *s = findSym((yyvsp[0].arrayDecl)->arrayName, actualList);
                                                             if (s == NULL) {
                                                                 (yyval.arrayInit)=malloc(sizeof(struct AstNodeArrayInit));
@@ -1899,14 +1900,14 @@ yyreduce:
                                                                 numberError++;
                                                             }
                                                         }
-#line 1903 "parser.tab.c"
+#line 1904 "parser.tab.c"
     break;
 
   case 46: /* arrayInit: types arrayDecl EQ LBRA RBRA  */
 #line 486 "parser.y"
                                                         {
-                                                            //int myArray[] = {};
-                                                            //int myArray[3] = {};
+                                                            //int myArray[] = {}; Correct
+                                                            //int myArray[3] = {}; Correct
                                                             struct SymTab *s = findSym((yyvsp[-3].arrayDecl)->arrayName, actualList);
                                                             if (s == NULL) {
                                                                 (yyval.arrayInit)=malloc(sizeof(struct AstNodeArrayInit));
@@ -1921,14 +1922,14 @@ yyreduce:
                                                                 numberError++;
                                                             }
                                                         }
-#line 1925 "parser.tab.c"
+#line 1926 "parser.tab.c"
     break;
 
   case 47: /* arrayInit: types arrayDecl EQ arrayElements  */
 #line 503 "parser.y"
                                                         {
-                                                            //int myArray[] = 24; Error: invalid initializer !!!
-                                                            //int myArray[3] = 24; Error: invalid initializer !!!
+                                                            //int myArray[] = 24; Error: invalid initializer
+                                                            //int myArray[3] = 24; Error: invalid initializer
                                                             (yyval.arrayInit)=malloc(sizeof(struct AstNodeArrayInit));
                                                             printf("AstNodeArrayInit allocated for 'types arrayDecl EQ arrayElements'\n");
                                                             (yyval.arrayInit)->arrayType = stringToType((yyvsp[-3].string));
@@ -1938,14 +1939,14 @@ yyreduce:
                                                             printf("\n\t***Line: %d - Error: invalid initializer of '%s'***\n\n", yylineno,(yyvsp[-2].arrayDecl)->arrayName);
                                                             numberError++;
                                                         }
-#line 1942 "parser.tab.c"
+#line 1943 "parser.tab.c"
     break;
 
   case 48: /* arrayInit: types arrayDecl EQ LBRA arrayElements RBRA  */
 #line 515 "parser.y"
                                                         {
-                                                            //int myArray[] = {24, 27, 29};
-                                                            //int myArray[3] = {24, 27, 29};
+                                                            //int myArray[] = {24, 27, 29}; Correct
+                                                            //int myArray[3] = {24, 27, 29}; Correct
                                                             struct SymTab *s = findSym((yyvsp[-4].arrayDecl)->arrayName, actualList);
                                                             if (s == NULL) {
                                                                 (yyval.arrayInit)=malloc(sizeof(struct AstNodeArrayInit));
@@ -1968,7 +1969,7 @@ yyreduce:
                                                                 numberError++;
                                                             }
                                                         }
-#line 1972 "parser.tab.c"
+#line 1973 "parser.tab.c"
     break;
 
   case 49: /* arrayAssign: arrayCall EQ LBRA RBRA  */
@@ -1982,7 +1983,7 @@ yyreduce:
                                                             printf("\n\t***Line: %d - Syntax Error***\n\n", yylineno);
                                                             numberError++;
                                                         }
-#line 1986 "parser.tab.c"
+#line 1987 "parser.tab.c"
     break;
 
   case 50: /* arrayAssign: arrayCall EQ arrayElements  */
@@ -2001,7 +2002,7 @@ yyreduce:
                                                                 numberError++;
                                                             }
                                                         }
-#line 2005 "parser.tab.c"
+#line 2006 "parser.tab.c"
     break;
 
   case 51: /* arrayAssign: arrayCall EQ LBRA arrayElements RBRA  */
@@ -2018,7 +2019,7 @@ yyreduce:
                                                             printf("\n\t***Line: %d - Syntax Error***\n\n", yylineno);
                                                             numberError++;
                                                         }
-#line 2022 "parser.tab.c"
+#line 2023 "parser.tab.c"
     break;
 
   case 52: /* arrayDecl: ID LSBRA RSBRA  */
@@ -2029,7 +2030,7 @@ yyreduce:
                                                             (yyval.arrayDecl)->arrayName = (yyvsp[-2].string);
                                                             (yyval.arrayDecl)->arrayLength = NULL;
                                                         }
-#line 2033 "parser.tab.c"
+#line 2034 "parser.tab.c"
     break;
 
   case 53: /* arrayDecl: ID LSBRA INT_VALUE RSBRA  */
@@ -2040,7 +2041,7 @@ yyreduce:
                                                             (yyval.arrayDecl)->arrayName = (yyvsp[-3].string);
                                                             (yyval.arrayDecl)->arrayLength = (yyvsp[-1].string);
                                                         }
-#line 2044 "parser.tab.c"
+#line 2045 "parser.tab.c"
     break;
 
   case 54: /* arrayCall: ID LSBRA RSBRA  */
@@ -2051,7 +2052,7 @@ yyreduce:
                                                             (yyval.arrayCall)->arrayName = (yyvsp[-2].string);
                                                             (yyval.arrayCall)->elementIndex = NULL;
                                                         }
-#line 2055 "parser.tab.c"
+#line 2056 "parser.tab.c"
     break;
 
   case 55: /* arrayCall: ID LSBRA content RSBRA  */
@@ -2072,7 +2073,7 @@ yyreduce:
                                                                 numberError++;
                                                             }
                                                         }
-#line 2076 "parser.tab.c"
+#line 2077 "parser.tab.c"
     break;
 
   case 56: /* arrayElements: content  */
@@ -2087,7 +2088,7 @@ yyreduce:
                                                             (yyval.arrayElements)->element = (yyvsp[0].operand);
                                                             (yyval.arrayElements)->nextElement = NULL;
                                                         }
-#line 2091 "parser.tab.c"
+#line 2092 "parser.tab.c"
     break;
 
   case 57: /* arrayElements: content COMMA arrayElements  */
@@ -2102,7 +2103,7 @@ yyreduce:
                                                             (yyval.arrayElements)->element = (yyvsp[-2].operand);
                                                             (yyval.arrayElements)->nextElement = (yyvsp[0].arrayElements);
                                                         }
-#line 2106 "parser.tab.c"
+#line 2107 "parser.tab.c"
     break;
 
   case 58: /* outputFunction: PRINTF LPAR STRING_VALUE RPAR  */
@@ -2113,7 +2114,7 @@ yyreduce:
                                                             (yyval.outputFunction)->string = (yyvsp[-1].string);
                                                             (yyval.outputFunction)->outputElements = NULL;
                                                         }
-#line 2117 "parser.tab.c"
+#line 2118 "parser.tab.c"
     break;
 
   case 59: /* outputFunction: PRINTF LPAR STRING_VALUE COMMA outputElements RPAR  */
@@ -2124,7 +2125,7 @@ yyreduce:
                                                             (yyval.outputFunction)->string = (yyvsp[-3].string);
                                                             (yyval.outputFunction)->outputElements = (yyvsp[-1].outputElements);
                                                         }
-#line 2128 "parser.tab.c"
+#line 2129 "parser.tab.c"
     break;
 
   case 60: /* outputFunction: PRINTF LPAR RPAR  */
@@ -2135,7 +2136,7 @@ yyreduce:
                                                             printf("\n\t***Line: %d -  Error: too few arguments to function 'printf'***\n\n", yylineno);
                                                             numberError++;
                                                         }
-#line 2139 "parser.tab.c"
+#line 2140 "parser.tab.c"
     break;
 
   case 61: /* inputFunction: SCANF LPAR STRING_VALUE RPAR  */
@@ -2146,7 +2147,7 @@ yyreduce:
                                                             (yyval.inputFunction)->string = (yyvsp[-1].string);
                                                             (yyval.inputFunction)->inputElements = NULL;
                                                         }
-#line 2150 "parser.tab.c"
+#line 2151 "parser.tab.c"
     break;
 
   case 62: /* inputFunction: SCANF LPAR STRING_VALUE COMMA inputElements RPAR  */
@@ -2157,7 +2158,7 @@ yyreduce:
                                                             (yyval.inputFunction)->string = (yyvsp[-3].string);
                                                             (yyval.inputFunction)->inputElements = (yyvsp[-1].inputElements);
                                                         }
-#line 2161 "parser.tab.c"
+#line 2162 "parser.tab.c"
     break;
 
   case 63: /* inputFunction: SCANF LPAR RPAR  */
@@ -2168,7 +2169,7 @@ yyreduce:
                                                             printf("\n\t***Line: %d -  Error: too few arguments to function 'scanf'***\n\n", yylineno);
                                                             numberError++;
                                                         }
-#line 2172 "parser.tab.c"
+#line 2173 "parser.tab.c"
     break;
 
   case 64: /* outputElements: content  */
@@ -2179,7 +2180,7 @@ yyreduce:
                                                             (yyval.outputElements)->element = (yyvsp[0].operand);
                                                             (yyval.outputElements)->nextElement = NULL;
                                                         }
-#line 2183 "parser.tab.c"
+#line 2184 "parser.tab.c"
     break;
 
   case 65: /* outputElements: content COMMA outputElements  */
@@ -2190,7 +2191,7 @@ yyreduce:
                                                             (yyval.outputElements)->element = (yyvsp[-2].operand);
                                                             (yyval.outputElements)->nextElement = (yyvsp[0].outputElements);
                                                         }
-#line 2194 "parser.tab.c"
+#line 2195 "parser.tab.c"
     break;
 
   case 66: /* inputElements: REFOP content  */
@@ -2201,7 +2202,7 @@ yyreduce:
                                                             (yyval.inputElements)->element = (yyvsp[0].operand);
                                                             (yyval.inputElements)->nextElement = NULL;
                                                         }
-#line 2205 "parser.tab.c"
+#line 2206 "parser.tab.c"
     break;
 
   case 67: /* inputElements: REFOP content COMMA inputElements  */
@@ -2212,7 +2213,7 @@ yyreduce:
                                                             (yyval.inputElements)->element = (yyvsp[-2].operand);
                                                             (yyval.inputElements)->nextElement = (yyvsp[0].inputElements);
                                                         }
-#line 2216 "parser.tab.c"
+#line 2217 "parser.tab.c"
     break;
 
   case 68: /* initialization: types ID  */
@@ -2223,7 +2224,7 @@ yyreduce:
                                                             (yyval.init)->variableName = (yyvsp[0].string);
                                                             (yyval.init)->dataType = stringToType((yyvsp[-1].string));
                                                         }
-#line 2227 "parser.tab.c"
+#line 2228 "parser.tab.c"
     break;
 
   case 69: /* assignment: types ID EQ content  */
@@ -2251,7 +2252,7 @@ yyreduce:
                                                                 //printf("'types ID EQ content': the variable %s has not already been declared and then I create the symbol table for this variable\n", $2);
                                                             }
                                                         }
-#line 2255 "parser.tab.c"
+#line 2256 "parser.tab.c"
     break;
 
   case 70: /* assignment: ID EQ content  */
@@ -2260,7 +2261,7 @@ yyreduce:
                                                             (yyval.assign) = malloc(sizeof(struct AstNodeAssign));
                                                             printf("AstNodeAssign allocated for 'ID EQ content'\n");
                                                             struct SymTab *s = NULL;
-                                                            s = findSymtab((yyvsp[-2].string), actualList); 
+                                                            s = findSymtab((yyvsp[-2].string), actualList);
                                                             if (s == NULL) {
                                                                 printf("\n\t***Line: %d - Error: variable %s not declared***\n\n", yylineno,(yyvsp[-2].string));
                                                                 numberError++;
@@ -2276,7 +2277,7 @@ yyreduce:
                                                                 }
                                                             }
                                                         }
-#line 2280 "parser.tab.c"
+#line 2281 "parser.tab.c"
     break;
 
   case 71: /* expression: content ADD content  */
@@ -2303,7 +2304,7 @@ yyreduce:
                                                                 printf("Expression of type Sum\n");
                                                             }
                                                         }
-#line 2307 "parser.tab.c"
+#line 2308 "parser.tab.c"
     break;
 
   case 72: /* expression: content SUB content  */
@@ -2330,7 +2331,7 @@ yyreduce:
                                                                 printf("Expression of type Subtraction\n");
                                                             }
                                                         }
-#line 2334 "parser.tab.c"
+#line 2335 "parser.tab.c"
     break;
 
   case 73: /* expression: content MUL content  */
@@ -2357,7 +2358,7 @@ yyreduce:
                                                                 printf("Expression of type Multiplication\n");
                                                             }
                                                         }
-#line 2361 "parser.tab.c"
+#line 2362 "parser.tab.c"
     break;
 
   case 74: /* expression: content DIV content  */
@@ -2370,7 +2371,7 @@ yyreduce:
                                                             (yyval.expression)->leftOper = (yyvsp[-2].operand);
                                                             (yyval.expression)->op = (yyvsp[-1].string);
                                                             (yyval.expression)->rightOper = (yyvsp[0].operand);
-                                                            (yyval.expression)->exprType = DATA_TYPE_FLOAT; //forziamo il tipo a Float essendo una divisione
+                                                            (yyval.expression)->exprType = DATA_TYPE_FLOAT; //The result of a division will be a float
                                                             if  ((yyvsp[-2].operand)->valueType == DATA_TYPE_CHAR || (yyvsp[0].operand)->valueType == DATA_TYPE_CHAR) {
                                                                 printf("\n\t***Line: %d - Error: cannot divide variables of type char***\n\n", yylineno);
                                                                 numberError++;
@@ -2384,7 +2385,7 @@ yyreduce:
                                                                 printf("Expression of type Division\n");
                                                             }
                                                         }
-#line 2388 "parser.tab.c"
+#line 2389 "parser.tab.c"
     break;
 
   case 75: /* expression: content EE content  */
@@ -2400,7 +2401,7 @@ yyreduce:
                                                             (yyval.expression)->exprType = DATA_TYPE_INT;
                                                             printf("Expression of type Equal to\n");
                                                         }
-#line 2404 "parser.tab.c"
+#line 2405 "parser.tab.c"
     break;
 
   case 76: /* expression: content NE content  */
@@ -2416,7 +2417,7 @@ yyreduce:
                                                             (yyval.expression)->exprType = DATA_TYPE_INT;
                                                             printf("Expression of type Not Equal\n");
                                                         }
-#line 2420 "parser.tab.c"
+#line 2421 "parser.tab.c"
     break;
 
   case 77: /* expression: content GT content  */
@@ -2440,7 +2441,7 @@ yyreduce:
                                                                 printf("Expression of type Greater than\n");
                                                             }
                                                         }
-#line 2444 "parser.tab.c"
+#line 2445 "parser.tab.c"
     break;
 
   case 78: /* expression: content LT content  */
@@ -2464,7 +2465,7 @@ yyreduce:
                                                                 printf("Expression of type Less than\n");
                                                             }
                                                         }
-#line 2468 "parser.tab.c"
+#line 2469 "parser.tab.c"
     break;
 
   case 79: /* expression: content GE content  */
@@ -2488,7 +2489,7 @@ yyreduce:
                                                                 printf("Expression of type Greater than or equal to\n");
                                                             }
                                                         }
-#line 2492 "parser.tab.c"
+#line 2493 "parser.tab.c"
     break;
 
   case 80: /* expression: content LE content  */
@@ -2512,7 +2513,7 @@ yyreduce:
                                                                 printf("Expression of type Less than or equal to\n");
                                                             }
                                                         }
-#line 2516 "parser.tab.c"
+#line 2517 "parser.tab.c"
     break;
 
   case 81: /* expression: content AND content  */
@@ -2536,7 +2537,7 @@ yyreduce:
                                                                 printf("Expression of type AND\n");
                                                             }
                                                         }
-#line 2540 "parser.tab.c"
+#line 2541 "parser.tab.c"
     break;
 
   case 82: /* expression: content OR content  */
@@ -2560,7 +2561,7 @@ yyreduce:
                                                                 printf("Expression of type OR\n");
                                                             }
                                                         }
-#line 2564 "parser.tab.c"
+#line 2565 "parser.tab.c"
     break;
 
   case 83: /* expression: NOT content  */
@@ -2584,14 +2585,14 @@ yyreduce:
                                                                 printf("Expression of type NOT\n");
                                                             }
                                                         }
-#line 2588 "parser.tab.c"
+#line 2589 "parser.tab.c"
     break;
 
   case 84: /* content: ID  */
 #line 1005 "parser.y"
                                                         {
                                                             (yyval.operand) = malloc(sizeof(struct AstNodeOperand));
-                                                            printf("AstNodeOperand allocated for 'ID'\n"); //Ci troviamo nel caso in cui abbiamo int a = b
+                                                            printf("AstNodeOperand allocated for 'ID'\n"); //int a = b
                                                             struct SymTab *s = findSymtab((yyvsp[0].string),actualList);
                                                             if(s == NULL) {
                                                                 printf("\n\t***Line: %d - Error: The variable %s does not exist***\n\n", yylineno,(yyvsp[0].string));
@@ -2602,7 +2603,7 @@ yyreduce:
                                                                 (yyval.operand)->contentType = CONTENT_TYPE_ID;
                                                             }
                                                         }
-#line 2606 "parser.tab.c"
+#line 2607 "parser.tab.c"
     break;
 
   case 85: /* content: INT_VALUE  */
@@ -2614,7 +2615,7 @@ yyreduce:
                                                             (yyval.operand)->valueType = DATA_TYPE_INT;
                                                             (yyval.operand)->contentType = CONTENT_TYPE_INT_NUMBER;
                                                         }
-#line 2618 "parser.tab.c"
+#line 2619 "parser.tab.c"
     break;
 
   case 86: /* content: FLOAT_VALUE  */
@@ -2626,7 +2627,7 @@ yyreduce:
                                                             (yyval.operand)->valueType = DATA_TYPE_FLOAT;
                                                             (yyval.operand)->contentType = CONTENT_TYPE_FLOAT_NUMBER;
                                                         }
-#line 2630 "parser.tab.c"
+#line 2631 "parser.tab.c"
     break;
 
   case 87: /* content: CHAR_VALUE  */
@@ -2638,7 +2639,7 @@ yyreduce:
                                                             (yyval.operand)->valueType = DATA_TYPE_CHAR;
                                                             (yyval.operand)->contentType = CONTENT_TYPE_CHAR;
                                                         }
-#line 2642 "parser.tab.c"
+#line 2643 "parser.tab.c"
     break;
 
   case 88: /* content: expression  */
@@ -2650,7 +2651,7 @@ yyreduce:
                                                             (yyval.operand)->valueType = (yyvsp[0].expression)->exprType;
                                                             (yyval.operand)->contentType = CONTENT_TYPE_EXPRESSION;
                                                         }
-#line 2654 "parser.tab.c"
+#line 2655 "parser.tab.c"
     break;
 
   case 89: /* content: functionCall  */
@@ -2662,7 +2663,7 @@ yyreduce:
                                                             (yyval.operand)->valueType = (yyvsp[0].functionCall)->returnType;
                                                             (yyval.operand)->contentType = CONTENT_TYPE_FUNCTION;
                                                         }
-#line 2666 "parser.tab.c"
+#line 2667 "parser.tab.c"
     break;
 
   case 90: /* content: arrayCall  */
@@ -2677,7 +2678,7 @@ yyreduce:
                                                                 (yyval.operand)->contentType = CONTENT_TYPE_ARRAY;
                                                             }
                                                         }
-#line 2681 "parser.tab.c"
+#line 2682 "parser.tab.c"
     break;
 
   case 91: /* types: VOID  */
@@ -2685,7 +2686,7 @@ yyreduce:
                                                         {
                                                             printf("Defined 'type: VOID'\n");
                                                         }
-#line 2689 "parser.tab.c"
+#line 2690 "parser.tab.c"
     break;
 
   case 92: /* types: INT  */
@@ -2693,7 +2694,7 @@ yyreduce:
                                                         {
                                                             printf("Defined 'type: INT'\n");
                                                         }
-#line 2697 "parser.tab.c"
+#line 2698 "parser.tab.c"
     break;
 
   case 93: /* types: FLOAT  */
@@ -2701,7 +2702,7 @@ yyreduce:
                                                         {
                                                             printf("Defined 'type: FLOAT'\n");
                                                         }
-#line 2705 "parser.tab.c"
+#line 2706 "parser.tab.c"
     break;
 
   case 94: /* types: CHAR  */
@@ -2709,11 +2710,11 @@ yyreduce:
                                                         {
                                                             printf("Defined 'type: CHAR'\n");
                                                         }
-#line 2713 "parser.tab.c"
+#line 2714 "parser.tab.c"
     break;
 
 
-#line 2717 "parser.tab.c"
+#line 2718 "parser.tab.c"
 
       default: break;
     }
@@ -2913,7 +2914,7 @@ int main() {
     yyparse();
     nullValue.val = NULL;
     counter = 0;
-
+    
     if(numberError == 0) {
         fptr = fopen("test.py", "w");
         translate(root);

@@ -4,7 +4,8 @@
 #include <ctype.h>
 #include <string.h> //strcmp, strdup
 #include <stdbool.h> //true, false
-#include <stdlib.h> //atoi()
+#include <stdlib.h> //atoi
+
 #include "ast.h"
 #include "symboltable.h"
 #include "c2py.h"
@@ -26,7 +27,6 @@ void beginScope();
 void endScope();
 
 %}
-
 
 %token VOID
 %token INT
@@ -246,7 +246,7 @@ body                                                    {
                                                                 printf("\n\t***Line: %d - Error: function 'MAIN' already declared***\n\n", yylineno);
                                                                 numberError++;
                                                                 endScope();
-                                                            } 
+                                                            }
                                                         }
 |   initialization LPAR RPAR                            {
                                                             beginScope();
@@ -254,7 +254,7 @@ body                                                    {
     body                                                {
                                                             struct SymTab *s = NULL;
                                                             s = findSymtab($1->variableName, actualList);
-                                                            if (s == NULL) { 
+                                                            if (s == NULL) {
                                                                 $$ = malloc(sizeof(struct AstNodeFunctionDecl));
                                                                 printf("AstNodeFunctionDecl allocated for 'initialization LPAR RPAR body'\n");
                                                                 $$->functionName = $1->variableName;
@@ -267,9 +267,9 @@ body                                                    {
                                                                 printf("\n\t***Line: %d - Error: function '%s' already declared***\n\n", yylineno,$1->variableName);
                                                                 numberError++;
                                                                 endScope();
-                                                            } 
+                                                            }
                                                         }
-|   initialization LPAR                                 {   
+|   initialization LPAR                                 {
                                                             beginScope();
                                                         }
     functionParams                                      {
@@ -279,19 +279,19 @@ body                                                    {
                                                             for(struct AstNodeFunctionParams *p = $4; p != NULL; p = p->nextParams) {
                                                                 struct SymTab *s = createSym(p->initParam->variableName, actualList, SYMBOL_FUNCTION, p->initParam->dataType, DATA_TYPE_NONE, $1->variableName, NULL, NULL, nullValue);
                                                                 strcat(appoggio,typeToString(p->initParam->dataType));
-                                                            } 
+                                                            }
                                                             printf("Parameters of the declared function: %s\n",appoggio);
                                                         }
     RPAR body                                           {
                                                             struct SymTab *s = NULL;
                                                             s = findSymtab($1->variableName, actualList);
-                                                            if (s == NULL) { 
+                                                            if (s == NULL) {
                                                                 $$ = malloc(sizeof(struct AstNodeFunctionDecl));
                                                                 printf("AstNodeFunctionDecl allocated for 'initialization LPAR functionParams RPAR body'\n");
                                                                 $$->functionName = $1->variableName;
                                                                 $$->returnType = $1->dataType;
                                                                 $$->functionParams = $4;
-                                                                $$->functiontBody = $7; 
+                                                                $$->functiontBody = $7;
                                                                 endScope();
                                                                 struct SymTab *q = createSym($$->functionName, actualList, SYMBOL_FUNCTION, DATA_TYPE_NONE, $$->returnType, $$->functionName, appoggio, NULL, nullValue);
                                                             } else {
@@ -306,13 +306,13 @@ ID LPAR RPAR                                            {
                                                             $$ = malloc(sizeof(struct AstNodeFunctionCall));
                                                             printf("AstNodeFunctionCall allocated for 'ID LPAR RPAR'\n");
                                                             struct SymTab *s = findSymtab($1, actualList);
-                                                            if (s != NULL) { 
+                                                            if (s != NULL) {
                                                                 $$->functionName = $1;
                                                                 $$->returnType = s->returnType;
                                                                 $$->functionParams = NULL;
                                                             } else {
                                                                 printf("\n\t***Line: %d - Error: function '%s' not declared***\n\n", yylineno,$1);
-                                                            } 
+                                                            }
                                                         }
 |   ID LPAR functionParams RPAR                         {
                                                             $$ = malloc(sizeof(struct AstNodeFunctionCall));
@@ -405,8 +405,8 @@ body                                                    {
                                                             endScope();
                                                         }
 |   ELSE IF LPAR RPAR body                              {
-                                                            $$ = malloc(sizeof(struct AstNodeIf));
-                                                            printf("AstNodeIf allocated for 'IF LPAR RPAR body'\n");
+                                                            $$ = malloc(sizeof(struct AstNodeElseIf));
+                                                            printf("AstNodeElseIf allocated for 'ELSE IF LPAR RPAR body'\n");
                                                             printf("\n\t***Line: %d - Error: missing condition in 'else if statement'***\n\n", yylineno);
                                                             numberError++;
                                                         };
@@ -434,8 +434,8 @@ body                                                    {
                                                             endScope();
                                                         }
 |   WHILE LPAR RPAR body                                {
-                                                            $$ = malloc(sizeof(struct AstNodeIf));
-                                                            printf("AstNodeIf allocated for 'IF LPAR expression RPAR body'\n");
+                                                            $$ = malloc(sizeof(struct AstNodeWhile));
+                                                            printf("AstNodeWhile allocated for 'WHILE LPAR RPAR body'\n");
                                                             printf("\n\t***Line: %d - Error: missing condition in 'while statement'***\n\n", yylineno);
                                                             numberError++;
                                                         };
@@ -462,8 +462,8 @@ LBRA statements RBRA                                    {
 
 arrayInit:
 types arrayDecl                                         {
-                                                            //int myArray[]; Error: array size missing in ‘myArray’ !!!
-                                                            //int myArray[3]; Corretct
+                                                            //int myArray[]; Error: array size missing in ‘myArray’
+                                                            //int myArray[3]; Correct
                                                             struct SymTab *s = findSym($2->arrayName, actualList);
                                                             if (s == NULL) {
                                                                 $$=malloc(sizeof(struct AstNodeArrayInit));
@@ -484,8 +484,8 @@ types arrayDecl                                         {
                                                             }
                                                         }
 |   types arrayDecl EQ LBRA RBRA                        {
-                                                            //int myArray[] = {};
-                                                            //int myArray[3] = {};
+                                                            //int myArray[] = {}; Correct
+                                                            //int myArray[3] = {}; Correct
                                                             struct SymTab *s = findSym($2->arrayName, actualList);
                                                             if (s == NULL) {
                                                                 $$=malloc(sizeof(struct AstNodeArrayInit));
@@ -501,8 +501,8 @@ types arrayDecl                                         {
                                                             }
                                                         }
 |   types arrayDecl EQ arrayElements                    {
-                                                            //int myArray[] = 24; Error: invalid initializer !!!
-                                                            //int myArray[3] = 24; Error: invalid initializer !!!
+                                                            //int myArray[] = 24; Error: invalid initializer
+                                                            //int myArray[3] = 24; Error: invalid initializer
                                                             $$=malloc(sizeof(struct AstNodeArrayInit));
                                                             printf("AstNodeArrayInit allocated for 'types arrayDecl EQ arrayElements'\n");
                                                             $$->arrayType = stringToType($1);
@@ -513,8 +513,8 @@ types arrayDecl                                         {
                                                             numberError++;
                                                         }
 |   types arrayDecl EQ LBRA arrayElements RBRA          {
-                                                            //int myArray[] = {24, 27, 29};
-                                                            //int myArray[3] = {24, 27, 29};
+                                                            //int myArray[] = {24, 27, 29}; Correct
+                                                            //int myArray[3] = {24, 27, 29}; Correct
                                                             struct SymTab *s = findSym($2->arrayName, actualList);
                                                             if (s == NULL) {
                                                                 $$=malloc(sizeof(struct AstNodeArrayInit));
@@ -739,7 +739,7 @@ types ID EQ content                                     {
                                                             $$ = malloc(sizeof(struct AstNodeAssign));
                                                             printf("AstNodeAssign allocated for 'ID EQ content'\n");
                                                             struct SymTab *s = NULL;
-                                                            s = findSymtab($1, actualList); 
+                                                            s = findSymtab($1, actualList);
                                                             if (s == NULL) {
                                                                 printf("\n\t***Line: %d - Error: variable %s not declared***\n\n", yylineno,$1);
                                                                 numberError++;
@@ -831,7 +831,7 @@ content ADD content                                     {
                                                             $$->leftOper = $1;
                                                             $$->op = $2;
                                                             $$->rightOper = $3;
-                                                            $$->exprType = DATA_TYPE_FLOAT; //forziamo il tipo a Float essendo una divisione
+                                                            $$->exprType = DATA_TYPE_FLOAT; //The result of a division will be a float
                                                             if  ($1->valueType == DATA_TYPE_CHAR || $3->valueType == DATA_TYPE_CHAR) {
                                                                 printf("\n\t***Line: %d - Error: cannot divide variables of type char***\n\n", yylineno);
                                                                 numberError++;
@@ -844,7 +844,7 @@ content ADD content                                     {
                                                             } else {
                                                                 printf("Expression of type Division\n");
                                                             }
-                                                        } 
+                                                        }
 |   content EE content                                  {
                                                             $$ = malloc(sizeof(struct AstNodeExpression));
                                                             printf("AstNodeExpression allocated for 'content EE content'\n");
@@ -1004,7 +1004,7 @@ content ADD content                                     {
 content:
 ID                                                      {
                                                             $$ = malloc(sizeof(struct AstNodeOperand));
-                                                            printf("AstNodeOperand allocated for 'ID'\n"); //Ci troviamo nel caso in cui abbiamo int a = b
+                                                            printf("AstNodeOperand allocated for 'ID'\n"); //int a = b
                                                             struct SymTab *s = findSymtab($1,actualList);
                                                             if(s == NULL) {
                                                                 printf("\n\t***Line: %d - Error: The variable %s does not exist***\n\n", yylineno,$1);
@@ -1081,7 +1081,7 @@ int main() {
     yyparse();
     nullValue.val = NULL;
     counter = 0;
-
+    
     if(numberError == 0) {
         fptr = fopen("test.py", "w");
         translate(root);

@@ -7,12 +7,11 @@
     #include "ast.h"
 %}
 
-
 delim           [ \t]
 ws              {delim}+
 digit           [0-9]
 letter          [a-zA-Z]
-int_value       ([+]?[0]+|([-+]?[0]+?[1-9][0-9]*))       
+int_value       ([+]?[0]+|([-+]?[0]+?[1-9][0-9]*))
 float_value     [-+]?([0-9]*\.?[0-9]+|[0-9]+\.)(E[+-]?{digit}+)?
 char_value      (\')({letter}|{digit})(\')
 id              {letter}({letter}|{digit})*

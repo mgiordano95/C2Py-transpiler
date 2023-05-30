@@ -72,10 +72,10 @@ union yystype {
     struct AstNodeFunctionOutput      *outputFunction;
     struct AstNodeFunctionInput       *inputFunction;
     struct AstNodeOutputElements      *outputElements;
-    struct AstNodeInputElements       *inputElements;    
+    struct AstNodeInputElements       *inputElements;
 };
 
-/*--------------- Other Types ---------------*/
+/*--------------- Content Types ---------------*/
 typedef union ValueOper {
     char *val;
     struct AstNodeExpression *expression;
@@ -85,34 +85,31 @@ typedef union ValueOper {
 
 static union ValueOper nullValue;
 
+/*--------------- Node Statements ---------------*/
 struct AstNodeStatements {
-    enum NodeType nodeType; //questa può essere uguale solo a NodeType.STATEMENT_NODE
+    enum NodeType nodeType; //tipo dell'instruction
     struct AstNodeInstruction *currentInstruction; //puntatore all'instruction corrente
     struct AstNodeStatements *nextStatement; //puntato allo statmenent successivo
 };
 
+/*--------------- Node Instruction ---------------*/
 struct AstNodeInstruction {
     enum NodeType nodeType; //tipo dell'instruction
     union yystype value; /*puntatore alla struct dell'instruction $1 -> value.init, $1 -> value.functionDecl
     usare gli stessi nomi dei puntatori definiti in camelCase a riga 55*/
 };
 
-
 /*--------------- Node Initialization ---------------*/
-
 //int a = 3;
 struct AstNodeInit {
     char *variableName;
-    enum DataType dataType; 
-    //struct AstNodeAssign *assign;
-    //struct AstNodeInit *nextInit;  //serivra' per controllo che non siano state inizializzate 2 variabili 
-    // con lo stesso nome
+    enum DataType dataType;
 };
 
 /*--------------- Node Assignment ---------------*/
 //a = 5;
 struct AstNodeAssign {
-    char *variableName; 
+    char *variableName;
     enum DataType variableType; //valueType serve per il check del type del Content/ID ed è il tipo prima di uguale
     union ValueOper assignValue; //Valore vero e proprio dopo uguale
     enum ContentType assignType; //Contenuto (int func expr) che c'è dopo l'uguale
@@ -133,7 +130,7 @@ struct AstNodeExpression {
     enum DataType exprType;  //tipo dato restituito dall'espressione (void, int float, char)
     char *op; // op è $2 e può essere +, -, *, /, >, < ...
     struct AstNodeOperand *leftOper;
-    struct AstNodeOperand *rightOper; 
+    struct AstNodeOperand *rightOper;
 };
 
 /*--------------- Node Operand ---------------*/
@@ -144,7 +141,7 @@ struct AstNodeOperand {
     union ValueOper value;             //valore reale restituito se int, void, char  o puntatore a func o a expr
     enum DataType valueType;          //tipo del valore restituito
     enum ContentType contentType;   //è il tipo di operando func expr int che forse serve per la traduzione ma forse no
-}; 
+};
 
 /*--------------- Node Array Decl ---------------*/
 struct AstNodeArrayDecl {
@@ -197,8 +194,8 @@ struct AstNodeFunctionCall {
 
 /*--------------- Node Function Parameters ---------------*/
 struct AstNodeFunctionParams {
-    struct AstNodeInit *initParam; //questo vale solo per la dichiarazione e va annullato nella chiamata 
-    struct AstNodeOperand *callParams; //questo vale solo per la chiamata e va annullato nella dichiarazione 
+    struct AstNodeInit *initParam; //questo vale solo per la dichiarazione e va annullato nella chiamata
+    struct AstNodeOperand *callParams; //questo vale solo per la chiamata e va annullato nella dichiarazione
     struct AstNodeFunctionParams *nextParams; // questo vale sempre per puntare al parametro successivo (a, b, c), sia dichiarazione che chiamata
     /* Gestione di più parametri:
     multi_fun_param:
@@ -213,6 +210,7 @@ struct AstNodeFunctionParams {
     */
 };
 
+/*--------------- Node Body ---------------*/
 struct AstNodeBody {
     struct AstNodeStatements *bodyStatements;
     struct AstNodeOperand *returnValue;
@@ -222,7 +220,6 @@ struct AstNodeBody {
 struct AstNodeIf {
     struct AstNodeExpression *ifCondition;
     struct AstNodeBody *ifBody;
-
 };
 
 /*--------------- Node Elseif ---------------*/
@@ -242,21 +239,25 @@ struct AstNodeWhile {
     struct AstNodeBody *whileBody;
 };
 
+/*--------------- Node Function Output ---------------*/
 struct AstNodeFunctionOutput {
     char *string;
     struct AstNodeOutputElements *outputElements;
 };
 
+/*--------------- Node Function Input ---------------*/
 struct AstNodeFunctionInput {
     char *string;
     struct AstNodeInputElements *inputElements;
 };
 
+/*--------------- Node Output Elements ---------------*/
 struct AstNodeOutputElements {
     struct AstNodeOperand *element;
     struct AstNodeOutputElements *nextElement;
 };
 
+/*--------------- Node Input Elements ---------------*/
 struct AstNodeInputElements {
     struct AstNodeOperand *element;
     struct AstNodeInputElements *nextElement;

@@ -2,7 +2,7 @@
 #define SYMBOLTABLE_H
 
 #include <stdio.h>
-#include <stdlib.h> // for exit function used by uthash
+#include <stdlib.h> //For exit function used by uthash
 #include <stdbool.h>
 #include "uthash.h"
 #include "ast.h"
@@ -14,7 +14,7 @@ struct List {
 };
 
 struct SymTab {
-    char *symbolName;    //questa è la mia chiave
+    char *symbolName; //questa è la mia chiave
     enum SymbolType symbolType;
     enum DataType dataType;
     enum DataType returnType;
@@ -56,7 +56,7 @@ struct List *deleteList(struct List *symList) {   //più che cancellare la lista
     
 //uthash rimuove solo la struct dalla hash table, non libera lo spazio in memoria. Quello è opzionale
 //in seguito a HASH_DEL cambia il puntatore alla tabella che prima puntava al primo oggetto aggiunto. Questo se cancello il primo oggetto
-//HASH_ITER è un costrutto che si espande in un ciclo for iterando su tutte le symtab della lista 
+//HASH_ITER è un costrutto che si espande in un ciclo for iterando su tutte le symtab della lista
 }
 
 struct SymTab *findSymtab(char *symbolName, struct List *symList) {
@@ -71,7 +71,7 @@ struct SymTab *findSymtab(char *symbolName, struct List *symList) {
     }
 }
 
-//aggiunge una symbol table con simbolo alla lista 
+//aggiunge una symbol table con simbolo alla lista
 struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType symbolType, enum DataType dataType, enum DataType returnType, char *funcName, char funcParameters[], char *arrayLength, union ValueOper valueOper) {
     struct SymTab *s;
     s = findSym(symbolName, list);
@@ -84,7 +84,7 @@ struct SymTab *createSym(char *symbolName, struct List *list, enum SymbolType sy
         s->funcName = funcName;
         if (funcParameters != NULL) {
             for(int i=0;i<100;i++) {
-            s->funcParameters[i] = funcParameters[i]; 
+                s->funcParameters[i] = funcParameters[i];
             }
         }
         s->arrayLength = arrayLength;
