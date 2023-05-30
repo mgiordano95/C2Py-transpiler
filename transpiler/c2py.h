@@ -283,51 +283,61 @@ void translateExpression(struct AstNodeExpression *expression) {
     char *and = "&&";
     char *or = "||";
     char *not = "!";
-    if (expression->leftOper->contentType == CONTENT_TYPE_EXPRESSION && expression->rightOper->contentType == CONTENT_TYPE_EXPRESSION) {
-        translateExpression(expression->leftOper->value.expression);
-        if (strcmp(expression->op, and) == 0) {
-            fprintf(fptr, " and ");
-        } else if (strcmp(expression->op, or) == 0) {
-            fprintf(fptr, " or ");
-        } else if (strcmp(expression->op, not) == 0) {
-            fprintf(fptr, " not ");
+    if (expression->rightOper != NULL) {
+        if (expression->leftOper->contentType == CONTENT_TYPE_EXPRESSION && expression->rightOper->contentType == CONTENT_TYPE_EXPRESSION) {
+            translateExpression(expression->leftOper->value.expression);
+            if (strcmp(expression->op, and) == 0) {
+                fprintf(fptr, " and ");
+            } else if (strcmp(expression->op, or) == 0) {
+                fprintf(fptr, " or ");
+            } else if (strcmp(expression->op, not) == 0) {
+                fprintf(fptr, " not ");
+            } else {
+                fprintf(fptr, " %s ", expression->op);
+            }
+            translateExpression(expression->rightOper->value.expression);
+        } else if (expression->leftOper->contentType == CONTENT_TYPE_EXPRESSION) {
+            translateExpression(expression->leftOper->value.expression);
+            if (strcmp(expression->op, and) == 0) {
+                fprintf(fptr, " and ");
+            } else if (strcmp(expression->op, or) == 0) {
+                fprintf(fptr, " or ");
+            } else if (strcmp(expression->op, not) == 0) {
+                fprintf(fptr, " not ");
+            } else {
+                fprintf(fptr, " %s ", expression->op);
+            }
+            fprintf(fptr, "%s", expression->rightOper->value.val);
+        } else if (expression->rightOper->contentType == CONTENT_TYPE_EXPRESSION) {
+            fprintf(fptr, "%s", expression->leftOper->value.val);
+            if (strcmp(expression->op, and) == 0) {
+                fprintf(fptr, " and ");
+            } else if (strcmp(expression->op, or) == 0) {
+                fprintf(fptr, " or ");
+            } else if (strcmp(expression->op, not) == 0) {
+                fprintf(fptr, " not ");
+            } else {
+                fprintf(fptr, " %s ", expression->op);
+            }
+            translateExpression(expression->rightOper->value.expression);
         } else {
-            fprintf(fptr, " %s ", expression->op);
+            if (strcmp(expression->op, and) == 0) {
+                fprintf(fptr, "%s and %s", expression->leftOper->value.val, expression->rightOper->value.val);
+            } else if (strcmp(expression->op, or) == 0) {
+                fprintf(fptr, "%s or %s", expression->leftOper->value.val, expression->rightOper->value.val);
+            } else if (strcmp(expression->op, not) == 0) {
+                fprintf(fptr, "%s not %s", expression->leftOper->value.val, expression->rightOper->value.val);
+            } else {
+                fprintf(fptr, "%s %s %s", expression->leftOper->value.val, expression->op, expression->rightOper->value.val);
+            }
         }
-        translateExpression(expression->rightOper->value.expression);
-    } else if (expression->leftOper->contentType == CONTENT_TYPE_EXPRESSION) {
-        translateExpression(expression->leftOper->value.expression);
-        if (strcmp(expression->op, and) == 0) {
-            fprintf(fptr, " and ");
-        } else if (strcmp(expression->op, or) == 0) {
-            fprintf(fptr, " or ");
-        } else if (strcmp(expression->op, not) == 0) {
-            fprintf(fptr, " not ");
-        } else {
-            fprintf(fptr, " %s ", expression->op);
-        }
-        fprintf(fptr, "%s", expression->rightOper->value.val);
-    } else if (expression->rightOper->contentType == CONTENT_TYPE_EXPRESSION) {
-        fprintf(fptr, "%s", expression->leftOper->value.val);
-        if (strcmp(expression->op, and) == 0) {
-            fprintf(fptr, " and ");
-        } else if (strcmp(expression->op, or) == 0) {
-            fprintf(fptr, " or ");
-        } else if (strcmp(expression->op, not) == 0) {
-            fprintf(fptr, " not ");
-        } else {
-            fprintf(fptr, " %s ", expression->op);
-        }
-        translateExpression(expression->rightOper->value.expression);
     } else {
-        if (strcmp(expression->op, and) == 0) {
-            fprintf(fptr, "%s and %s", expression->leftOper->value.val, expression->rightOper->value.val);
-        } else if (strcmp(expression->op, or) == 0) {
-            fprintf(fptr, "%s or %s", expression->leftOper->value.val, expression->rightOper->value.val);
-        } else if (strcmp(expression->op, not) == 0) {
-            fprintf(fptr, "%s not %s", expression->leftOper->value.val, expression->rightOper->value.val);
+        if (expression->leftOper->contentType == CONTENT_TYPE_EXPRESSION) {
+            fprintf(fptr, " not(");
+            translateExpression(expression->leftOper->value.expression);
+            fprintf(fptr, ")");
         } else {
-            fprintf(fptr, "%s %s %s", expression->leftOper->value.val, expression->op, expression->rightOper->value.val);
+            fprintf(fptr, " not(%s)", expression->leftOper->value.val);
         }
     }
 }
