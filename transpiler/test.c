@@ -1,11 +1,10 @@
-#include <stdio.h>
+int a = 3;
+int b = 4;
 
-int main() {
-    int a = 3;
-    
-    if(!(a == 0)) { 
-        printf("Ciao");
-    }
+if(a > 7 + 1) {
+    int g = 0;
+}
 
-    return 0;
+if((a > 7) && (b > 8)) {
+    int d = 0;
 }

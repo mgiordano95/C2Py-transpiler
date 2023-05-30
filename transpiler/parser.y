@@ -77,7 +77,7 @@ void endScope();
 %type <init> initialization
 %type <assign> assignment
 %type <operand> content
-%type <expression> expression
+%type <expression> expression arithmeticExpression comparisonExpression logicalExpression  
 %type <body> body
 %type <functionDecl> functionDecl
 %type <functionCall> functionCall
@@ -757,6 +757,21 @@ types ID EQ content                                     {
                                                         };
 
 expression:
+comparisonExpression                                    {
+                                                            $$ = $1;
+                                                        }
+|   arithmeticExpression                                {
+                                                            $$ = $1;
+                                                        }
+|   logicalExpression                                   {
+                                                            $$ = $1;
+                                                        }
+
+|   LPAR expression RPAR                                {
+                                                            $$ = $2;
+                                                        };
+
+arithmeticExpression:
 content ADD content                                     {
                                                             $$ = malloc(sizeof(struct AstNodeExpression));
                                                             printf("AstNodeExpression allocated for 'content ADD content'\n");
@@ -844,8 +859,10 @@ content ADD content                                     {
                                                             } else {
                                                                 printf("Expression of type Division\n");
                                                             }
-                                                        }
-|   content EE content                                  {
+                                                        };
+
+comparisonExpression:
+content EE content                                      {
                                                             $$ = malloc(sizeof(struct AstNodeExpression));
                                                             printf("AstNodeExpression allocated for 'content EE content'\n");
                                                             $$->leftOper = malloc(sizeof(struct AstNodeOperand));
@@ -942,8 +959,10 @@ content ADD content                                     {
                                                             } else {
                                                                 printf("Expression of type Less than or equal to\n");
                                                             }
-                                                        }
-|   content AND content                                 {
+                                                        };
+
+logicalExpression:
+content AND content                                     {
                                                             $$ = malloc(sizeof(struct AstNodeExpression));
                                                             printf("AstNodeExpression allocated for 'content AND content'\n");
                                                             $$->leftOper = malloc(sizeof(struct AstNodeOperand));
@@ -985,7 +1004,6 @@ content ADD content                                     {
                                                             $$ = malloc(sizeof(struct AstNodeExpression));
                                                             printf("AstNodeExpression allocated for 'NOT content'\n");
                                                             $$->leftOper = malloc(sizeof(struct AstNodeOperand));
-                                                            $$->rightOper = malloc(sizeof(struct AstNodeOperand));
                                                             $$->op = $1;
                                                             $$->leftOper = $2;
                                                             $$->rightOper = NULL;
