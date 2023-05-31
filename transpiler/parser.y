@@ -757,10 +757,10 @@ types ID EQ content                                     {
                                                         };
 
 expression:
-comparisonExpression                                    {
+arithmeticExpression                                    {
                                                             $$ = $1;
                                                         }
-|   arithmeticExpression                                {
+|   comparisonExpression                                {
                                                             $$ = $1;
                                                         }
 |   logicalExpression                                   {

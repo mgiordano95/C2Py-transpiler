@@ -689,7 +689,7 @@ static const yytype_int8 yydefact[] =
        0,     0,     0,     0,     0,     0,     0,     0,     0,     4,
        7,    10,    11,     0,    12,    13,    22,     8,     9,     0,
       68,    45,     0,     0,     0,    89,    90,    88,    91,    93,
-      94,    92,    72,    71,    73,     0,     0,     0,    38,     0,
+      94,    92,    71,    72,    73,     0,     0,     0,    38,     0,
       92,    60,     0,    63,     0,    92,    70,    25,     0,    28,
        0,    54,     0,     0,    50,    56,    20,     0,     0,     0,
        0,     0,    87,    92,    33,    31,     0,     0,     0,     0,
@@ -2288,7 +2288,7 @@ yyreduce:
 #line 2289 "parser.tab.c"
     break;
 
-  case 71: /* expression: comparisonExpression  */
+  case 71: /* expression: arithmeticExpression  */
 #line 760 "parser.y"
                                                         {
                                                             (yyval.expression) = (yyvsp[0].expression);
@@ -2296,7 +2296,7 @@ yyreduce:
 #line 2297 "parser.tab.c"
     break;
 
-  case 72: /* expression: arithmeticExpression  */
+  case 72: /* expression: comparisonExpression  */
 #line 763 "parser.y"
                                                         {
                                                             (yyval.expression) = (yyvsp[0].expression);
