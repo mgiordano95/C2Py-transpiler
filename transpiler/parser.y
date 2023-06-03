@@ -856,6 +856,9 @@ content ADD content                                     {
                                                             } else if ($1->valueType != $3->valueType) {
                                                                 printf("\n\t***Line: %d - Error: cannot divide variables of different types***\n\n", yylineno);
                                                                 numberError++;
+                                                            } else if(strcmp($$->rightOper->value.val, "0") == 0) {
+                                                                printf("\n\t***Line: %d - Error: division by zero***\n\n", yylineno);
+                                                                numberError++;
                                                             } else {
                                                                 printf("Expression of type Division\n");
                                                             }

@@ -10,5 +10,7 @@ int main() {
     char c2 = 'L';
     char c3 = c1 + c2; //Expression_Error_1 (Error: cannot add variables of type char)
     
+    float div = a / 0; //Expression_Error_2 (Error: division by zero)
+    
     return 0;
 }

@@ -602,9 +602,9 @@ static const yytype_int16 yyrline[] =
      426,   436,   444,   450,   456,   464,   486,   503,   515,   542,
      551,   565,   579,   585,   593,   599,   617,   627,   639,   645,
      651,   659,   665,   671,   679,   685,   693,   699,   707,   715,
-     738,   760,   763,   766,   770,   775,   797,   819,   841,   865,
-     876,   887,   906,   925,   944,   965,   984,  1003,  1023,  1036,
-    1043,  1050,  1057,  1064,  1071,  1083,  1086,  1089,  1092
+     738,   760,   763,   766,   770,   775,   797,   819,   841,   868,
+     879,   890,   909,   928,   947,   968,   987,  1006,  1026,  1039,
+    1046,  1053,  1060,  1067,  1074,  1086,  1089,  1092,  1095
 };
 #endif
 
@@ -2421,15 +2421,18 @@ yyreduce:
                                                             } else if ((yyvsp[-2].operand)->valueType != (yyvsp[0].operand)->valueType) {
                                                                 printf("\n\t***Line: %d - Error: cannot divide variables of different types***\n\n", yylineno);
                                                                 numberError++;
-                                                            } else {
+                                                            } else if(strcmp((yyval.expression)->rightOper->value.val, "0") == 0) {
+                                                                printf("\n\t***Line: %d - Error: division by zero***\n\n", yylineno);
+                                                                numberError++;
+                                                            }else {
                                                                 printf("Expression of type Division\n");
                                                             }
                                                         }
-#line 2429 "parser.tab.c"
+#line 2432 "parser.tab.c"
     break;
 
   case 79: /* comparisonExpression: content EE content  */
-#line 865 "parser.y"
+#line 868 "parser.y"
                                                         {
                                                             (yyval.expression) = malloc(sizeof(struct AstNodeExpression));
                                                             printf("AstNodeExpression allocated for 'content EE content'\n");
@@ -2441,11 +2444,11 @@ yyreduce:
                                                             (yyval.expression)->exprType = DATA_TYPE_INT;
                                                             printf("Expression of type Equal to\n");
                                                         }
-#line 2445 "parser.tab.c"
+#line 2448 "parser.tab.c"
     break;
 
   case 80: /* comparisonExpression: content NE content  */
-#line 876 "parser.y"
+#line 879 "parser.y"
                                                         {
                                                             (yyval.expression) = malloc(sizeof(struct AstNodeExpression));
                                                             printf("AstNodeExpression allocated for 'content NE content'\n");
@@ -2457,11 +2460,11 @@ yyreduce:
                                                             (yyval.expression)->exprType = DATA_TYPE_INT;
                                                             printf("Expression of type Not Equal\n");
                                                         }
-#line 2461 "parser.tab.c"
+#line 2464 "parser.tab.c"
     break;
 
   case 81: /* comparisonExpression: content GT content  */
-#line 887 "parser.y"
+#line 890 "parser.y"
                                                         {
                                                             (yyval.expression) = malloc(sizeof(struct AstNodeExpression));
                                                             printf("AstNodeExpression allocated for 'content GT content'\n");
@@ -2481,11 +2484,11 @@ yyreduce:
                                                                 printf("Expression of type Greater than\n");
                                                             }
                                                         }
-#line 2485 "parser.tab.c"
+#line 2488 "parser.tab.c"
     break;
 
   case 82: /* comparisonExpression: content LT content  */
-#line 906 "parser.y"
+#line 909 "parser.y"
                                                         {
                                                             (yyval.expression) = malloc(sizeof(struct AstNodeExpression));
                                                             printf("AstNodeExpression allocated for 'content LT content'\n");
@@ -2505,11 +2508,11 @@ yyreduce:
                                                                 printf("Expression of type Less than\n");
                                                             }
                                                         }
-#line 2509 "parser.tab.c"
+#line 2512 "parser.tab.c"
     break;
 
   case 83: /* comparisonExpression: content GE content  */
-#line 925 "parser.y"
+#line 928 "parser.y"
                                                         {
                                                             (yyval.expression) = malloc(sizeof(struct AstNodeExpression));
                                                             printf("AstNodeExpression allocated for 'content GE content'\n");
@@ -2529,11 +2532,11 @@ yyreduce:
                                                                 printf("Expression of type Greater than or equal to\n");
                                                             }
                                                         }
-#line 2533 "parser.tab.c"
+#line 2536 "parser.tab.c"
     break;
 
   case 84: /* comparisonExpression: content LE content  */
-#line 944 "parser.y"
+#line 947 "parser.y"
                                                         {
                                                             (yyval.expression) = malloc(sizeof(struct AstNodeExpression));
                                                             printf("AstNodeExpression allocated for 'content LE content'\n");
@@ -2553,11 +2556,11 @@ yyreduce:
                                                                 printf("Expression of type Less than or equal to\n");
                                                             }
                                                         }
-#line 2557 "parser.tab.c"
+#line 2560 "parser.tab.c"
     break;
 
   case 85: /* logicalExpression: content AND content  */
-#line 965 "parser.y"
+#line 968 "parser.y"
                                                         {
                                                             (yyval.expression) = malloc(sizeof(struct AstNodeExpression));
                                                             printf("AstNodeExpression allocated for 'content AND content'\n");
@@ -2577,11 +2580,11 @@ yyreduce:
                                                                 printf("Expression of type AND\n");
                                                             }
                                                         }
-#line 2581 "parser.tab.c"
+#line 2584 "parser.tab.c"
     break;
 
   case 86: /* logicalExpression: content OR content  */
-#line 984 "parser.y"
+#line 987 "parser.y"
                                                         {
                                                             (yyval.expression) = malloc(sizeof(struct AstNodeExpression));
                                                             printf("AstNodeExpression allocated for 'content OR content'\n");
@@ -2601,11 +2604,11 @@ yyreduce:
                                                                 printf("Expression of type OR\n");
                                                             }
                                                         }
-#line 2605 "parser.tab.c"
+#line 2608 "parser.tab.c"
     break;
 
   case 87: /* logicalExpression: NOT content  */
-#line 1003 "parser.y"
+#line 1006 "parser.y"
                                                         {
                                                             (yyval.expression) = malloc(sizeof(struct AstNodeExpression));
                                                             printf("AstNodeExpression allocated for 'NOT content'\n");
@@ -2624,11 +2627,11 @@ yyreduce:
                                                                 printf("Expression of type NOT\n");
                                                             }
                                                         }
-#line 2628 "parser.tab.c"
+#line 2631 "parser.tab.c"
     break;
 
   case 88: /* content: ID  */
-#line 1023 "parser.y"
+#line 1026 "parser.y"
                                                         {
                                                             (yyval.operand) = malloc(sizeof(struct AstNodeOperand));
                                                             printf("AstNodeOperand allocated for 'ID'\n"); //int a = b
@@ -2642,11 +2645,11 @@ yyreduce:
                                                                 (yyval.operand)->contentType = CONTENT_TYPE_ID;
                                                             }
                                                         }
-#line 2646 "parser.tab.c"
+#line 2649 "parser.tab.c"
     break;
 
   case 89: /* content: INT_VALUE  */
-#line 1036 "parser.y"
+#line 1039 "parser.y"
                                                         {
                                                             (yyval.operand) = malloc(sizeof(struct AstNodeOperand));
                                                             printf("AstNodeOperand allocated for 'INT_VALUE'\n");
@@ -2654,11 +2657,11 @@ yyreduce:
                                                             (yyval.operand)->valueType = DATA_TYPE_INT;
                                                             (yyval.operand)->contentType = CONTENT_TYPE_INT_NUMBER;
                                                         }
-#line 2658 "parser.tab.c"
+#line 2661 "parser.tab.c"
     break;
 
   case 90: /* content: FLOAT_VALUE  */
-#line 1043 "parser.y"
+#line 1046 "parser.y"
                                                         {
                                                             (yyval.operand) = malloc(sizeof(struct AstNodeOperand));
                                                             printf("AstNodeOperand allocated for 'FLOAT_VALUE'\n");
@@ -2666,11 +2669,11 @@ yyreduce:
                                                             (yyval.operand)->valueType = DATA_TYPE_FLOAT;
                                                             (yyval.operand)->contentType = CONTENT_TYPE_FLOAT_NUMBER;
                                                         }
-#line 2670 "parser.tab.c"
+#line 2673 "parser.tab.c"
     break;
 
   case 91: /* content: CHAR_VALUE  */
-#line 1050 "parser.y"
+#line 1053 "parser.y"
                                                         {
                                                             (yyval.operand) = malloc(sizeof(struct AstNodeOperand));
                                                             printf("AstNodeOperand allocated for 'CHAR_VALUE'\n");
@@ -2678,11 +2681,11 @@ yyreduce:
                                                             (yyval.operand)->valueType = DATA_TYPE_CHAR;
                                                             (yyval.operand)->contentType = CONTENT_TYPE_CHAR;
                                                         }
-#line 2682 "parser.tab.c"
+#line 2685 "parser.tab.c"
     break;
 
   case 92: /* content: expression  */
-#line 1057 "parser.y"
+#line 1060 "parser.y"
                                                         {
                                                             (yyval.operand) = malloc(sizeof(struct AstNodeOperand));
                                                             printf("AstNodeOperand allocated for 'expression'\n");
@@ -2690,11 +2693,11 @@ yyreduce:
                                                             (yyval.operand)->valueType = (yyvsp[0].expression)->exprType;
                                                             (yyval.operand)->contentType = CONTENT_TYPE_EXPRESSION;
                                                         }
-#line 2694 "parser.tab.c"
+#line 2697 "parser.tab.c"
     break;
 
   case 93: /* content: functionCall  */
-#line 1064 "parser.y"
+#line 1067 "parser.y"
                                                         {
                                                             (yyval.operand) = malloc(sizeof(struct AstNodeOperand));
                                                             printf("AstNodeOperand allocated for 'functionCall'\n");
@@ -2702,11 +2705,11 @@ yyreduce:
                                                             (yyval.operand)->valueType = (yyvsp[0].functionCall)->returnType;
                                                             (yyval.operand)->contentType = CONTENT_TYPE_FUNCTION;
                                                         }
-#line 2706 "parser.tab.c"
+#line 2709 "parser.tab.c"
     break;
 
   case 94: /* content: arrayCall  */
-#line 1071 "parser.y"
+#line 1074 "parser.y"
                                                         {
                                                             (yyval.operand) = malloc(sizeof(struct AstNodeOperand));
                                                             printf("AstNodeOperand allocated for 'arrayCall'\n");
@@ -2717,43 +2720,43 @@ yyreduce:
                                                                 (yyval.operand)->contentType = CONTENT_TYPE_ARRAY;
                                                             }
                                                         }
-#line 2721 "parser.tab.c"
+#line 2724 "parser.tab.c"
     break;
 
   case 95: /* types: VOID  */
-#line 1083 "parser.y"
+#line 1086 "parser.y"
                                                         {
                                                             printf("Defined 'type: VOID'\n");
                                                         }
-#line 2729 "parser.tab.c"
+#line 2732 "parser.tab.c"
     break;
 
   case 96: /* types: INT  */
-#line 1086 "parser.y"
+#line 1089 "parser.y"
                                                         {
                                                             printf("Defined 'type: INT'\n");
                                                         }
-#line 2737 "parser.tab.c"
+#line 2740 "parser.tab.c"
     break;
 
   case 97: /* types: FLOAT  */
-#line 1089 "parser.y"
+#line 1092 "parser.y"
                                                         {
                                                             printf("Defined 'type: FLOAT'\n");
                                                         }
-#line 2745 "parser.tab.c"
+#line 2748 "parser.tab.c"
     break;
 
   case 98: /* types: CHAR  */
-#line 1092 "parser.y"
+#line 1095 "parser.y"
                                                         {
                                                             printf("Defined 'type: CHAR'\n");
                                                         }
-#line 2753 "parser.tab.c"
+#line 2756 "parser.tab.c"
     break;
 
 
-#line 2757 "parser.tab.c"
+#line 2760 "parser.tab.c"
 
       default: break;
     }
@@ -2946,7 +2949,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 1096 "parser.y"
+#line 1099 "parser.y"
 
 
 int main() {
